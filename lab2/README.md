@@ -1,3 +1,5 @@
+# DRAFT (don't start yet)
+
 # Lab 2: Git Practice
 
 In this lab, you'll practice using git and GitHub.  You'll do the following:

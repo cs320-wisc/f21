@@ -1,3 +1,5 @@
+# DRAFT (don't start yet)
+
 # Lab 12: Decision Boundaries
 
 We've learned two kinds of supervised learning: regression and

@@ -1,3 +1,5 @@
+# DRAFT (don't start yet)
+
 # P7: Selling Laptops: Smart Marketing
 
 ## Corrections/Clarifications

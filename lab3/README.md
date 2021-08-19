@@ -1,3 +1,5 @@
+# DRAFT (don't start yet)
+
 # Lab 3: Files and Complexity
 
 Start a new notebook on your virtual machine, then complete the following three parts of the lab:
