@@ -5,13 +5,13 @@
 ## Corrections/Clarifications
 
 * Feb 19: add an example for SimplePredictor
-* Feb 16: tips for getting started: https://youtu.be/Ws1B8Wz4sEg
+* Feb 16: tips for getting started (from spring 2021): https://youtu.be/Ws1B8Wz4sEg
 * Feb 15: edited bias_test part of tester.py
 * Fed 13: fix bias_test result in README
 * Feb 12: clarified `loans()` method and `name`,`reader` in `Bank` class. And, added an Expected output for `get_bank_names`. clarified how to interpret `action_taken` more.
 * Feb 11: clarified how to interpret `action_taken`
 
-FAQ Post [HERE](https://piazza.com/class/kjomvrz8kyl64u?cid=333)
+FAQ Post link TBA.
 
 ## Overview
 
@@ -124,7 +124,7 @@ After the above call, it should be possible to see a list of files via a `paths`
 print(data_reader.paths) # in alphabetical order!
 ```
 
-For this, you can refer to lab3 part2 (https://github.com/tylerharter/cs320/blob/master/s21/lab3/part2.md).
+For this, you can refer to lab3 part2 (link TBA).
 
 Your ZippedCSVReader will have two methods to help people access the
 data inside a zip file: `load_json` and `rows`.  Both accept an
