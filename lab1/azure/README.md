@@ -29,7 +29,7 @@ Click the "+Add" button to create a new virtual machine:
 
 Give your machine a name and choose a region near you ("Central US"
 will probably be fastest for remote access for those working from
-Wisconsin).  Make sure the image is "Ubuntu Server 18.04 LTS - Gen1"
+Wisconsin).  Make sure the image is "Ubuntu Server 20.04 LTS - Gen1"
 (probably the default already, but double check).
 
 **Very Important:** change the "Size" to "Standard_B1s", which costs
