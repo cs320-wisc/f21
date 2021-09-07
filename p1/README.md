@@ -134,6 +134,124 @@ The answer should be 6: 2+1+3.  11 and 15 are too large, so they are skipped.  8
 
 ## Review 220: State (Part 2)
 
+### Requirement: lists and dicts
+
+Copy/paste the following:
+
+```python
+header = ["A", "B", "C"]
+
+coord1 = {"x": 8, "y": 5}
+coord2 = {"x": 9, "y": 2}
+coord3 = {"x": 3, "y": 1}
+
+rows = [
+    [1, 6, coord1],
+    [3, 4, coord2],
+    [5, 2, coord3],
+]
+```
+
+Note that `rows` is a list of lists.  Each inner list contains two ints and one dict (dictionary).  For complicated nested structures like this, it's often helpful to visualize the stack of frames and heap of objects in PythonTutor: https://pythontutor.com/live.html#mode=edit.
+
+You could copy the above to visualize it, or use the following link for your convenience:
+
+https://pythontutor.com/visualize.html#code=header%20%3D%20%5B%22A%22,%20%22B%22,%20%22C%22%5D%0A%0Acoord1%20%3D%20%7B%22x%22%3A%208,%20%22y%22%3A%205%7D%0Acoord2%20%3D%20%7B%22x%22%3A%209,%20%22y%22%3A%202%7D%0Acoord3%20%3D%20%7B%22x%22%3A%203,%20%22y%22%3A%201%7D%0A%0Arows%20%3D%20%5B%0A%20%20%20%20%5B1,%206,%20coord1%5D,%0A%20%20%20%20%5B3,%204,%20coord2%5D,%0A%20%20%20%20%5B5,%202,%20coord3%5D,%0A%5D&cumulative=false&curInstr=7&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false
+
+Both lists and dicts contain values.  With lists, each value is associated with an index (integers starting from 0).  With dicts, each value is associated with a key specified by the programmers.  Keys are often strings, but they don't need to be.
+
+Docs:
+* https://docs.python.org/3/tutorial/datastructures.html#more-on-lists
+* https://docs.python.org/3/tutorial/datastructures.html#dictionaries
+
+### Q9: after inserting a "z" key in `coord3` (with `coord3["z"] = 3.14`), what is `rows`?
+
+### Q10: what is the value associated with the "x" key of the dict in the last position of the first list?
+
+**Hint:** if the question were "what is the value associated with the 'y' key of the dict in the last position of the second list?", the solution would be: `rows[1][-1]["y"]`.  You just need to tack on brackets containing indexes (for lists) or keys (for dicts) to delve deeper into a nested structure.
+
+### Q11: what is `rows` after running the following?
+
+Complete the following so that the first change via `v2` is NOT reflected in `rows`, but the second change via `v2` IS reflected in `rows`:
+
+```python
+import copy
+v2 = ????
+v2[0] = 8888    # first change
+v2[1][1] = 9999 # second change
+```
+
+Relevant docs: https://docs.python.org/3/library/copy.html
+
+To get a good intuition about the reference/shallow/deep copy, try stepping through the following slowly in PythonTutor:
+
+```python
+import copy
+v1 = [[1], [], [2, 3]]
+v2 = v1
+v2 = copy.copy(v1)
+v2 = copy.deepcopy(v1)
+```
+
+### Q12: if we imagine the list of lists structure referenced by `rows` as a table, with column names in `header`, what is the sum of values in the "B" column?
+
+Note: the "B" column corresponds to the values at index in 1 of each list, but you are not allowed to hardcode 1 for this solution.  Instead, use `header.index(????)` to look up the position of "B" within the `header` list.
+
+### Q13: what is `rows` after we sort it in-place by the "B" column, ascending?
+
+Docs:
+* https://docs.python.org/3/howto/sorting.html#sorting-basics
+* https://docs.python.org/3/howto/sorting.html#key-functions
+
+Hint: if we had to sort by the "A" column ascending, we could do the following:
+
+```python
+def get_column_a(row):
+    print("lookup A column for a row")
+    return row[header.index("A")]
+
+rows.sort(key=get_column_a, reverse=True)
+rows
+```
+
+Note that we aren't calling `get_column_a` ourselves (because there are now parentheses after it on the sort line).  Instead, we're giving the `sort` method a reference to that function; this allows `sort` to call the function on each row, to figure out what part of the row objects matters for the sort.
+
+When we only need a function for one purpose, we can use the `lambda` syntax instead of the `def` syntax to define the function on a single line, without even giving it a name.  The following works the same as the earlier example (but without the print):
+
+```python
+rows.sort(key=lambda row: row[header.index("A")], reverse=True)
+rows
+```
+
+### Q14: say you're going on vacation to Europe with 400 US dollars; how many Euros can you get at the current exchange rate?
+
+This site provides exchange rate information in JSON format: https://www.floatrates.com/json-feeds.html.  JSON is a simple format that can represent nested dicts and lists in files and web resources.
+
+Download a copy of `usd.json` to the directory where your project is.  An easy way is to open a terminal, `cd` to the appriate directory, then run `wget SOME_URL_HERE` to download the web resource.
+
+Note: you can run shell commands in Jupyter, too, if you start the command with a `!` (to indicate it is not Python code).  If you do this, be sure to delete the cell after the download.  Otherwise you'll create too much traffic on the floatrates.com site, re-downloading the same thing every time you re-run your notebook.
+
+You can read a file like this:
+
+```python
+f = open("usd.json")
+data = f.read()
+f.close()
+```
+
+Check the type of `data` and the first portion of it:
+
+```python
+print(type(data))
+print(data[:300] + "...")
+```
+
+Even though the file contains a string that *could* be interpreted as JSON, Python won't *deserialize* it to Python dicts/lists automatically.  Instead of calling `.read()`, we need to use the `load` function in the `json` module:
+
+https://docs.python.org/3/library/json.html#json.load
+
+When reading documentation, start by focusing on parameters that can't take default arguments.
+
 ## Review 220: Data Science (Part 3)
 
 # Individual Part (25%)

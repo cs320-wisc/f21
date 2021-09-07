@@ -9,27 +9,6 @@ Be sure to activate Google's free credit (if available).
 
 ## Step 2: Configuring the Firewall
 
-What is a firewall?  First, a little background.
-
-Remember from CS 220/301 that a computer (typically) has an *IP address*
-(something like 123.234.210.001), and other computers knowing that IP
-address can communicate with programs running on that computer.
-
-If there are multiple running programs, they are differentiated by
-*port numbers*.  For example, sending a message to 123.234.210.001:220
-sends a message to the program on port 220 running on a computer with
-address 123.234.210.001 (note the `:` between the IP address and port
-number).  Sending a message to 123.234.210.001:320 might send a
-message to a different program on that same machine.  Analogy: an IP
-address is like the address of an apartment building (the computer),
-and a port number is like the apartment number of a specific unit;
-programs are the residents living in the units.
-
-A Firewall (among other things) can block access to certain ports for
-outsiders, to provide security.  We will unblock all ports for our
-virtual machine.  This is not the most secure option, but it is
-convenient, and fine for the purposes of this course.
-
 Follow [these instructions](firewall.md) to configure the firewall to unblock all
 ports.
 
