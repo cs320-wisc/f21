@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Azure Option for Virtual Machine
 
 ## Creating an Account

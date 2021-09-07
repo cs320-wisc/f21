@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Google Option for Virtual Machine
 
 ## Step 1: Signing up for GCP
