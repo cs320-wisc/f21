@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Creating Your Virtual Machine
 
 The lectures, instructions, and projects for this course are designed
