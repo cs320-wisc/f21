@@ -1,6 +1,6 @@
 # Google Option for Virtual Machine
 
-## Step 1: Signing up for GCP
+## Step 1: Create Account and Redeem Credits
 
 Follow the instructions to [create a Google Cloud account](gcp.md).
 Be sure to activate Google's free credit (if available).
