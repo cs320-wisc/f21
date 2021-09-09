@@ -2,8 +2,9 @@
 
 ## Step 1: Create Account and Redeem Credits
 
-Follow the instructions to [create a Google Cloud account](gcp.md).
-Be sure to activate Google's free credit (if available).
+See details about how to get the $50 credit: https://canvas.wisc.edu/courses/272598/discussion_topics/1079256.
+
+Then follow [these instructions](gcp.md) to create an account and redeem the credit.
 
 ## Step 2: Configuring the Firewall
 

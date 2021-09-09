@@ -22,7 +22,10 @@ they're generally more reliable.  Update your boot disk to use 15 GB.
 
 <img src="img/21.png" width=600>
 
-6. Further down, click to allow HTTP and HTTPS traffic, then click "Create".
+6. Further down, click to allow HTTP and HTTPS traffic, then click
+"Create".  If you get an error (e.g., `e2 instances do not support
+onHostMaintenance=TERMINATE unless they are preemptible`, deleting the
+VM and retrying the creation sometimes works the second time)
 
 7. You should see one instance here.  After the semester, or if you
 ever want to start fresh with a new virtual machine, you may want to
