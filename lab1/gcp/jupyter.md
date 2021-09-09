@@ -37,7 +37,7 @@ python3 -m notebook password
 
 `nohup python3 -m notebook --no-browser --ip=0.0.0.0 --port=2020`
 
-6. Now, open up a new browser window, and type `IP:2020` for the URL
+6. Now, open up a new browser window, and type `IP:2022` (the web ui is the specified port + 2) for the URL
 (IP should be the External IP of the virtual machine).  You can enter
 the same password that you set in step 4:
 
