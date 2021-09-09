@@ -46,6 +46,8 @@ def read_code_cells(ipynb, default_notes={}):
                 output_str = "".join(outputs[0]["data"]["text/plain"]).strip()
                 if output_str.startswith("<Figure"):
                     output_str = "plt.Figure()"
+                if output_str == "nan":
+                    output_str = 'float("nan")'
             else:
                 output_str = "None"
             try:
@@ -77,6 +79,8 @@ def compare_type(expected, actual, config={}):
     return expected == actual
 
 def compare_float(expected, actual, config={}):
+    if math.isnan(expected) and math.isnan(actual):
+        return True
     tolerance = float(config.get("tolerance", 0))
     return math.isclose(expected, actual, rel_tol=tolerance)
 
@@ -116,7 +120,7 @@ compare_fns = {
     "set": compare_set,
     "dict": compare_dict,
     "type": compare_type,
-    "Figure": compare_figure,
+    "Figure": compare_figure
 }
 
 def parse_question_config(c):
@@ -150,7 +154,7 @@ def compare(expected_csv, actual_csv):
             result["errors"].append(err)
             continue
         if not expected["type"] in compare_fns:
-            raise Exception(f'Tester cannot handle type {expected["type"]}')
+            raise Exception(f'Tester cannot handle type {expected["type"]} on question {qnum}')
         compare_fn = compare_fns[expected["type"]]
         config = parse_question_config(expected["notes"])
         if "run" in config:

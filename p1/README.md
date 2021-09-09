@@ -4,11 +4,13 @@
 
 ## Corrections/Clarifications
 
+* none yet
+
 ## Overview
 
+This project is longer than usual, with 32 questions, because it is designed to help you learn (or review) Python concepts taught in 220.  The first 75% can be done as a group and focues on review.  The last 25% focuses on new 320 concepts: `check_output`, `time`, and `git`.
+
 ## Setup
-
-
 
 # Group Part (75%)
 
@@ -252,10 +254,179 @@ https://docs.python.org/3/library/json.html#json.load
 
 When reading documentation, start by focusing on parameters that can't take default arguments.
 
+### Requirement: `divide` function
+
+Normally, if you divide by 0, you'll get an exception.  Write a function that does division; when there is such an exception, is should catch it and return the float `nan` (not a number).
+
+How to catch exceptions: https://docs.python.org/3/tutorial/errors.html#handling-exceptions
+
+To get `nan`, you can convert a string: `float("nan")`
+
+Requirement: the function should only catch the exception that gets thrown for division by zero (not other exceptions).  To find the name of this exception, you could try doing a simple division by zero in a cell and observe what gets thrown.
+
+### Q15: what is `divide(3, 2)`?
+
+### Q16: what is `divide(-3, 0)`?
+
 ## Review 220: Data Science (Part 3)
+
+The US Census Bureau conducts the ACS (American Community Survey) yearly, asking a variety of questions.  The following gives data on household computer use from the years 2013 to 2018:
+
+https://data.census.gov/cedsci/table?t=Computer%20and%20Internet%20Use&g=0100000US%240400000&tid=ACSDT1Y2015.B28001&hidePreview=true&tp=true&moe=true
+
+We have downloaded the data for each year to a file in the `home-computers` directory.
+
+Create a dictionary called `years` like this:
+
+* **key**: a year (int), corresponding to a year of data in the directory.  Don't hardcode the years -- use `os.listdir` and extract the year from each filename (right before the first `.`).
+* **value**: a pandas DataFrame corresponding to the CSV for that year.  Skip the first row from each CSV file: https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.read_csv.html
+
+### Q17: what are the keys in `years`?
+
+Answer with a sorted set.
+
+### Q18: how many households did Wisconsin have in 2018?
+
+The answer is in row 49 and column 1.  The hardcoding way to answer (not allowed) would thus be this:
+
+```python
+df = years[2018]
+df.iat[49, 1] # iat works like df.iloc[49, 1], but is faster for one cell
+```
+
+Instead of hardcoding 49 and 1, you can use "Wisconsin" (row index name) and "Estimate!!Total" (column name).  When using names instead of positions, you just need to use `.at` or `.loc` (instead of `.iat`).
+
+### Q19: how many total households in the US are estimated to not have any computer at home? (2018)
+
+The data is in the "Estimate!!Total!!No Computer" column.
+
+If `df` is a DataFrame, `df["some column name here"]` will extract an individual column as a Pandas Series.  A Pandas Series is like a list/dict hybrid.  You can use `.iat` to look up values by integer position (like you would with a list).  You can use `.at` to look up values by the Series' index, like you would with a dict.  Note the confusing terminology here: a Series' index is like a dict's key, and the "i" in "iat" does NOT refer to "index".
+
+If you have a Pandas Series `s`, you can do various aggregations on it, like `.mean()`, `.sum()`, `.max()`, etc.
+
+### Q20: what is the biggest per-state margin of error for "No Computer", as a fraction of the total estimate? (2018)
+
+The margin of error is given in the "Margin of Error!!Total!!No Computer" column.
+
+You can divide one Pandas Series by another on an elementwise basis like this: `s3 = s2 / s1`.  You can then compute `s3.max()`.  Or better, see if you can combine everything into a one-line computation.
+
+### Q21: for Wisconsin and adjacent states, what percent of households are estimated to be without a computer? (2018)
+
+**States**: Illinois, Indiana, Iowa, Michigan, Minnesota, Wisconsin.
+
+Answer with a `dict`, where the key is the state name, and the value is the percent.
+
+### Q22: same question, but answer with a bar plot.
+
+If you have a Series `s`, you can use `s.plot.bar()` or `s.plot.barh()`.  Be sure to set an axis label for the percent.
+
+Example:
+
+<img src="img/q22.png">
+
+### Q23: how as the number of WI households without computers changed over recent years?
+
+Answer with a plot like this:
+
+<img src="img/q23.png">
+
+### Q24: what is the relationship between household with smartphones and those with tablets?
+
+Answer with a plot like this:
+
+<img src="img/q24.png">
+
+Columns:
+* "Estimate!!Total!!Has one or more types of computing devices!!Smartphone"
+* "Estimate!!Total!!Has one or more types of computing devices!!Tablet or other portable wireless computer"
 
 # Individual Part (25%)
 
 You have to do the remainder of this project on your own.  Do not
 discuss with anybody except 320 staff (mentors, TAs, instructor).
+
+For this part, we'll analyze the history of this project: https://github.com/tylerharter/cs320-p1/commits/main.  The repo contains a `wc.py` program that counts the number of times each word appears in a file.  We'll also measure how fast different versions of `wc.py` are.
+
+Checkout the repo in the same directory where you have your notebook:
+
+```
+git clone https://github.com/tylerharter/cs320-p1.git
+```
+
+### Q25: what is the first line of output from `git log`?
+
+If you pass `cwd="????"` to `check_output`, you can run the `git log` command inside the `cs320-p1` directory that was created when you ran the `git clone` command.
+
+`check_output` returns a byte sequence; consider converting it to a string ("utf-8" encoding) and splitting it by newline (`\n`) to get a list.  This will be useful for answering following questions.
+
+### Q26: What are all the commit numbers?
+
+Answer with a list.
+
+### Q27: how has the length of `wc.py` changed over time?
+
+Answer with a dict:
+* key: a commit number
+* val: lines in wc.py
+
+Checkout each commit number in turn.  Then read the wc.py file and count how many lines it has.  You can read a .py the same you would a .txt or any other text file.
+
+Here's a general snippet that reads a file to a list of strings:
+
+```python
+f = open("some_file_name")
+lines = list(f)
+f.close()
+```
+
+Consider running a `git checkout main` so that the repo returns to the most recent commit after you're done.
+
+### Q28: what does `python3 cs320-p1/wc.py input.txt ALL` return when input.txt contains "A B C C"?
+
+Run the latest version of `wc.py`.
+
+Your code should produce the input.txt file with the specified contents.  Here's a general way to write text to a file (note the "w" in the `open` call -- you need that to make the file "writeable"):
+
+```python
+f = open(????, "w")
+f.write(????)
+f.close()
+```
+
+The `wc.py` prints a JSON string.  JSON can encode things like dicts and lists.  You should convert the JSON string to a Python data structure.  Here's an example of how to convert the JSON string "[1, 2, 3]" to an actual Python list:
+
+```python
+import json
+data = json.loads("[1, 2, 3]")
+```
+
+### Q29: for which versions (commits) of the program does the previous command fail?
+
+Answer with a list of commits.
+
+Hint: first write some code to try running on each version.  For at least one of them, you'll get an exception indicating the program crashed.  Use a `try`/`except` to catch this exception and add the current commit to a list.
+
+### Q30: for commit `4e4128313b8d5b5e5d04f2e8e585f64f7c5831a4`, what is the relationship between input size and time to run `wc.py`?
+
+Create a plot where the y-axis is time it takes to run (in milliseconds) and the x-axis is the number of "words" in the file.  If there are 5 "words" in the file, you can generate something like this (for simplicity, we're counting numbers as words):
+
+```python
+0
+1
+2
+3
+4
+```
+
+Choose a few different sizes to measure, up to 1000 (it will take too long if you do every size from 1 to 1000).
+
+Example:
+
+<img src="img/q30.png">
+
+Note: your numbers won't be exactly the same.  If you re-run your code multiple times, you'll probably see slightly different results each time.
+
+### Q31: for commit `f37e610ce055a3d894baac2d9449e6eb77c72320`, what is the relationship between input size and time to run `wc.py`?
+
+### Q32: for commit `6f5ca9327e986315ffcacddce5d9d6195c0913b7`, what is the relationship between input size and time to run `wc.py`?
 
