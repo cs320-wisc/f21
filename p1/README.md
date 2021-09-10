@@ -1,5 +1,3 @@
-# DRAFT -- don't start yet
-
 # Project 1: Review and Git Analysis
 
 ## Corrections/Clarifications
@@ -45,9 +43,25 @@ console.
 
 ## Testing
 
-1. from an SSH session, make sure you are in the f21/p1 directory
+1. do a "Kernel" > "Restart & Run All" in your notebook
+
+2. "File" > "Save and Checkpoint"
+
+3. from an SSH session, navigate to the f21/p1 directory
+
+4. run `python3 tester.py p1.ipynb` and work on fixing any issues
 
 ## Submission
+
+1. "File" > "Download as" > "Notebook (.ipynb)"
+
+2. go to https://tyler.caraza-harter.com/cs320/f21/submission.html
+
+3. select P1
+
+4. "Choose File" to select the .ipynb file you had downloaded
+
+5. "Submit" (don't use "Ignore Errors" unless you're right before a deadline -- better to email us to get help resolving the issue)
 
 # Group Part (75%)
 
