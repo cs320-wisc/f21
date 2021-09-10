@@ -12,6 +12,8 @@ The first 75% can be done as a group and focuses on review.  The last
 25% is individual and focuses on new 320 concepts: `check_output`,
 `time`, and `git`.
 
+[VIDEO](https://mediaspace.wisc.edu/media/CS%20320%20Project%201%3A%20Tips%20for%20Getting%20Started/1_gw0nxldd) showing how to get started (assumes you have completed lab 1).
+
 ## Setup
 
 Make sure to do lab 1 before starting this, as it must be done on your
