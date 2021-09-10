@@ -8,9 +8,46 @@
 
 ## Overview
 
-This project is longer than usual, with 32 questions, because it is designed to help you learn (or review) Python concepts taught in 220.  The first 75% can be done as a group and focues on review.  The last 25% focuses on new 320 concepts: `check_output`, `time`, and `git`.
+This project is longer than usual, with 32 questions, because it is
+designed to help you learn (or review) Python concepts taught in 220.
+The first 75% can be done as a group and focuses on review.  The last
+25% is individual and focuses on new 320 concepts: `check_output`,
+`time`, and `git`.
 
 ## Setup
+
+Make sure to do lab 1 before starting this, as it must be done on your
+virtual machine.
+
+1. SSH to your virtual machine using the following:
+
+```
+ssh USERNAME@IP_ADDRESS
+```
+
+If you don't recall these from lab, you can find your username
+(https://console.cloud.google.com/compute/metadata/sshKeys) and
+External IP address
+(https://console.cloud.google.com/compute/instances) in Google's
+console.
+
+2. run `pip3 install matplotlib pandas`
+
+3. run `git clone https://github.com/cs320-wisc/f21.git`
+
+4. go to `http://YOUR_IP_ADDRESS:2020/tree` in the browser (sign in, if prompted)
+
+5. enter the `f21` > `p1` directory
+
+6. Click the "New" button and select "Python 3", then start the project
+
+7. Go to "File" > "Rename", and name your notebook "p1"
+
+## Testing
+
+1. from an SSH session, make sure you are in the f21/p1 directory
+
+## Submission
 
 # Group Part (75%)
 
