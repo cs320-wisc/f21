@@ -83,6 +83,9 @@ Some functions we use a lot in 220/320 are abs, dir, float, input, int, len, lis
 
 In other cases where you want to divide 7 by 2 and get an int, you would use `7 // 2`.
 
+For your answer cell, be sure to start it with `#q1` (and similar for
+following) -- this helps the tester, which you should run often.
+
 ### Q2: what is `error`?
 
 Complete the code in accordance with the comment to calculate the answer.
