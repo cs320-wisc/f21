@@ -272,7 +272,7 @@ rows.sort(key=get_column_a, reverse=True)
 rows
 ```
 
-Note that we aren't calling `get_column_a` ourselves (because there are now parentheses after it on the sort line).  Instead, we're giving the `sort` method a reference to that function; this allows `sort` to call the function on each row, to figure out what part of the row objects matters for the sort.
+Note that we aren't calling `get_column_a` ourselves (because there are not parentheses after it on the sort line).  Instead, we're giving the `sort` method a reference to that function; this allows `sort` to call the function on each row, to figure out what part of the row objects matters for the sort.
 
 When we only need a function for one purpose, we can use the `lambda` syntax instead of the `def` syntax to define the function on a single line, without even giving it a name.  The following works the same as the earlier example (but without the print):
 
