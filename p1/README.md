@@ -5,6 +5,8 @@
 * Sept. 12 2021, 10:00 AM - q3 fix: expected answer is changed from False to True
 * Sept. 12 2021, 10:30 AM - q12 fix: expected answer is changed from 9 to 10007
 * Sept. 12 2021, 10:30 AM - q13 fix: "because there are NOW parentheses" is changed to "because there are NO parentheses"
+* Sept. 12 2021, 02:30 PM - q13 fix: in sample code changed "reverse" value from True to False
+* Sept. 12 2021, 02:30 PM - q17 fix: prompt changed from "sorted set" to "sorted list"
 
 ## Overview
 
@@ -270,7 +272,7 @@ def get_column_a(row):
     print("lookup A column for a row")
     return row[header.index("A")]
 
-rows.sort(key=get_column_a, reverse=True)
+rows.sort(key=get_column_a, reverse=False)
 rows
 ```
 
@@ -279,7 +281,7 @@ Note that we aren't calling `get_column_a` ourselves (because there are no paren
 When we only need a function for one purpose, we can use the `lambda` syntax instead of the `def` syntax to define the function on a single line, without even giving it a name.  The following works the same as the earlier example (but without the print):
 
 ```python
-rows.sort(key=lambda row: row[header.index("A")], reverse=True)
+rows.sort(key=lambda row: row[header.index("A")], reverse=False)
 rows
 ```
 
@@ -341,7 +343,7 @@ Create a dictionary called `years` like this:
 
 ### Q17: what are the keys in `years`?
 
-Answer with a sorted set.
+Answer with a sorted list.
 
 ### Q18: how many households did Wisconsin have in 2018?
 
