@@ -4,6 +4,7 @@
 
 * Sept. 12 2021, 10:00 AM - q3 fix: expected answer is changed from False to True
 * Sept. 12 2021, 10:30 AM - q12 fix: expected answer is changed from 9 to 10007
+* Sept. 12 2021, 10:30 AM - q13 fix: "because there are NOW parentheses" is changed to "because there are NO parentheses"
 
 ## Overview
 
