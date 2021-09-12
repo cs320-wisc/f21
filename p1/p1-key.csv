@@ -1,7 +1,7 @@
 question,type,value,notes
 1,type,float,
 2,bool,True,
-3,bool,False,
+3,bool,True,
 4,int,7,
 5,int,10,
 6,str,'positive',

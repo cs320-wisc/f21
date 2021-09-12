@@ -2,7 +2,7 @@
 
 ## Corrections/Clarifications
 
-* none yet
+* Sept. 12 2021, 10:00 AM - test.py q3 fix: expected answer is changed from False to True
 
 ## Overview
 
