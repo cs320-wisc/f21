@@ -20,7 +20,7 @@ help more specific to your setup during office hours).
 <img src="img/15.png" width=600>
 
 4. run `cat ~/.ssh/id_rsa.pub`.  Then copy the output (the part
-highlighted in the following screenshot).
+highlighted in the following screenshot).(If your using windows, run the command using windows powershell)
 
 <img src="img/16.png" width=600>
 
