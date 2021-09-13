@@ -2,11 +2,11 @@
 
 ## Corrections/Clarifications
 
-* Sept 12: q3 fix, expected answer is changed from False to True
-* Sept 12: q12 fix, expected answer is changed from 9 to 10007
-* Sept 12: q13 fix, "because there are NOW parentheses" is changed to "because there are NO parentheses"
-* Sept 12: q13 fix, in sample code changed "reverse" value from True to False
-* Sept 12: q17 fix, prompt changed from "sorted set" to "sorted list"
+* Sept 12: q3 expected answer is changed from False to True
+* Sept 12: q12 expected answer is changed from 9 to 10007
+* Sept 12: q13 "because there are NOW parentheses" is changed to "because there are NO parentheses"
+* Sept 12: q13 in sample code changed "reverse" value from True to False
+* Sept 12: q17 prompt changed from "sorted set" to "sorted list"
 
 ## Overview
 
