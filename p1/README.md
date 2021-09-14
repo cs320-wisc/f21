@@ -59,6 +59,22 @@ console.
 
 ## Submission
 
+Your notebook should have a comment like this:
+
+```python
+# project: p1
+# submitter: ????
+# partner: none
+# hours: ????
+```
+
+For submitter, use your NetID (part before @wisc.edu in your email).
+Estimate how many hours you spent on the project.  This semester,
+"partner" should always be "none".  Don't list people on your assigned
+team.
+
+Submit as follows:
+
 1. "File" > "Download as" > "Notebook (.ipynb)"
 
 2. go to https://tyler.caraza-harter.com/cs320/f21/submission.html
