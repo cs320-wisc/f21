@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 2: Git Practice
 
 In this lab, you'll practice using git and GitHub.  You'll do the following:
@@ -67,7 +65,7 @@ Consider a concrete example of how to use all these commands.  Say you find a bu
 ## Step 1: Practice Git Branching
 
 Let's start by practicing in the Git simulator <a
-href="https://tyler.caraza-harter.com/cs320/s21/learnGitBranching/index.html"
+href="https://tyler.caraza-harter.com/cs320/f21/learnGitBranching/index.html"
 target="_blank">here</a>.  Try to run commands to get to the following state (if you get stuck, check the [solution here](solution.md)):
 
 <img src="step1/1.png" width=500>
@@ -91,9 +89,8 @@ with a third merge commit.
 
 ## Step 2: Create GitHub Account
 
-Everybody in your group should go to http://github.com/ and create a
-GitHub account (choose a name that wouldn't embarrass you on a
-resume):
+Go to http://github.com/ and create a GitHub account (choose a name
+that wouldn't embarrass you on a resume):
 
 <img src="step2/1.png" width=600>
 
@@ -102,6 +99,12 @@ password each time, unless you setup an SSH key to use instead of a
 password (you likely setup an SSH key during the first lab to access
 your virtual machine).  It's recommended (but not required) that you
 configure GitHub with an SSH key following [these directions](ssh.md).
+
+**Important:** for participation credit, fill [this
+  form](https://forms.gle/rCdrRhq3HoAbioDW6) so that we know you
+  completed this part.  Associating your GitHub name with your
+  @wisc.edu user will also let us give you credit for pull requests
+  you might make to improve the course.
 
 ## Step 3: Create a Repo
 
