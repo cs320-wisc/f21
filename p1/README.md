@@ -7,6 +7,7 @@
 * Sept 12: q13 "because there are NOW parentheses" is changed to "because there are NO parentheses"
 * Sept 12: q13 in sample code changed "reverse" value from True to False
 * Sept 12: q17 prompt changed from "sorted set" to "sorted list"
+* Sept 14: added submission directions
 
 ## Overview
 
