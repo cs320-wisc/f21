@@ -105,6 +105,18 @@ def compare_set(expected, actual, config={}):
         return expected == actual
 
 def compare_dict(expected, actual, config={}):
+    tolerance = config.get("tolerance", None)
+
+    if tolerance:
+        if expected.keys() != actual.keys():
+            return False
+
+        for key in expected.keys():
+            if not compare_float(expected[key], actual[key], {"tolerance": tolerance}):
+                return False
+                
+        return True
+
     return expected == actual
 
 def compare_figure(expected, actual, config={}):

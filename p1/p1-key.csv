@@ -18,7 +18,7 @@ question,type,value,notes
 13,list,"[[5, 2, {'x': 3, 'y': 1, 'z': 3.14}],
  [1, 6, {'x': 8, 'y': 5}],
  [3, 9999, {'x': 9, 'y': 2}]]",
-14,float,338.383886588076,tolerance=0.05
+14,float,338.383886588076,tolerance=2
 15,float,1.5,
 16,float,"float(""nan"")",
 17,list,"[2013, 2014, 2015, 2016, 2017, 2018]",
@@ -30,7 +30,7 @@ question,type,value,notes
  'Iowa': 9.468929459023103,
  'Michigan': 8.936374942955922,
  'Minnesota': 7.491847623005652,
- 'Wisconsin': 9.582497175331794}",
+ 'Wisconsin': 9.582497175331794}",tolerance=0.01
 22,Figure,plt.Figure(),
 23,Figure,plt.Figure(),
 24,Figure,plt.Figure(),
