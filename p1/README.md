@@ -11,7 +11,7 @@
 * Sept 17: q24 in prompt specified 2018 year
 * Sept 17: q25 added python documentation for reference
 * Sept 17: q14 expected answer tolerance (the maximum allowed difference between expected and actual answers) increased from 0.5 to 2
-* Sept 17: q21 expected answer tolerance (the maximum allowed difference between expected and actual answers increased from 0 to 0.01
+* Sept 17: q21 expected answer tolerance (the maximum allowed difference between expected and actual answers) increased from 0 to 0.01
 
 ## Overview
 
