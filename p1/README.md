@@ -8,6 +8,10 @@
 * Sept 12: q13 in sample code changed "reverse" value from True to False
 * Sept 12: q17 prompt changed from "sorted set" to "sorted list"
 * Sept 14: added submission directions
+* Sept 17: q24 in prompt specified 2018 year
+* Sept 17: q25 added python documentation for reference
+* Sept 17: q14 expected answer tolerance (the maximum allowed difference between expected and actual answers) increased from 0.5 to 2
+* Sept 17: q21 expected answer tolerance (the maximum allowed difference between expected and actual answers increased from 0 to 0.01
 
 ## Overview
 
@@ -407,7 +411,7 @@ Answer with a plot like this:
 
 <img src="img/q23.png">
 
-### Q24: what is the relationship between household with smartphones and those with tablets?
+### Q24: what is the relationship between household with smartphones and those with tablets? (2018)
 
 Answer with a plot like this:
 
@@ -432,9 +436,9 @@ git clone https://github.com/tylerharter/cs320-p1.git
 
 ### Q25: what is the first line of output from `git log`?
 
-If you pass `cwd="????"` to `check_output`, you can run the `git log` command inside the `cs320-p1` directory that was created when you ran the `git clone` command.
+If you pass argument `cwd="????"` to `check_output`, you can run the `git log` command inside the `cs320-p1` directory that was created when you ran the `git clone` command.
 
-`check_output` returns a byte sequence; consider converting it to a string ("utf-8" encoding) and splitting it by newline (`\n`) to get a list.  This will be useful for answering following questions.
+`check_output` function in the `subprocess` module (https://docs.python.org/2/library/subprocess.html#subprocess.check_output) returns a byte sequence; consider converting it to a string ("utf-8" encoding) and splitting it by newline (`\n`) to get a list.  This will be useful for answering following questions.
 
 ### Q26: What are all the commit numbers?
 
