@@ -122,12 +122,12 @@ you'll see something like this:
 Copy the commands in the "create a new repository box".  We want to run those in a new directory on your computer.  So run this in the terminal:
 
 ```
-mkdir cs320-lab
-cd cs320-lab
+mkdir cs320-lab2
+cd cs320-lab2
 ```
 
 Then paste and run what you copied from GitHub.  Make sure there are
-no errors, and enter your git username/password as necessary.
+no errors, and enter your git username/password as necessary. If you are prompted to configure your github account on the VM after trying to commit. Please do so. 
 
 Refresh the GitHub page for your repo at
 https://github.com/tylerharter/cs320-lab2 (with your username instead
@@ -138,7 +138,7 @@ content of your README.md:
 
 Make another change to README.md on your computer (for example, say
 "hello world"), push those changes to GitHub, then refresh the page.
-Like this (one step at a time):
+Like this (one step at a time): 
 
 ```
 nano README.md # make some changes, then save
@@ -147,6 +147,8 @@ git add README.md
 git commit -m 'say hello'
 git push
 ```
+
+Keep in mind nano is a text editor. Do control-O to write the file. 
 
 ## Step 4: Pull Request
 
