@@ -465,14 +465,14 @@ Each row in the CSV file corresponds to one node in the tree. The first column i
 The CSV file of the tree described above will be as follows:
 
 ```
-field, threshold, left, right
-amount, 200, 1, 2
-income, 35, 3, 4
-income, 70, 5, 6
-class, 0, -1, -1
-class, 1, -1, -1
-class, 0, -1, -1
-class, 1, -1, -1
+field,threshold, left, right
+amount,200,1,2
+income,35,3,4
+income,70,5,6
+class,0,-1,-1
+class,1,-1,-1
+class,0,-1,-1
+class,1,-1,-1
 ```
 
 The first row is the header of the CSV file. The second row represents the root node of the tree, which has a `field` value as "amount" and a `threshold` as 200. The left child node of the node is `income, 35, 3, 4` (The index of the second row is `1`). `None` is represented as `-1`.
