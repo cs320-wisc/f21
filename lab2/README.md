@@ -109,8 +109,7 @@ configure GitHub with an SSH key following [these directions](ssh.md).
 ## Step 3: Create a Repo
 
 Go to https://github.com/new and create a public repo called
-"cs320-lab2", initialized with a README (the other people working on
-the lab will have another role to play):
+"cs320-lab2". Do not initialize the repo by clicking on any checkbox at this step. 
 
 <img src="step3/1.png" width=600>
 
