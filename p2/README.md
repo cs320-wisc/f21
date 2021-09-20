@@ -4,12 +4,9 @@
 
 ## Corrections/Clarifications
 
-* Feb 19: add an example for SimplePredictor
-* Feb 16: tips for getting started (from spring 2021): https://youtu.be/Ws1B8Wz4sEg
-* Feb 15: edited bias_test part of tester.py
-* Fed 13: fix bias_test result in README
-* Feb 12: clarified `loans()` method and `name`,`reader` in `Bank` class. And, added an Expected output for `get_bank_names`. clarified how to interpret `action_taken` more.
-* Feb 11: clarified how to interpret `action_taken`
+* TBA
+
+Tips for getting started (from spring 2021): https://youtu.be/Ws1B8Wz4sEg
 
 FAQ Post link TBA.
 
@@ -127,10 +124,10 @@ print(data_reader.paths) # in alphabetical order!
 For this, you can refer to lab3 part2 (link TBA).
 
 Your ZippedCSVReader will have two methods to help people access the
-data inside a zip file: `load_json` and `rows`.  Both accept an
-argument specifying the name of a file inside the zip.  `load_json`
-uses the `json` module parse the specified .json file inside the zip,
-and returns a dict.  `rows` works on .csv files; it returns a list of
+data inside a zip file: `load_tree` and `rows`.  Both accept an
+argument specifying the name of a file inside the zip.  `load_tree` 
+parses the specified .csv file inside the zip,
+and returns a dict. More details will be provided later.  `rows` works on .csv files; it returns a list of
 dicts corresponding to each row (hint: look into how csv.DictReader
 works).  Furthermore, if no file name is passed to `rows`, then it
 will read all files ending with ".csv" contained inside the zip,
@@ -141,7 +138,7 @@ appear earlier in this list).
 Example usage:
 
 ```python
-tree = tree_reader.load_json("simple.json")
+tree = tree_reader.load_tree("simple.csv")
 print(tree.keys())
 
 dict_list = data_reader.rows("wi.csv")
@@ -170,7 +167,7 @@ about loans.  It will have the following methods:
 
 ```python
 class Loan:
-    def __init__(self, amount, purpose, race, income, decision):
+    def __init__(self, amount, purpose, race, sex, income, decision):
         pass # TODO
 
     def __repr__(self):
@@ -183,13 +180,13 @@ class Loan:
 It can be instantiated like this:
 
 ```python
-loan = Loan(40, "Home improvement", "Asian", 120, "approve")
+loan = Loan(40, "Home improvement", "Asian", "Male", 120, "approve")
 ```
 
 `repr(loan)` should return something like this:
 
 ```python
-"Loan(40, 'Home improvement', 'Asian', 120, 'approve')"
+"Loan(40, 'Home improvement', 'Asian', 'Male', 120, 'approve')"
 ```
 
 In this example, if you implement `__getitem__` properly, `loan["amount"]` should give 40, `loan["purpose"]`
@@ -223,13 +220,13 @@ for loan in b.loans():
 Expected output:
 
 ```
-Loan(94, 'Refinancing', 'Information not provided by applicant in mail, Internet, or telephone application', 71, 'deny')
-Loan(55, 'Home purchase', 'White', 41, 'deny')
-Loan(20, 'Refinancing', 'Black or African American', 41, 'approve')
-Loan(22, 'Refinancing', 'White', 36, 'approve')
-Loan(175, 'Refinancing', 'White', 70, 'approve')
-Loan(191, 'Home purchase', 'Information not provided by applicant in mail, Internet, or telephone application', 68, 'approve')
-Loan(82, 'Refinancing', 'White', 40, 'deny')
+Loan(94, 'Refinancing', 'Information not provided by applicant in mail, Internet, or telephone application', 'Information not provided by applicant in mail, Internet, or telephone application', 71, 'deny')
+Loan(55, 'Home purchase', 'White', 'Male', 41, 'deny')
+Loan(20, 'Refinancing', 'Black or African American', 'Female', 41, 'approve')
+Loan(22, 'Refinancing', 'White', 'Male', 36, 'approve')
+Loan(175, 'Refinancing', 'White', 'Male', 70, 'approve')
+Loan(191, 'Home purchase', 'Information not provided by applicant in mail, Internet, or telephone application', 'Information not provided by applicant in mail, Internet, or telephone application', 68, 'approve')
+Loan(82, 'Refinancing', 'White', 'Male', 40, 'deny')
 ```
 
 `Bank` is doing two things here: (1) converting dict rows to Loan
@@ -238,10 +235,7 @@ in `ZippedCSVReader.rows` (which `Bank` uses), `loans` should return
 the list of loan objects.  If `None` is passed for the bank name,
 `loans()` should return `Loan` objects for all rows in the zip file.
 
-Relevant fields when reading from the CSV: `agency_abbr`,
-`applicant_race_name_1`, `loan_amount_000s`, `loan_purpose_name`,
-`applicant_income_000s`, `action_taken`.  When converting, `amount`
-and `income` should be converted to ints.  Missing values (`""`)
+Relevant fields when reading from the CSV: `agency_abbr`, `loan_amount_000s`, `loan_purpose_name`, `applicant_race_name_1`, `applicant_sex_name`, `applicant_income_000s`, `action_taken`.  When converting, `amount` and `income` should be converted to ints.  Missing values (`""`)
 should be replaced with 0.  `action_taken` is 1 for "approve", otherwise `decision` is "deny"
 
 To figure out what bank names (like "HUD") are in the dataset, you
@@ -292,11 +286,11 @@ For example, `SimplePredictor` object can be used like this:
 
 ```
 spred = SimplePredictor()
-my_loans = [Loan(175, 'Refinancing', 'White', 70, 'approve'),
-            Loan(145, 'Home purchase', 'White', 37, 'deny'),
-            Loan(200, 'Home purchase', 'White', 95, 'approve'),
-            Loan(414, 'Home purchase', 'White', 300, 'approve'),
-            Loan(22, 'Refinancing', 'White', 36, '1')]
+my_loans = [Loan(175, 'Refinancing', 'White', 'Male', 70, 'approve'),
+            Loan(145, 'Home purchase', 'White', 'Female', 37, 'deny'),
+            Loan(200, 'Home purchase', 'White', 'Male', 95, 'approve'),
+            Loan(414, 'Home purchase', 'White', 'Female', 300, 'approve'),
+            Loan(22, 'Refinancing', 'White', 'Female', 36, '1')]
 
 for loan in my_loans:
     print(loan, 'predict:', spred.predict(loan))
@@ -306,15 +300,15 @@ for loan in my_loans:
 Expected output:
 
 ```
-Loan(175, 'Refinancing', 'White', 70, 'approve') predict: True
+Loan(175, 'Refinancing', 'White', 'Male', 70, 'approve') predict: True
 approved: 1 denied 0
-Loan(145, 'Home purchase', 'White', 37, 'deny') predict: False
+Loan(145, 'Home purchase', 'White', 'Female', 37, 'deny') predict: False
 approved: 1 denied 1
-Loan(200, 'Home purchase', 'White', 95, 'approve') predict: False
+Loan(200, 'Home purchase', 'White', 'Male', 95, 'approve') predict: False
 approved: 1 denied 2
-Loan(414, 'Home purchase', 'White', 300, 'approve') predict: False
+Loan(414, 'Home purchase', 'White', 'Female', 300, 'approve') predict: False
 approved: 1 denied 3
-Loan(22, 'Refinancing', 'White', 36, '1') predict: True
+Loan(22, 'Refinancing', 'White', 'Female', 36, '1') predict: True
 approved: 2 denied 3
 ```
 
@@ -325,7 +319,7 @@ approved: 2 denied 3
 Decision Trees are trees that can be used to make predictions (or
 decisions).  Consider the following picture:
 
-![simple.json](tree.png)
+![simple.json](image_tree.png)
 
 How can we read the above tree?
 
@@ -445,15 +439,17 @@ amount <= 200
 ```
 
 Of course, you won't usually paste large tree dicts into your code.
-It makes more sense to use your `load_json` method from earlier to
-read a dict tree from a JSON inside a zip file.  The following
+
+You need to implement a method called `load_tree` to read a dict tree from a CSV inside a zip file.  The following
 achieves the same result as above:
 
 ```python
 tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_json("simple.json"))
+dt = DTree(tree_reader.load_tree("simple.csv"))
 dt.dump()
 ```
+
+The `load_tree` method should convert the CSV file to the a dictionary.
 
 **Dictionary Format**: each dictionary contains four fields: `field`
 (type of the value ie. amount, income, etc.), `threshold` (the value
@@ -464,13 +460,32 @@ and `right` will be None) and `threshold` is interpreted as the
 prediction value of 0 or 1 (instead of a value for comparison as in
 non-leaf nodes).
 
+Each row in the CSV file corresponds to one node in the tree. The first column in the CSV file specifies the `field` value. The second row is `threshold`. The third row means the index (starting from 0) of the left child node. The fourth row is the index of the right child.
+
+The CSV file of the tree described above will be as follows:
+
+```
+field, threshold, left, right
+amount, 200, 1, 2
+income, 35, 3, 4
+income, 70, 5, 6
+class, 0, -1, -1
+class, 1, -1, -1
+class, 0, -1, -1
+class, 1, -1, -1
+```
+
+The first row is the header of the CSV file. The second row represents the root node of the tree, which has a `field` value as "amount" and a `threshold` as 200. The left child node of the node is `income, 35, 3, 4` (The index of the second row is `1`). `None` is represented as `-1`.
+
+The `load_tree` function should take the path to CSV file as parameter and convert the contents into a dictionary described above. For convenience, **the first node in the CSV file is always the root node.**
+
 For now, add one more recursive method named `node_count` to `DTree`
 that counts the number of nodes in the tree.  The following should
 return 61, for example:
 
 ```python
 tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_json("good.json"))
+dt = DTree(tree_reader.load_tree("good.csv"))
 dt.node_count()
 ```
 
@@ -488,8 +503,8 @@ should work like this:
 
 ```python
 tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_json("simple.json"))
-loan = Loan(40, "Home improvement", "Asian", 120, "approve")
+dt = DTree(tree_reader.load_tree("simple.csv"))
+loan = Loan(40, "Home improvement", "Asian", "Male", 120, "approve")
 dt.predict(loan)
 ```
 
@@ -503,18 +518,18 @@ tree.
 Here's one possible way to measure racial bias in a predictor: for a
 given set of loan applications, how often would the outcome
 (approve/deny) have been different if the applicant was of a different
-race, but was otherwise identical on all stats?
+race or sex, but was otherwise identical on all stats?
 
 Complete the following function to answer this question:
 
 ```python
-def bias_test(bank, predictor, race_override):
+def bias_test(bank, predictor, field, value_override):
     pass
 ```
 
 1. use bank to iterate over loans with `loans`
 2. for each loan, feed it directly to predictor, and store the result
-3. modify the loan, changing the race of applicant to `race_override`
+3. modify the loan and according to `field`, change the race or sex of applicant to `value_override` (Note that the parameter `field` can only be `sex` or `race`.)
 4. feed the modified loan to the predictor again, and compare new result to previous result
 5. at the end, return the percentage of cases where the predictor gave a different result after the race was changed
 
@@ -522,14 +537,16 @@ Here's an example:
 
 ```python
 b = Bank(None, ZippedCSVReader("loans.zip"))
-dt = DTree(ZippedCSVReader("trees.zip").load_json("bad.json"))
-bias_percent = bias_test(b, dt, "Black or African American")
+dt = DTree(ZippedCSVReader("trees.zip").load_tree("race_biased.csv"))
+bias_percent = bias_test(b, dt, "race", "Black or African American")
 print(bias_percent)
 ```
 
-Here, the result should be `0.4112`.  The decision tree in "bad.json"
+Here, the result should be `0.4112`.  The decision tree in "race_bad.json"
 is exhibiting major bias with respect to Black and African American
 applicants, with race being a deciding factor 41% of the time.
+
+
 
 ## Conclusion
 
