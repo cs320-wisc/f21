@@ -465,7 +465,7 @@ Each row in the CSV file corresponds to one node in the tree. The first column i
 The CSV file of the tree described above will be as follows:
 
 ```
-field,threshold, left, right
+field,threshold,left,right
 amount,200,1,2
 income,35,3,4
 income,70,5,6
