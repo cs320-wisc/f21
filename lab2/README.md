@@ -109,7 +109,7 @@ configure GitHub with an SSH key following [these directions](ssh.md).
 ## Step 3: Create a Repo
 
 Go to https://github.com/new and create a public repo called
-"cs320-lab2". Do not initialize the repo by clicking on any checkbox at this step. 
+"cs320-lab2". Do NOT initialize the repo by clicking on any checkbox at this step. Do NOT select "Add a README file".
 
 <img src="step3/1.png" width=600>
 
@@ -126,10 +126,18 @@ mkdir cs320-lab2
 cd cs320-lab2
 ```
 
-Then paste and run what you copied from GitHub.  Make sure there are
-no errors, and enter your git username/password as necessary. If you are prompted to configure your github account on the VM after trying to commit. Please do so. 
+Then paste and run what you copied from GitHub. Enter your git username/password as necessary. If you are prompted to configure your github account on the VM after trying to commit, please do so. For example, you might need to: 
 
-Refresh the GitHub page for your repo at
+1. Set Git username and email if prompted:
+```
+git config --global user.name "your_github_username"
+git config --global user.email "your_email"
+```
+2. If you are using HTTPS url instead of SSH, [create token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) and use it when prompted to enter password.
+
+<img src="step3/5.png" width=600>
+
+Make sure there are no errors - you configured git if prompted, created commit and pushed it. Refresh the GitHub page for your repo at
 https://github.com/tylerharter/cs320-lab2 (with your username instead
 of "tylerharter").  You should now see the first commit, and the
 content of your README.md:
