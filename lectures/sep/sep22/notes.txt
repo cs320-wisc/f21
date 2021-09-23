@@ -1,0 +1,6 @@
+I ran the following to download the loan application data from 2020 for WI and IL:
+
+wget "https://ffiec.cfpb.gov/v2/data-browser-api/view/csv?states=WI&years=2020" -O wi.csv
+wget "https://ffiec.cfpb.gov/v2/data-browser-api/view/csv?states=IL&years=2020" -O il.csv
+sudo apt install zip
+zip states.zip il.csv wi.csv
