@@ -143,7 +143,6 @@ def run_all_tests(mod_name="tree"):
 @test(points=20)
 def testReader():
     points = 0
-    tree_reader = tree.ZippedCSVReader('trees.zip')
     reader = tree.ZippedCSVReader('mini.zip')
 
     err = is_expected(actual=reader.paths, name="testReader:paths")
@@ -152,14 +151,13 @@ def testReader():
     else:
         points += 5
 
-    rv = tree_reader.load_tree("simple.csv")
-    err = is_expected(actual=rv, name="testReader:load_tree_simple")
-    if err != None:
-        print("unexpected results for load_json('simple.json'): {}".format(err))
-    else:
-        points += 5
-
     rows = reader.rows("la.csv")
+    if hasattr(rows, "__next__"):
+        points += 5
+    else:
+        print("rows should be a generator function")
+    
+    rows = list(rows)
     err = is_expected(actual=len(list(rows)), name="testReader:rows_la")
     if err != None:
         print("unexpected results for rows('la.csv'): {}".format(err))
@@ -197,7 +195,7 @@ def testLoan():
         else:
             points += 1
     return points
-            
+
 @test(points=10)
 def testBank():
     points = 0
@@ -233,12 +231,11 @@ def testSimplePredictor():
     mistakes = 0
     for i, row in enumerate(b.loans()):
         y_ = sp.predict(row)
-        print(row, y_, "testSP:predict:%d"%i)
         err = is_expected(actual=y_, name="testSP:predict:%d"%i)
         if err != None:
             print("unexpected results for SimplePredictor.predict: {}".format(err))
             mistakes += 1
-            
+
     points = 4 if mistakes == 0 else 0
 
     # test get_approved
@@ -258,16 +255,17 @@ def testSimplePredictor():
     return points
 
 @test(points=1)
-def testDTreeNodeCount():
-    dtree = tree.DTree(tree.ZippedCSVReader("trees.zip").load_tree("simple.csv"))
+def testDTreeNodeCount1():
+    dt = tree.build_tree(list(tree.ZippedCSVReader("trees.zip").rows("simple.csv")))
+    dt.node_count()
     return 1
 
 @test(points=16)
-def testDTreeNodeCount():
+def testDTreeNodeCount2():
     points = 0
     for file_name in ['simple.csv', 'good.csv', 'race_biased.csv', 'sex_biased.csv']:
-        dtree = tree.DTree(tree.ZippedCSVReader("trees.zip").load_tree(file_name))
-        err = is_expected(actual=dtree.node_count(), name="testDTree:node_count:%sd"%(file_name))
+        dt = tree.build_tree(list(tree.ZippedCSVReader("trees.zip").rows(file_name)))
+        err = is_expected(actual=dt.node_count(), name="testDTree:node_count:%sd"%(file_name))
         if err != None:
             print("unexpected results for DTree.predict(): {}".format(err))
         else:
@@ -283,15 +281,15 @@ def testDTreePredict():
     reader = tree.ZippedCSVReader('loans.zip')
     b = tree.Bank(None, reader)
     li = b.loans()
-    loans = li[:30]
+    loans = [next(li) for i in range(30)]
 
     for file_name in ['simple.csv', 'good.csv', 'race_biased.csv', 'sex_biased.csv']:
-        dtree = tree.DTree(tree.ZippedCSVReader("trees.zip").load_tree(file_name))
+        dt = tree.build_tree(list(tree.ZippedCSVReader("trees.zip").rows(file_name)))
 
         # test predict
         mistakes = 0
         for i, loan in enumerate(loans):
-            y = dtree.predict(loan)
+            y = dt.predict(loan)
             err = is_expected(actual=y, name="testDTree:predict:%s:%d"%(file_name,i))
             if err != None:
                 mistakes += 1
@@ -300,14 +298,14 @@ def testDTreePredict():
             points += 2
 
         # test get_approved
-        err = is_expected(actual=dtree.get_approved(), name="testDTree:get_approved:%s"%file_name)
+        err = is_expected(actual=dt.get_approved(), name="testDTree:get_approved:%s"%file_name)
         if err != None:
             print("unexpected results for DTree.get_approved(): {}".format(err))
         else:
             points += 1
 
         # test get_denied
-        err = is_expected(actual=dtree.get_denied(), name="testDTree:get_denied:%s"%file_name)
+        err = is_expected(actual=dt.get_denied(), name="testDTree:get_denied:%s"%file_name)
         if err != None:
             print("unexpected results for DTree.get_denied(): {}".format(err))
         else:
@@ -323,10 +321,10 @@ def testBias():
         reader = tree.ZippedCSVReader('mini.zip')
         b = tree.Bank(None, reader)
         li = b.loans()
-        dtree = tree.DTree(tree.ZippedCSVReader("trees.zip").load_tree(file_name))
+        dt = tree.build_tree(list(tree.ZippedCSVReader("trees.zip").rows(file_name)))
 
-        bias_count_race = tree.bias_test(b, dtree, "race", "Black or African American")
-        bias_count_sex = tree.bias_test(b, dtree, "sex", "Male")
+        bias_count_race = tree.bias_test(b, dt, "race", "Black or African American")
+        bias_count_sex = tree.bias_test(b, dt, "sex", "Male")
         err_1 = is_expected(actual=bias_count_race, name=f"bias_test_race:{file_name}")
         err_2 = is_expected(actual=bias_count_sex, name=f"bias_test_sex:{file_name}")
         if err_1 != None:
@@ -344,10 +342,9 @@ def testBiasLargeFile():
     reader = tree.ZippedCSVReader('loans.zip')
     b = tree.Bank(None, reader)
     li = b.loans()
+    dt = tree.build_tree(list(tree.ZippedCSVReader("trees.zip").rows("race_biased.csv")))
 
-    dtree = tree.DTree(tree.ZippedCSVReader("trees.zip").load_tree("race_biased.csv"))
-
-    bias_count = tree.bias_test(b, dtree, "race", "Asian")
+    bias_count = tree.bias_test(b, dt, "race", "Asian")
     err = is_expected(actual=bias_count, name=f"bias_test-largezip:bad.json")
     if err != None:
         print(f"unexpected results for bias_test on bad.json: {err}")

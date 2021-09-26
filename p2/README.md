@@ -4,11 +4,9 @@
 
 ## Corrections/Clarifications
 
-* TBA
+* none yet
 
-Tips for getting started (from spring 2021): https://youtu.be/Ws1B8Wz4sEg
-
-FAQ Post link TBA.
+FAQ Post link TBA. (TODO)
 
 ## Overview
 
@@ -27,7 +25,8 @@ class Loan
 class Bank
 def get_bank_names
 class SimplePredictor
-class DTree
+class Node
+def build_tree
 def bias_test
 ```
 
@@ -85,11 +84,8 @@ snippets of code that use it.  The `%` lines automatically reload your
 module if you change it (well, it usually works -- you'll need to
 occasionally run "Kernel Restart & Run All" when it doesn't).
 
-To run our `tester.py`, you'll need to download the .zip files,
-tester.py, and expected.json. tester.py will test whether each class
-and class methods are properly implemented.  This is helpful in terms
-of grading, but is not an easy way to troubleshoot your code as you go
-(your `debugging.ipynb` will be better for that).
+Be sure to also run `tester.py` regularly to estimate your grade
+(prior to TA deductions).
 
 We strongly recommend against copying code back and forth between the
 notebook and .py file throughout the development process.  It's a
@@ -121,40 +117,32 @@ After the above call, it should be possible to see a list of files via a `paths`
 print(data_reader.paths) # in alphabetical order!
 ```
 
-For this, you can refer to lab3 part2 (link TBA).
+For this, you can refer to [Lab 3](https://github.com/cs320-wisc/f21/tree/main/lab3).
 
-Your ZippedCSVReader will have two methods to help people access the
-data inside a zip file: `load_tree` and `rows`.  Both accept an
-argument specifying the name of a file inside the zip.  `load_tree` 
-parses the specified .csv file inside the zip,
-and returns a dict. More details will be provided later.  `rows` works on .csv files; it returns a list of
-dicts corresponding to each row (hint: look into how csv.DictReader
-works).  Furthermore, if no file name is passed to `rows`, then it
-will read all files ending with ".csv" contained inside the zip,
-returning a big list of dicts corresponding to the records in all the
-CSV files (the rows of CSV files that are alphabetically earlier will
-appear earlier in this list).
+Your ZippedCSVReader will have one generator method to help people
+access the data inside a zip file: `rows`.  It accepts an argument
+specifying the name of a file inside the zip.  `rows` works on .csv
+files; it yields dicts corresponding to each row (hint: look into how
+csv.DictReader works).  Furthermore, if no file name is passed to
+`rows`, then it will read all files ending with ".csv" contained
+inside the zip, returning a big list of dicts corresponding to the
+records in all the CSV files (the rows of CSV files that are
+alphabetically earlier will appear earlier in this list).
 
 Example usage:
 
 ```python
-tree = tree_reader.load_tree("simple.csv")
-print(tree.keys())
-
-dict_list = data_reader.rows("wi.csv")
-print()
+dict_list = list(data_reader.rows("wi.csv"))
 print(dict_list[0])
+print()
 
 dict_list = data_reader.rows()
-print()
 print(len(dict_list))
 ```
 
 Expected output:
 
 ```
-dict_keys(['field', 'threshold', 'left', 'right'])
-
 {'as_of_year': '2017', 'respondent_id': '33-0975529', 'agency_name': 'Department of Housing and Urban Development', 'agency_abbr': 'HUD', 'agency_code': '7', 'loan_type_name': 'VA-guaranteed', 'loan_type': '3', 'property_type_name': 'One-to-four family dwelling (other than manufactured housing)', 'property_type': '1', 'loan_purpose_name': 'Refinancing', 'loan_purpose': '3', 'owner_occupancy_name': 'Owner-occupied as a principal dwelling', 'owner_occupancy': '1', 'loan_amount_000s': '165', 'preapproval_name': 'Not applicable', 'preapproval': '3', 'action_taken_name': 'Loan originated', 'action_taken': '1', 'state_name': 'Wisconsin', 'state_abbr': 'WI', 'state_code': '55', 'county_name': 'Outagamie County', 'county_code': '87.0', 'applicant_ethnicity_name': 'Not Hispanic or Latino', 'applicant_ethnicity': '2', 'co_applicant_ethnicity_name': 'Not Hispanic or Latino', 'co_applicant_ethnicity': '2', 'applicant_race_name_1': 'White', 'applicant_race_1': '5', 'applicant_race_name_2': '', 'applicant_race_2': '', 'applicant_race_name_3': '', 'applicant_race_3': '', 'co_applicant_race_name_1': 'White', 'co_applicant_race_1': '5', 'co_applicant_race_name_2': '', 'co_applicant_race_2': '', 'applicant_sex_name': 'Male', 'applicant_sex': '1', 'co_applicant_sex_name': 'Female', 'co_applicant_sex': '2', 'applicant_income_000s': '57', 'purchaser_type_name': 'Life insurance company, credit union, mortgage bank, or finance company', 'purchaser_type': '7', 'denial_reason_name_1': '', 'denial_reason_1': '', 'denial_reason_name_2': '', 'denial_reason_2': '', 'population': '5765.0', 'minority_population': '24', 'hud_median_family_income': '74700'}
 
 60
@@ -208,8 +196,8 @@ Instances can be instantiated like this:
 b = Bank(name, reader)
 ```
 
-, where `name` is a string and `reader` is an instance of your `ZippedCSVReader` class.  A
-`loans` method can be used like this:
+`name` is a string and `reader` is an instance of your
+`ZippedCSVReader` class.  A `loans` method can be used like this:
 
 ```python
 b = Bank("NCUA", data_reader)
@@ -230,10 +218,10 @@ Loan(82, 'Refinancing', 'White', 'Male', 40, 'deny')
 ```
 
 `Bank` is doing two things here: (1) converting dict rows to Loan
-objects, and (2) filtering to rows where `agency_abbr` is "NCUA".  As
-in `ZippedCSVReader.rows` (which `Bank` uses), `loans` should return
-the list of loan objects.  If `None` is passed for the bank name,
-`loans()` should return `Loan` objects for all rows in the zip file.
+objects, and (2) filtering to rows where `agency_abbr` is "NCUA".
+`loans` is a generator function, so loan objects are yielded.  If
+`None` is passed for the bank name, `loans()` should return `Loan`
+objects for all rows in the zip file.
 
 Relevant fields when reading from the CSV: `agency_abbr`, `loan_amount_000s`, `loan_purpose_name`, `applicant_race_name_1`, `applicant_sex_name`, `applicant_income_000s`, `action_taken`.  When converting, `amount` and `income` should be converted to ints.  Missing values (`""`)
 should be replaced with 0.  `action_taken` is 1 for "approve", otherwise `decision` is "deny"
@@ -284,7 +272,7 @@ purpose is "Refinancing" and deny all others.
 
 For example, `SimplePredictor` object can be used like this:
 
-```
+```python
 spred = SimplePredictor()
 my_loans = [Loan(175, 'Refinancing', 'White', 'Male', 70, 'approve'),
             Loan(145, 'Home purchase', 'White', 'Female', 37, 'deny'),
@@ -312,27 +300,26 @@ Loan(22, 'Refinancing', 'White', 'Female', 36, '1') predict: True
 approved: 2 denied 3
 ```
 
-
-
-### `DTree` Class
+### `Node` Class
 
 Decision Trees are trees that can be used to make predictions (or
 decisions).  Consider the following picture:
 
 ![simple.json](image_tree.png)
 
-How can we read the above tree?
+How can we use the tree to decide whether to approve or deny a loan?
 
 Let's say somebody is applying for a 190 (thousand dollar) loan
 (`amount=190`) and makes 45 (thousands dollars) per year
 (`income=45`).  We see that `"field": "amount"` and `"threshold":
-200"`. Since `amount <= 200`, we take the left branch. Next, we see
-`"field": "income"` and `"threshold: 35"` from the left child
-node. Since `income > 35` we take the right branch. In the right child
-node, we see `"field": "class"` and `"threshold: 1"`, which represents
-predicted class is 1.  In these trees, class `1` means "approve" and
-class `0` means "deny".  This particular loan application is therefore
-approved.
+200"`. Since `amount <= 200`, we take the left branch.
+
+Next, we see `"field": "income"` and `"threshold: 35"` from the left
+child node. Since `income > 35` we take the right branch. In the right
+child node, we see `"field": "class"` and `"threshold: 1"`, which
+represents predicted class is 1.  In these trees, class `1` means
+"approve" and class `0` means "deny".  This particular loan
+application is therefore approved.
 
 In terms of code, a DT (decision tree) has some similarities to a BST
 (binary search tree).  In both cases, branches are recursively taken
@@ -342,127 +329,50 @@ one value.  With a DT, we're working with a row of data, and each node
 tells us not only the threshold, but which field of the row should be
 considered.
 
-In class, we often implemented a `Node` class.  Here, for simplicity,
-we'll use dictionaries instead of custom objects.  The advantage is
-that our trees can then be directly loaded from JSON files, with
-minimal processing.
-
-You will, however, implement a `DTree` class to help make predictions
-based on the tree of dictionaries.  Complete the following to get
-started (`DTree` should inherit from `SimplePredictor`):
+Create a `Node` class, starting with the following:
 
 ```python
-class DTree(????):
-    def __init__(self, nodes):
-        ???? # TODO: call parent constructor
+class Node(????):
+    def __init__(self, field, threshold, left, right):
+        # TODO: call parent constructor
+        # TODO: create attributes with same names/values as the parameters
 
-        # a dict with keys: field, threshold, left, right
-        # left and right, if set, refer to similar dicts
-        self.root = nodes
-
-    def dump(self, node=None, indent=0):
-        if node == None:
-            node = self.root
-
-        if node["field"] == "class":
-            line = "class=" + str(node["threshold"])
+    def dump(self, indent=0):
+        if self.field == "class":
+            line = "class=" + str(self.threshold)
         else:
-            line = node["field"] + " <= " + str(node["threshold"])
-        print("  "*indent + line)
+            line = self.field + " <= " + str(self.threshold)
+        print("  "*indent+line)
         if ????:
-            self.dump(node["left"], indent+1)
-        if node["right"]:
+            self.left.dump(indent+1)
+	if self.right != None:
             ????
 ```
 
-Test your code.  You should be able to create a DTree based on nested
-dicts, then dump it, as follows:
+Test your code.  You should be able to create a 3-node tree like this:
 
 ```python
-node_dicts = {
-    "field": "amount",
-    "threshold": 200,
-    "left": 
-        {
-        "field": "income",
-        "threshold": 35,
-        "left": 
-            {
-            "field": "class",
-            "threshold": 0,
-            "left": None,
-            "right": None
-            },
-        "right": 
-            {
-            "field": "class",
-            "threshold": 1,
-            "left": None,
-            "right": None
-            }
-    },
-    "right": 
-        {
-        "field": "income",
-        "threshold": 70,
-        "left": 
-            {
-            "field": "class",
-            "threshold": 0,
-            "left": None,
-            "right": None
-            },
-        "right": 
-            {
-            "field": "class",
-            "threshold": 1,
-            "left": None,
-            "right": None
-        }
-    }
-}
-
-dt = DTree(node_dicts)
-dt.dump()
+leaf1 = Node(field="class", threshold=0, left=None, right=None)
+leaf2 = Node(field="class", threshold=1, left=None, right=None)
+root = Node(field="income", threshold=50, left=leaf1, right=leaf2)
+root.dump()
 ```
 
-You should see something like this (note that this simple text representation is equivalent to the earlier tree diagram):
+You should see something like this:
 
 ```
-amount <= 200
-  income <= 35
-    class=0
-    class=1
-  income <= 70
-    class=0
-    class=1
+income <= 50
+  class=0
+  class=1
 ```
 
-Of course, you won't usually paste large tree dicts into your code.
+### `build_tree` function
 
-You need to implement a method called `load_tree` to read a dict tree from a CSV inside a zip file.  The following
-achieves the same result as above:
+You won't normally build trees by writing a line of code for each
+`Node`, as in the above example.
 
-```python
-tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_tree("simple.csv"))
-dt.dump()
-```
-
-The `load_tree` method should convert the CSV file to the a dictionary.
-
-**Dictionary Format**: each dictionary contains four fields: `field`
-(type of the value ie. amount, income, etc.), `threshold` (the value
-held in the dictionary), `left` (<= current value), and `right` (>
-current value).  Dictionaries with a field of "class" treat the fields
-a little differently.  They are guaranteed to be leaf nodes (`left`
-and `right` will be None) and `threshold` is interpreted as the
-prediction value of 0 or 1 (instead of a value for comparison as in
-non-leaf nodes).
-
-Each row in the CSV file corresponds to one node in the tree. The first column in the CSV file specifies the `field` value. The second row is `threshold`. The third row means the index (starting from 0) of the left child node. The fourth row is the index of the right child.
-
-The CSV file of the tree described above will be as follows:
+`trees.zip` contains several trees, represented as CSV files.  For
+example, `simple.csv` looks like this:
 
 ```
 field,threshold,left,right
@@ -475,17 +385,68 @@ class,0,-1,-1
 class,1,-1,-1
 ```
 
-The first row is the header of the CSV file. The second row represents the root node of the tree, which has a `field` value as "amount" and a `threshold` as 200. The left child node of the node is `income, 35, 3, 4` (The index of the second row is `1`). `None` is represented as `-1`.
+The root node corresponds to the first row after the header:
+`amount,200,1,2`.  Notice that it's left and right children are at row
+indexes 1 and 2; this works out to `income,35,3,4` and `income,70,5,6`
+respectively.
 
-The `load_tree` function should take the path to CSV file as parameter and convert the contents into a dictionary described above. For convenience, **the first node in the CSV file is always the root node.**
+`simple.csv` can be read to a list of dicts like this:
 
-For now, add one more recursive method named `node_count` to `DTree`
-that counts the number of nodes in the tree.  The following should
-return 61, for example:
+```python
+node_rows = list(tree_reader.rows("simple.csv"))
+node_rows
+```
+
+Output:
+
+```
+[{'field': 'amount', 'threshold': '200', 'left': '1', 'right': '2'},
+ {'field': 'income', 'threshold': '35', 'left': '3', 'right': '4'},
+ {'field': 'income', 'threshold': '70', 'left': '5', 'right': '6'},
+ {'field': 'class', 'threshold': '0', 'left': '-1', 'right': '-1'},
+ {'field': 'class', 'threshold': '1', 'left': '-1', 'right': '-1'},
+ {'field': 'class', 'threshold': '0', 'left': '-1', 'right': '-1'},
+ {'field': 'class', 'threshold': '1', 'left': '-1', 'right': '-1'}]
+```
+
+Your job is to write a `build_tree` function in your module that takes
+such a list of dicts (into a `rows` parameter) and the index of a root
+row (`root_idx`) parameter and construct a tree of `Node` objects:
+
+```python
+def build_tree(rows, root_idx=0):
+    # TODO: recursively call build_tree to create child Nodes (if any)
+    # before constructing+returning the node corresponding to the row
+    # at index root_idx in rows
+    return Node(????)
+```
+
+From your debug notebook, you could call it like this:
+
+```python
+root = build_tree(node_rows)
+root.dump()
+```
+
+Output:
+
+```
+amount <= 200
+  income <= 35
+    class=0
+    class=1
+  income <= 70
+    class=0
+    class=1
+```
+
+Add one more recursive method named `node_count` to `Node` that
+counts the number of nodes in the tree.  The following should return
+61, for example:
 
 ```python
 tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_tree("good.csv"))
+dt = build_tree(list(tree_reader.rows("good.csv")))
 dt.node_count()
 ```
 
@@ -494,7 +455,7 @@ dt.node_count()
 You have to do the remainder of this project on your own.  Do not
 discuss with anybody except 320 staff (mentors, TAs, instructor).
 
-### `DTree.predict` Method
+### `Node.predict` Method
 
 Add a recursive `predict` method that takes a Loan object and
 traverses the nodes of the decision tree to determine whether or not
@@ -502,10 +463,9 @@ to approve the loan.  `predict` should return True or False, and
 should work like this:
 
 ```python
-tree_reader = ZippedCSVReader("trees.zip")
-dt = DTree(tree_reader.load_tree("simple.csv"))
 loan = Loan(40, "Home improvement", "Asian", "Male", 120, "approve")
-dt.predict(loan)
+root = build_tree(list(tree_reader.rows("simple.csv")))
+root.predict(loan)
 ```
 
 The above returns True, but to manually test your code (before running
@@ -513,10 +473,10 @@ the tester.py), try changing the `amount` and `income` values to
 trigger decisions based on each of the leaf nodes in the decision
 tree.
 
-### Bias Testing
+### `bias_test` function
 
-Here's one possible way to measure racial bias in a predictor: for a
-given set of loan applications, how often would the outcome
+Here's one possible way to measure racial/gender bias in a predictor:
+for a given set of loan applications, how often would the outcome
 (approve/deny) have been different if the applicant was of a different
 race or sex, but was otherwise identical on all stats?
 
@@ -529,7 +489,7 @@ def bias_test(bank, predictor, field, value_override):
 
 1. use bank to iterate over loans with `loans`
 2. for each loan, feed it directly to predictor, and store the result
-3. modify the loan and according to `field`, change the race or sex of applicant to `value_override` (Note that the parameter `field` can only be `sex` or `race`.)
+3. modify the loan and according to `field`, change the race or sex of applicant to `value_override` (Note that the parameter `field` can only be "sex" or "race".)
 4. feed the modified loan to the predictor again, and compare new result to previous result
 5. at the end, return the percentage of cases where the predictor gave a different result after the race was changed
 
@@ -537,16 +497,14 @@ Here's an example:
 
 ```python
 b = Bank(None, ZippedCSVReader("loans.zip"))
-dt = DTree(ZippedCSVReader("trees.zip").load_tree("race_biased.csv"))
+dt = build_tree(list(ZippedCSVReader("trees.zip").rows("race_biased.csv")))
 bias_percent = bias_test(b, dt, "race", "Black or African American")
 print(bias_percent)
 ```
 
-Here, the result should be `0.4112`.  The decision tree in "race_bad.json"
-is exhibiting major bias with respect to Black and African American
-applicants, with race being a deciding factor 41% of the time.
-
-
+Here, the result should be `0.4112`.  The decision tree is exhibiting
+major bias with respect to Black and African American applicants, with
+race being a deciding factor 41% of the time.
 
 ## Conclusion
 
@@ -555,7 +513,7 @@ that our models don't also become biased.  In this project, we tested
 a number of models for one kind of bias (racial).  The HDMA data set
 is quite extensive.  Take a moment to think about what other biases
 you might want to check for before using decision trees (or other
-models) to make loan decisions for real people.  For inspiration, here
+models) to make loan decisions for real people.  For ideas, here
 are some of the columns in the HDMA dataset:
 
 ```
@@ -576,3 +534,7 @@ denial_reason_name_1, denial_reason_1, denial_reason_name_2,
 denial_reason_2, population, minority_population,
 hud_median_family_income
 ```
+
+Is there other information that can/should be collected in the HDMA
+data to allow other kinds of testing for bias that are not currently
+possible?
