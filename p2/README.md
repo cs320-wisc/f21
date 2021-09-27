@@ -1,12 +1,10 @@
-# DRAFT (don't start yet)
-
 # Project 2: Decision Trees and Bias
 
 ## Corrections/Clarifications
 
 * none yet
 
-FAQ Post link TBA. (TODO)
+[FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg)
 
 ## Overview
 
