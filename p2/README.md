@@ -1,12 +1,10 @@
-# DRAFT (don't start yet)
-
 # Project 2: Decision Trees and Bias
 
 ## Corrections/Clarifications
 
-* none yet
+* [09/28] Fix the example usage of `rows`.
 
-FAQ Post link TBA. (TODO)
+[FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=168)
 
 ## Overview
 
@@ -136,8 +134,8 @@ dict_list = list(data_reader.rows("wi.csv"))
 print(dict_list[0])
 print()
 
-dict_list = data_reader.rows()
-print(len(dict_list))
+dict_generator = data_reader.rows()
+print(sum(1 for _ in dict_generator))
 ```
 
 Expected output:
