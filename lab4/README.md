@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 4: Linked Lists
 
 Most people learn about Python lists before they learn about Python
