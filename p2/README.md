@@ -4,6 +4,7 @@
 
 * [9/28] Fix the example usage of `rows`.
 * [9/30] Watch [getting started video](https://mediaspace.wisc.edu/media/t/1_uzdufbmd)
+* [9/30] `rows()` and `loans()` are generators than `yield` results (fixed incorrect text describing them as returning lists)
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=168)
 
@@ -126,7 +127,7 @@ specifying the name of a file inside the zip.  `rows` works on .csv
 files; it yields dicts corresponding to each row (hint: look into how
 csv.DictReader works).  Furthermore, if no file name is passed to
 `rows`, then it will read all files ending with ".csv" contained
-inside the zip, returning a big list of dicts corresponding to the
+inside the zip, yielding dicts corresponding to the
 records in all the CSV files (the rows of CSV files that are
 alphabetically earlier will appear earlier in this list).
 
