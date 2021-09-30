@@ -2,7 +2,8 @@
 
 ## Corrections/Clarifications
 
-* [09/28] Fix the example usage of `rows`.
+* [9/28] Fix the example usage of `rows`.
+* [9/30] Watch [getting started video](https://mediaspace.wisc.edu/media/t/1_uzdufbmd)
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=168)
 
@@ -27,6 +28,8 @@ class Node
 def build_tree
 def bias_test
 ```
+
+You can watch this for hints on how to get started: https://mediaspace.wisc.edu/media/t/1_uzdufbmd
 
 ## Background: Redlining
 
