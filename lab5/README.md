@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 5: BSTs (Binary Search Trees)
 
 In this lab, you'll create a BST that can be used as a dictionary.
@@ -267,5 +265,6 @@ Then, perform an experiment where you generate 1000 different trees,
 each from 100 key/val pairs that you randomly generate.  Randomly
 shuffle the order in which you add the key/val pairs to your BST.
 
-Generate a histogram showing the distribution of max tree depth over
-your 1000 trials.
+Generate a
+[histogram](https://pandas.pydata.org/docs/reference/api/pandas.Series.hist.html#pandas.Series.hist)
+showing the distribution of max tree depth over your 1000 trials.
