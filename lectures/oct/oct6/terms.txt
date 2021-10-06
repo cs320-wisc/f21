@@ -1,0 +1,19 @@
+path: sequence of edges from one node to another
+      (no repeating edges)
+connected: if there's a path between any pair of nodes
+Directed: edges have arrow/direction
+DAG: directed *acyclic* graph
+Acyclic: no paths from/to same node
+Weakly connected: would be connected if direction didn't matter
+
+Parent: edge outgoing
+Child: edge incoming
+Root: a node with no parent
+Leaf: a node with no children
+
+Tree: a DAG with two additional rules
+1. only one root
+2. every node (except root) has exactly one parent
+
+Binary Tree: a tree with the additional rule
+* each node has at most 2 children
