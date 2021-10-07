@@ -31,6 +31,9 @@ help from 320 staff (mentors, TAs, instructor).  You <b>may not</b>
 seek receive help from other 320 students (outside your group) or
 anybody outside the course.
 
+If you just want to run `python3 tester.py` from the terminal you must call you python script
+`scrape.py`. If you do not call it this you must run tester as `python3 tester.py <your_filename_here>.py`.
+
 ### Part 1: `FileScraper` class
 
 Paste the following starter code to your Python module.  Your job is
