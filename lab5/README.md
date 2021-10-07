@@ -91,7 +91,7 @@ A `__len__` method should return `self.size`.
 
 ## Dump
 
-Let's some methods to BST to dump out all the keys and values (note
+Let's write some methods to BST to dump out all the keys and values (note
 that "__" before a method name is a hint that it is for internal use
 -- methods inside the class might call `__dump`, but code outside the
 class probably shouldn't):

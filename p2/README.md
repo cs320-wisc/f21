@@ -5,6 +5,7 @@
 * [9/28] Fix the example usage of `rows`.
 * [9/30] Watch [getting started video](https://mediaspace.wisc.edu/media/t/1_uzdufbmd)
 * [9/30] `rows()` and `loans()` are generators than `yield` results (fixed incorrect text describing them as returning lists)
+* [10/7] clarified that `Node` should be a child class of `SimplePredictor`
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=168)
 
@@ -331,7 +332,8 @@ one value.  With a DT, we're working with a row of data, and each node
 tells us not only the threshold, but which field of the row should be
 considered.
 
-Create a `Node` class, starting with the following:
+Create a `Node` class, starting with the following (`Node` should
+inherit `get_approved` and `get_denied` from `SimplePredictor`):
 
 ```python
 class Node(????):
