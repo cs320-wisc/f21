@@ -40,33 +40,36 @@ def node(title, linkIndicies, bfs_pass, dfs_pass):
         result = template.replace('&Links&', linkText)
     return result
 
+
+
+
 @application.route('/Node_1.html')
 def Node_1():
-    return node("Maze Start", [2, 4], 'X', 'B')
+    return node("Maze Start", [2, 4], '1', '9')
 
 @application.route("/Node_2.html")
 def Node_2():
-    return node("Page 2", [1, 3, 5], 'Æ', 'l')
+    return node("Page 2", [1, 3, 5], '2', '8')
 
 @application.route("/Node_3.html")
 def Node_3():
-    return node("Page 3", [1, 6], 'A', 'e')
+    return node("Page 3", [1, 6], '4', '7')
 
 @application.route("/Node_4.html")
 def Node_4():
-    return node("Page 4", [3, 6, 7], '_', 'u')
+    return node("Page 4", [3, 6, 7], '3', '6')
 
 @application.route("/Node_5.html")
 def Node_5():
-    return node("Page 5", [6], '-', 'S')
+    return node("Page 5", [6], '5', '5')
 
 @application.route("/Node_6.html")
 def Node_6():
-    return node("Page 6", [3], '1', 'u')
+    return node("Page 6", [3], '6', '4')
 
 @application.route("/Node_7.html")
 def Node_7():
-    return node("Page 7", [6], '2', 's')
+    return node("Page 7", [6], '7', '3')
 
 @application.route('/expandingTable.html')
 def expandingTable():
@@ -86,14 +89,20 @@ def styles():
         html = f.read()
     return html
 
+#old password_bfs:  "XÆ_A-12"
+#old password_dfs: "BleuSus"
+password_bfs = "1234567"
+password_dfs = "9876543"
 
-password_bfs = "XÆ_A-12"
-password_dfs = "BleuSus"
 
 @application.route('/password', methods=["POST"])
 def password():
     password = str(request.data, "utf-8")
-
+    print("my password: "+password)
+    if "Password:" in password:
+        #if it contains the password precedor, remove it.
+        password=password[9:]
+    print("my password: "+password)
     if(password == password_bfs):
         return jsonify('expandingTable.html')
     if(password == password_dfs):

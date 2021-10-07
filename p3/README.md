@@ -3,13 +3,15 @@
 # Project 3: Treasure Hunt!
 
 ## Corrections/Clarifications
-* [Mar 3] `expandingTable.html` has been updated.
-* [Mar 1] `application.py` has been updated.
-* [Mar 1] FAQ post [here](https://piazza.com/class/kjomvrz8kyl64u?cid=466)
-* [Mar 1] Optional Starter Video: [watch here](https://youtu.be/GuSlUAYvvF8)
-* [Feb 28] Tester updated (Tests for go methods have been added)
-* [Feb 27] README updated.
-* [Feb 27] Tester is now added.
+
+
+* [Oct ???] Optional Starter Video: 
+* [Oct 5] FAQ post [here](https://piazza.com/class/kskk56h2ohc7lg?cid=223)
+* [Oct 5] README updated.
+* [Oct 5] `index.html` updated to use a keypad.
+* [Oct 5] `application.py` updated to remove password: prefix
+* [Oct 5] Tester Updated to account for new passwords
+
 
 ## Overview
 
@@ -94,7 +96,6 @@ it should also append the BFS string (line 3 of the file) to the
 in your debug notebook:
 
 ```python
-from scrape import *
 fs = FileScraper()
 print(fs.go("1"))
 print(fs.go("2"))
@@ -168,6 +169,9 @@ different page.
 
 Use selenium to do the scraping.  BeautifulSoup is probably also
 helpful, though not required.
+
+If you find your VM running slow run:  `pkill -f -9 chromium` from the 
+terminal to clean up chrome. 
 
 ```python
 class WebScraper(GraphScraper):
