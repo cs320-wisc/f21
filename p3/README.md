@@ -115,7 +115,7 @@ Expected output:
 Your `bfs_search` (non-recursive) and `dfs_search` (recursive) methods
 inherited from `GraphScraper` will perform graph search, somewhat like
 the `find` and `find_bfs` methods from the reading, respectively:
-https://tyler.caraza-harter.com/cs320/s21/lec/14-graphsearch1/reading.html
+https://tyler.caraza-harter.com/cs320/f21/lec/15-graphsearch1/reading.html
 
 There are a few differences, however (your version will be somewhat
 simpler overall):
@@ -142,6 +142,9 @@ You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 Be sure to watch this lecture before starting this part:
 https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/17-crawling
 
+For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM. If you are stuck on installing Selenium and the Chrome Driver please refer to video one of
+this [lecture](https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/16-selenium).
+
 You'll be scraping a website implemented as a web application built
 using the flask framework (you don't need to know flask for this
 project, though you'll learn it soon and get a chance to build your
@@ -149,10 +152,10 @@ own website in the next project).  To run it, grab all the relevant
 html, csv, and css files.  Grab `application.py` too, and run this on
 your VM:
 
+
 ```
 python3 application.py
 ```
-
 Then, open `http://<YOUR-VM-IP>:5000` in your web browser.  It should look like this:
 
 <img src="website.png" width=600>
@@ -248,9 +251,9 @@ Expected output:
 ```
 ['http://YOUR_IP_ADDRESS:5000/Node_2.html', 'http://YOUR_IP_ADDRESS:5000/Node_4.html']
 
-DFS Password BleuSus
+DFS Password 9876543
 
-BFS Password XÆ_A-12
+BFS Password 1234567
 ```
 
 # Individual Part (25%)
@@ -260,7 +263,7 @@ discuss with anybody except 320 staff (mentors, TAs, instructor).
 
 ### Part 3: `protected_df` method
 
-The method should navigate to the home page, enter the password, click
+The method should navigate to the home page, enter the password into the keypad, click
 GO, and return a DataFrame based on the page that is loaded.
 
 Note that after clicking a button, there might be a slight delay
