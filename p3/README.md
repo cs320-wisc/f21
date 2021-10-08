@@ -3,13 +3,15 @@
 # Project 3: Treasure Hunt!
 
 ## Corrections/Clarifications
-* [Mar 3] `expandingTable.html` has been updated.
-* [Mar 1] `application.py` has been updated.
-* [Mar 1] FAQ post [here](https://piazza.com/class/kjomvrz8kyl64u?cid=466)
-* [Mar 1] Optional Starter Video: [watch here](https://youtu.be/GuSlUAYvvF8)
-* [Feb 28] Tester updated (Tests for go methods have been added)
-* [Feb 27] README updated.
-* [Feb 27] Tester is now added.
+
+
+* [Oct ???] Optional Starter Video: 
+* [Oct 5] FAQ post [here](https://piazza.com/class/kskk56h2ohc7lg?cid=223)
+* [Oct 5] README updated.
+* [Oct 5] `index.html` updated to use a keypad.
+* [Oct 5] `application.py` updated to remove password: prefix
+* [Oct 5] Tester Updated to account for new passwords
+
 
 ## Overview
 
@@ -28,6 +30,9 @@ members in any way (even looking at working code).  You may also seek
 help from 320 staff (mentors, TAs, instructor).  You <b>may not</b>
 seek receive help from other 320 students (outside your group) or
 anybody outside the course.
+
+If you just want to run `python3 tester.py` from the terminal you must call you python script
+`scrape.py`. If you do not call it this you must run tester as `python3 tester.py <your_filename_here>.py`.
 
 ### Part 1: `FileScraper` class
 
@@ -94,7 +99,6 @@ it should also append the BFS string (line 3 of the file) to the
 in your debug notebook:
 
 ```python
-from scrape import *
 fs = FileScraper()
 print(fs.go("1"))
 print(fs.go("2"))
@@ -114,7 +118,7 @@ Expected output:
 Your `bfs_search` (non-recursive) and `dfs_search` (recursive) methods
 inherited from `GraphScraper` will perform graph search, somewhat like
 the `find` and `find_bfs` methods from the reading, respectively:
-https://tyler.caraza-harter.com/cs320/s21/lec/14-graphsearch1/reading.html
+https://tyler.caraza-harter.com/cs320/f21/lec/15-graphsearch1/reading.html
 
 There are a few differences, however (your version will be somewhat
 simpler overall):
@@ -141,6 +145,9 @@ You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 Be sure to watch this lecture before starting this part:
 https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/17-crawling
 
+For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM. If you are stuck on installing Selenium and the Chrome Driver please refer to video one of
+this [lecture](https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/16-selenium).
+
 You'll be scraping a website implemented as a web application built
 using the flask framework (you don't need to know flask for this
 project, though you'll learn it soon and get a chance to build your
@@ -148,10 +155,10 @@ own website in the next project).  To run it, grab all the relevant
 html, csv, and css files.  Grab `application.py` too, and run this on
 your VM:
 
+
 ```
 python3 application.py
 ```
-
 Then, open `http://<YOUR-VM-IP>:5000` in your web browser.  It should look like this:
 
 <img src="website.png" width=600>
@@ -168,6 +175,9 @@ different page.
 
 Use selenium to do the scraping.  BeautifulSoup is probably also
 helpful, though not required.
+
+If you find your VM running slow run:  `pkill -f -9 chromium` from the 
+terminal to clean up chrome. 
 
 ```python
 class WebScraper(GraphScraper):
@@ -244,9 +254,9 @@ Expected output:
 ```
 ['http://YOUR_IP_ADDRESS:5000/Node_2.html', 'http://YOUR_IP_ADDRESS:5000/Node_4.html']
 
-DFS Password BleuSus
+DFS Password 9876543
 
-BFS Password XÆ_A-12
+BFS Password 1234567
 ```
 
 # Individual Part (25%)
@@ -256,7 +266,7 @@ discuss with anybody except 320 staff (mentors, TAs, instructor).
 
 ### Part 3: `protected_df` method
 
-The method should navigate to the home page, enter the password, click
+The method should navigate to the home page, enter the password into the keypad, click
 GO, and return a DataFrame based on the page that is loaded.
 
 Note that after clicking a button, there might be a slight delay

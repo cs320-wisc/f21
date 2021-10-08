@@ -19,8 +19,9 @@ address = f"http://localhost:{port}/{page}"
 add=f"http://localhost:{port}/"
 pass_bfs_file="MADCITY"
 pass_dfs_file="COVID19"
-password_bfs = "XÆ_A-12"
-password_dfs = "BleuSus"
+password_bfs = "1234567"
+password_dfs = "9876543"
+
 
 def FileScraper_go(fscraper):
     l1=fscraper.go("1")

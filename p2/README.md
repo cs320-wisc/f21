@@ -390,7 +390,7 @@ class,1,-1,-1
 ```
 
 The root node corresponds to the first row after the header:
-`amount,200,1,2`.  Notice that it's left and right children are at row
+`amount,200,1,2`.  Notice that its left and right children are at row
 indexes 1 and 2; this works out to `income,35,3,4` and `income,70,5,6`
 respectively.
 
