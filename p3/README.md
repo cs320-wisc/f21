@@ -65,13 +65,9 @@ class FileScraper(GraphScraper):
         pass
 ```
 
-Note how the constructor of `FileScraper` extracts all the zipped
-files to a directory named "Files" for you.  This means you'll be
-working with regular files in your code (not the original zip).
-
-The "Files" directory will only contain .txt files, each corresponding
-to a node in a directed graph, and each containing four lines,
-formatted like this:
+The "file_nodes" directory will only contain .txt files, each
+corresponding to a node in a directed graph, and each containing four
+lines, formatted like this:
 
 1. name of the node
 2. names of the children nodes, seperated by spaces
