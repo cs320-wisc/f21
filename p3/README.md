@@ -4,14 +4,7 @@
 
 ## Corrections/Clarifications
 
-
-* [Oct ???] Optional Starter Video: 
-* [Oct 5] FAQ post [here](https://piazza.com/class/kskk56h2ohc7lg?cid=223)
-* [Oct 5] README updated.
-* [Oct 5] `index.html` updated to use a keypad.
-* [Oct 5] `application.py` updated to remove password: prefix
-* [Oct 5] Tester Updated to account for new passwords
-
+* none yet
 
 ## Overview
 
@@ -19,9 +12,8 @@ In this project you will practice inheritance, graph search, and web
 scraping. You'll hand-in a module called `scrape.py`. It will contain
 three classes `GraphScraper`, `FileScraper` and `WebScraper`.
 
-Make sure to run the tests (which we plan to release by the weekend!)
-before handing in.  During development, we recommend having a
-debug.ipynb notebook to make calls to your module.
+Make sure to run the tests before handing in.  During development, we
+recommend having a debug.ipynb notebook to make calls to your module.
 
 # Group Part (75%)
 
@@ -31,20 +23,24 @@ help from 320 staff (mentors, TAs, instructor).  You <b>may not</b>
 seek receive help from other 320 students (outside your group) or
 anybody outside the course.
 
-If you just want to run `python3 tester.py` from the terminal you must call you python script
-`scrape.py`. If you do not call it this you must run tester as `python3 tester.py <your_filename_here>.py`.
+If you just want to run `python3 tester.py` from the terminal you must
+call your python script `scrape.py`. If you do not call it this you
+must run tester as `python3 tester.py <your_filename_here>.py`.
 
 ### Part 1: `FileScraper` class
 
 Paste the following starter code to your Python module.  Your job is
-complete the `go` method in the `FileScraper` class (don't change the
-one in `GraphScraper`!), the `bfs_search` method, and the `dfs_search`
-method.
+complete:
+
+1. the `go` method in the `FileScraper` class (don't change the
+one in `GraphScraper`)
+2. the `bfs_search` method
+3. the `dfs_search` method.
 
 The two search methods will call `self.go` to visit nodes.  This will
 not work if called on a GraphScraper object directly (because that
 class should not have a working `go` method), but `FileScraper` (which
-*does* have a `go`) method will inherit them.
+does have a `go`) method will inherit them.
 
 ```python
 import os, zipfile
@@ -65,12 +61,6 @@ class GraphScraper:
         pass
 
 class FileScraper(GraphScraper):
-    def __init__(self):
-        super().__init__()
-        if not os.path.exists("Files"):
-            with zipfile.ZipFile("files.zip") as zf:
-                zf.extractall()
-
     def go(self, node):
         pass
 ```
