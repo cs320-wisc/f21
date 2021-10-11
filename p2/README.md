@@ -6,6 +6,7 @@
 * [9/30] Watch [getting started video](https://mediaspace.wisc.edu/media/t/1_uzdufbmd)
 * [9/30] `rows()` and `loans()` are generators than `yield` results (fixed incorrect text describing them as returning lists)
 * [10/7] clarified that `Node` should be a child class of `SimplePredictor`
+* [10/11] added debug hint for testBias test
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=168)
 
@@ -509,6 +510,14 @@ print(bias_percent)
 Here, the result should be `0.4112`.  The decision tree is exhibiting
 major bias with respect to Black and African American applicants, with
 race being a deciding factor 41% of the time.
+
+If you get the wrong number from the tester, it can be difficult to
+determine which loan classification(s) happened differently, leading
+to your result.  The JSON files in the `testBias` directory show the
+loans before and after modification along the correct prediction
+results before/after when the `testBias` test runs.  If you're getting
+a slightly wrong number, consider adding debug prints/output to
+compare your predictions with these on a loan-by-loan basis.
 
 ## Conclusion
 
