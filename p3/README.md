@@ -27,7 +27,7 @@ If you just want to run `python3 tester.py` from the terminal you must
 call your python script `scrape.py`. If you do not call it this you
 must run tester as `python3 tester.py <your_filename_here>.py`.
 
-### Part 1: `FileScraper` class
+## Part 1: Graph Search
 
 Paste the following starter code to your Python module.  Your job is
 complete:
@@ -126,25 +126,53 @@ fs.DFSorder
 
 You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 
-### Part 2: `WebScraper` class
+## Part 2: Web Crawling
 
-Be sure to watch this lecture before starting this part:
-https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/17-crawling
+For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM.
 
-For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM. If you are stuck on installing Selenium and the Chrome Driver please refer to video one of
-this [lecture](https://github.com/tylerharter/caraza-harter-com/tree/master/tyler/cs320/s21/lec/16-selenium).
+```
+pip3 install selenium
+sudo apt -y install unzip htop chromium-browser
+rm -f chromedriver_linux64.zip
+wget https://chromedriver.storage.googleapis.com/94.0.4606.61/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+mv chromedriver ~/.local/bin
+```
+
+When it's all done, run both of the following, and verify that both
+versions start with 94 (like "94.X.X.X"):
+
+```
+chromium-browser --version
+chromedriver --version
+```
+
+**Note 1**: your virtual machine does not have a graphical user interface,
+so you won't be able to follow some of the early examples until I show
+how to run in "headless" mode (unrelated to git's headless) and take
+screenshots, unless you figure out how to install selenium on your
+laptop as well for fun (we don't require it, as it can often get quite
+tricky except on the VMs).
+
+**Note 2**: launching many web browsers via code can quickly eat up
+  all the memory on your VM.  You can run the `htop` command to see
+  how much memory you have (hit "q" to quit when done).  If you're low
+  on memory (you might notice your VM being sluggish), you can run
+  `pkill chromium` shutdown all browser instances hanging around in
+  the background.
+
+### `WebScraper` class
 
 You'll be scraping a website implemented as a web application built
 using the flask framework (you don't need to know flask for this
 project, though you'll learn it soon and get a chance to build your
-own website in the next project).  To run it, grab all the relevant
-html, csv, and css files.  Grab `application.py` too, and run this on
-your VM:
-
+own website in the next project).  In an SSH session, run the
+following to launch it:
 
 ```
 python3 application.py
 ```
+
 Then, open `http://<YOUR-VM-IP>:5000` in your web browser.  It should look like this:
 
 <img src="website.png" width=600>
@@ -250,7 +278,7 @@ BFS Password 1234567
 You have to do the remainder of this project on your own.  Do not
 discuss with anybody except 320 staff (mentors, TAs, instructor).
 
-### Part 3: `protected_df` method
+## Part 3: `protected_df` method
 
 The method should navigate to the home page, enter the password into the keypad, click
 GO, and return a DataFrame based on the page that is loaded.
