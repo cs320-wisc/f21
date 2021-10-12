@@ -337,7 +337,6 @@ def testBias():
 
 @test(points=3)
 def testBiasLargeFile():
-    return 0
     points = 0
 
     reader = tree.ZippedCSVReader('loans.zip')
