@@ -131,12 +131,8 @@ You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM.
 
 ```
-pip3 install selenium
-sudo apt -y install unzip htop chromium-browser
-rm -f chromedriver_linux64.zip
-wget https://chromedriver.storage.googleapis.com/94.0.4606.61/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip
-mv chromedriver ~/.local/bin
+pip3 install selenium beautifulsoup4
+sudo apt -y install chromium-browser
 ```
 
 When it's all done, run both of the following, and verify that both
@@ -144,7 +140,7 @@ versions start with 94 (like "94.X.X.X"):
 
 ```
 chromium-browser --version
-chromedriver --version
+chromium.chromedriver --version
 ```
 
 **Note 1**: your virtual machine does not have a graphical user interface,
@@ -158,8 +154,8 @@ tricky except on the VMs).
   all the memory on your VM.  You can run the `htop` command to see
   how much memory you have (hit "q" to quit when done).  If you're low
   on memory (you might notice your VM being sluggish), you can run
-  `pkill chromium` shutdown all browser instances hanging around in
-  the background.
+  `pkill -f -9 chromium` shutdown all browser instances hanging around
+  in the background.
 
 ### `WebScraper` class
 
@@ -188,10 +184,7 @@ either correct password on the home page will redirect you to a
 different page.
 
 Use selenium to do the scraping.  BeautifulSoup is probably also
-helpful, though not required.
-
-If you find your VM running slow run:  `pkill -f -9 chromium` from the 
-terminal to clean up chrome. 
+helpful, though not required.  Start with the following:
 
 ```python
 class WebScraper(GraphScraper):
@@ -242,7 +235,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 # kill previous chrome instance if still around (to conserve memory)
-os.system("pkill chrome")
+os.system("pkill -f -9 chromium")
 
 options = Options()
 options.headless = True
@@ -268,7 +261,7 @@ Expected output:
 ```
 ['http://YOUR_IP_ADDRESS:5000/Node_2.html', 'http://YOUR_IP_ADDRESS:5000/Node_4.html']
 
-DFS Password 9876543
+DFS Password 9874563
 
 BFS Password 1234567
 ```
@@ -280,8 +273,9 @@ discuss with anybody except 320 staff (mentors, TAs, instructor).
 
 ## Part 3: `protected_df` method
 
-The method should navigate to the home page, enter the password into the keypad, click
-GO, and return a DataFrame based on the page that is loaded.
+The method should navigate to the given URL, enter the password into
+the keypad, click GO, and return a DataFrame based on the page that is
+loaded.
 
 Note that after clicking a button, there might be a slight delay
 before `driver.page_source` reflects the new page.  Consider how you
