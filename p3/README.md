@@ -239,7 +239,7 @@ os.system("pkill -f -9 chromium")
 
 options = Options()
 options.headless = True
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(options=options, executable_path="chromium.chromedriver")
 
 # TODO: use IP address of your VM
 start_url = "http://YOUR_IP_HERE:5000/Node_1.html"

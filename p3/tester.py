@@ -20,7 +20,7 @@ add=f"http://localhost:{port}/"
 pass_bfs_file="MADCITY"
 pass_dfs_file="COVID19"
 password_bfs = "1234567"
-password_dfs = "9876543"
+password_dfs = "9874563"
 
 
 def FileScraper_go(fscraper):
@@ -122,13 +122,11 @@ def main():
     p = Popen(["python3", "application.py", port], stdout=f, stderr=f, stdin=f)
 
     # start fresh browser/scraper
-    os.system("pkill chrome")
-    my_window=webdriver.Chrome(options=options)
+    os.system("pkill -f -9 chromium")
+    my_window = webdriver.Chrome(options=options, executable_path="chromium.chromedriver")
     scraper = Scraper(my_window)
 
-
     tests= [WebScraper_go,dfs_pass_test, bfs_pass_test, protected_df_test,]
-
 
     for test_fn in tests:
         try:

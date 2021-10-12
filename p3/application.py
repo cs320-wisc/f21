@@ -89,11 +89,8 @@ def styles():
         html = f.read()
     return html
 
-#old password_bfs:  "XÆ_A-12"
-#old password_dfs: "BleuSus"
 password_bfs = "1234567"
-password_dfs = "9876543"
-
+password_dfs = "9874567"
 
 @application.route('/password', methods=["POST"])
 def password():
