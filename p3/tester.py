@@ -54,7 +54,6 @@ def bfs_pass_file_test(fscraper):
     fscraper.bfs_search("1")
     
     rv="".join(fscraper.BFSorder)
-    #print(rv)
     expected = pass_bfs_file
     if rv != expected:
         print(f"unexpected bfs pass: {repr(rv)}")
@@ -75,11 +74,13 @@ def bfs_pass_test(scraper):
         print(f"unexpected bfs pass: {repr(rv)}")
     return rv == expected
 
-def protected_df_test(scraper):
+def protected_df_test_bfs(scraper):
     points = 0
-
-    # BFS
     df = scraper.protected_df(add,password_bfs)
+    
+    print("\nFound Dataframe:")
+    print(df)
+   
     if df.iloc[0, -1] == "Picnic Point in Madison":
         points += 0.5
     else:
@@ -88,6 +89,29 @@ def protected_df_test(scraper):
         points += 0.5
     else:
         print(f"did not expect {len(df)} rows for protected_df (BFS)")
+
+    return points
+
+
+def protected_df_test_dfs(scraper):
+    points = 0
+
+    # BFS
+    
+    df = scraper.protected_df(add,password_dfs)
+        
+    print("\nFound Dataframe:")
+    print(df)
+    
+    
+    if df.iloc[0, -1] == "Picnic Point in Madison":
+        points += 0.5
+    else:
+        print(f"did not expect {repr(df.iloc[0, -1])} in top-right cell for protected_df (DFS)")
+    if len(df) == 8:
+        points += 0.5
+    else:
+        print(f"did not expect {len(df)} rows for protected_df (DFS)")
 
     return points
 
@@ -100,23 +124,30 @@ def main():
     
     #tests the revised part
     print("*** Testing GraphScraper and FileScraper ***\n")
+    print("-"*50+"\n")
     test_revised=[dfs_pass_file_test, bfs_pass_file_test,FileScraper_go]
     FScraper = imp.import_module(student_file_name).FileScraper
-    
-    for test_fn in test_revised:
+    labels1=["FileScraper.dfs_search(node)",\
+            "FileScraper.bfs_search(node)",\
+            "FileScraper.go(url)"]
+    for j,test_fn in enumerate(test_revised):
+        score=0
         try:
+            print("Testing: "+labels1[j]+"\n") 
             fscraper=FScraper()
             score = float(test_fn(fscraper))
-            print(f"{test_fn.__name__} : {score} out of 1.0")
-            results["score"] += score
-            results[test_fn.__name__] = score
         except Exception as e:
             print("TEST EXCEPTION:", str(e))
             traceback.print_exc()
-    
+        
+        results["score"] += score
+        results[test_fn.__name__] = score
+        print(f"\nScore : {score} out of 1.0")
+        print("\n"+"-"*50+"\n")
     
     # start server and test the web part 
     print("\n*** Testing WebScraper ***\n")
+    print("-"*50+"\n")
     Scraper = imp.import_module(student_file_name).WebScraper
     f = open("logfile.txt", "a") 
     p = Popen(["python3", "application.py", port], stdout=f, stderr=f, stdin=f)
@@ -126,25 +157,38 @@ def main():
     my_window = webdriver.Chrome(options=options, executable_path="chromium.chromedriver")
     scraper = Scraper(my_window)
 
-    tests= [WebScraper_go,dfs_pass_test, bfs_pass_test, protected_df_test,]
-
-    for test_fn in tests:
+    tests= [WebScraper_go,dfs_pass_test, bfs_pass_test,protected_df_test_dfs, protected_df_test_bfs]
+    labels=["WebScraper.go(url)",\
+            "WebScraper.dfs_pass(start_url)",\
+            "WebScraper.bfs_pass(start_url)",\
+            "WebScraper.protected_df(url,dfs_password)",\
+            "WebScraper.protected_df(url,bfs_password)"]
+    for j,test_fn in enumerate(tests):
+        score=0
         try:
+            # here is where we need to change the weights. s
+#             print("score before testing: %i"%score)
+            print("Testing: "+labels[j]+"\n") 
             score=float(test_fn(scraper))
-            results["score"] += score
-            results[test_fn.__name__] = score
-            print(f"{test_fn.__name__} : {score} out of 1.0")
         except Exception as e:
             print("TEST EXCEPTION:", str(e))
             traceback.print_exc()
+            
+#         print("score after testing: %i"%score)
+        results["score"] += score
+        results[test_fn.__name__] = score
+        print(f"\nScore : {score} out of 1.0")
+        print("\n"+"-"*50+"\n")
+        
     my_window.close()
     results["score"] *= 100 / (len(tests)+len(test_revised))
-
+    
+    print(f"\n\nFinal score:%0.2f"%results["score"])
     with open("results.json", "w") as f:
         json.dump(results, f, indent=True)
     print("\n*** Final Results ***\n")
     print(results)
-    p.kill()
+    p.terminate()
 
 if __name__ == "__main__":
     main()

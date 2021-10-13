@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Project 3: Treasure Hunt!
 
 ## Corrections/Clarifications
@@ -25,7 +23,7 @@ anybody outside the course.
 
 If you just want to run `python3 tester.py` from the terminal you must
 call your python script `scrape.py`. If you do not call it this you
-must run tester as `python3 tester.py <your_filename_here>.py`.
+must run tester as `python3 tester.py <your_filename_here>`.
 
 ## Part 1: Graph Search
 
@@ -128,10 +126,9 @@ You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 
 ## Part 2: Web Crawling
 
-For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM.
-
+For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM. In this lab you will only work with selenium. 
 ```
-pip3 install selenium beautifulsoup4
+pip3 install selenium beautifulsoup4 Flask lxml
 sudo apt -y install chromium-browser
 ```
 
@@ -169,7 +166,7 @@ following to launch it:
 python3 application.py
 ```
 
-Then, open `http://<YOUR-VM-IP>:5000` in your web browser.  It should look like this:
+Then, open `http://<YOUR-VM-IP>:5000` in your web browser. Do not use the IP address that is output to console in the ssh session. This is incorrect.It should look like this:
 
 <img src="website.png" width=600>
 
@@ -207,6 +204,9 @@ class WebScraper(GraphScraper):
     def protected_df(self, url, password):
         pass
 ```
+
+
+**Note**: Make sure to kill the application before running the tester.py. (The tester tries to open an application on the same port!) When you want to kill the application make sure to shut it down via CTRL-C in your ssh session. This will shut it down properly, any other way could result in hangtime errors, so you may have to re-ssh in. As well if your tester.py hangs (never throws an error and stops execution) make sure you kill the command via CTRL-C for the same reason as above. 
 
 ### `go` method
 

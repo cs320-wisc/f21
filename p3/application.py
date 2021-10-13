@@ -90,16 +90,15 @@ def styles():
     return html
 
 password_bfs = "1234567"
-password_dfs = "9874567"
+password_dfs = "9874563"
 
 @application.route('/password', methods=["POST"])
 def password():
     password = str(request.data, "utf-8")
-    print("my password: "+password)
     if "Password:" in password:
-        #if it contains the password precedor, remove it.
         password=password[9:]
-    print("my password: "+password)
+        #if it contains the password precedor, remove it.
+        
     if(password == password_bfs):
         return jsonify('expandingTable.html')
     if(password == password_dfs):
