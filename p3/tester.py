@@ -123,10 +123,12 @@ def main():
     score = 0
     
     #tests the revised part
+    # test the FileScraper class for BFS and DFS
     print("*** Testing GraphScraper and FileScraper ***\n")
     print("-"*50+"\n")
     test_revised=[dfs_pass_file_test, bfs_pass_file_test,FileScraper_go]
     FScraper = imp.import_module(student_file_name).FileScraper
+    # use informative outputs to console
     labels1=["FileScraper.dfs_search(node)",\
             "FileScraper.bfs_search(node)",\
             "FileScraper.go(url)"]
@@ -148,7 +150,14 @@ def main():
     # start server and test the web part 
     print("\n*** Testing WebScraper ***\n")
     print("-"*50+"\n")
-    Scraper = imp.import_module(student_file_name).WebScraper
+    
+    try:
+        Scraper = imp.import_module(student_file_name).WebScraper
+    except Exception: 
+        # if WebScraper doesn't exist use fake TestWebScraper below and continually throw errors
+        # for each function test
+        Scraper= TesterWebScraper;
+   
     f = open("logfile.txt", "a") 
     p = Popen(["python3", "application.py", port], stdout=f, stderr=f, stdin=f)
 
@@ -156,30 +165,36 @@ def main():
     os.system("pkill -f -9 chromium")
     my_window = webdriver.Chrome(options=options, executable_path="chromium.chromedriver")
     scraper = Scraper(my_window)
-
+    # tests for WebScraper 
     tests= [WebScraper_go,dfs_pass_test, bfs_pass_test,protected_df_test_dfs, protected_df_test_bfs]
+    # labels to show students so they are a bit more informative 
     labels=["WebScraper.go(url)",\
             "WebScraper.dfs_pass(start_url)",\
             "WebScraper.bfs_pass(start_url)",\
             "WebScraper.protected_df(url,dfs_password)",\
             "WebScraper.protected_df(url,bfs_password)"]
+    
+    # for each test get the score from each test, 
+    #if it throws an error print out that error to console
     for j,test_fn in enumerate(tests):
         score=0
         try:
-            # here is where we need to change the weights. s
-#             print("score before testing: %i"%score)
+            # test each function 
             print("Testing: "+labels[j]+"\n") 
             score=float(test_fn(scraper))
         except Exception as e:
             print("TEST EXCEPTION:", str(e))
             traceback.print_exc()
-            
+        # increment the total score
+        # print out score for that functon test
 #         print("score after testing: %i"%score)
         results["score"] += score
         results[test_fn.__name__] = score
         print(f"\nScore : {score} out of 1.0")
         print("\n"+"-"*50+"\n")
-        
+    
+    
+    # close the chromium window
     my_window.close()
     results["score"] *= 100 / (len(tests)+len(test_revised))
     
@@ -188,7 +203,29 @@ def main():
         json.dump(results, f, indent=True)
     print("\n*** Final Results ***\n")
     print(results)
+    
+    # shut down application.py 
     p.terminate()
+    
+    
+    
+ # trick to make WebScraper fail if it is not specified. Future TA could probably do this more cleanly by rewriting the code above, but it works! 
+class TesterWebScraper:
+    # required
+    def	__init__(self,driver):
+        print("** No WebScraper class FOUND ** \n\n")
+    # these three can be done as groupwork
+    def go(self, url):
+        raise Exception("No go function specified")
+    def dfs_pass(self, start_url):
+        raise Exception("No dfs_pass function specified")
+
+    def bfs_pass(self, start_url):
+        raise Exception("no bfs_pass function specified")
+
+    # write the code for this one individually
+    def protected_df(self, url, password):
+        raise Exception("no protected_df function specified")
 
 if __name__ == "__main__":
     main()
