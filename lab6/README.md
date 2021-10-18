@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 6: DFS vs. BFS
 
 In this lab, you'll get practice with depth-first search and
