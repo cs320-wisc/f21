@@ -2,7 +2,7 @@
 
 ## Corrections/Clarifications
 
-* none yet
+* Oct 18: see note about Selenium version and deprecation warnings: https://canvas.wisc.edu/courses/272598/discussion_topics/1118490
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=223)
 
@@ -128,9 +128,12 @@ You should get `['C', 'O', 'V', 'I', 'D', '1', '9']`.
 
 ## Part 2: Web Crawling
 
-For this part of the project you will also need to install a ChromeBrowser and ChromeDriver onto your VM. In this lab you will only work with selenium. 
+For this part of the project you will also need to install a
+ChromeBrowser and ChromeDriver onto your VM. In this lab you will only
+work with selenium.
+
 ```
-pip3 install selenium beautifulsoup4 Flask lxml
+pip3 install selenium==3.141.0 beautifulsoup4 Flask lxml
 sudo apt -y install chromium-browser
 ```
 
