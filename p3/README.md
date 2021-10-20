@@ -70,7 +70,7 @@ corresponding to a node in a directed graph, and each containing four
 lines, formatted like this:
 
 1. name of the node
-2. names of the children nodes, seperated by spaces
+2. names of the children nodes, separated by spaces
 3. "BFS: XXX" where "XXX" is a string
 4. "DFS: XXX" where "XXX" is a string
 
@@ -223,7 +223,7 @@ respectively.
 
 ### `dfs_pass` method
 
-Use the inherited `dfs_search` method to return the DFS password, which is just all the strings in `DFSorder` joined together (no spaces or other seperation).
+Use the inherited `dfs_search` method to return the DFS password, which is just all the strings in `DFSorder` joined together (no spaces or other separation).
 
 ### `bfs_pass` method
 
