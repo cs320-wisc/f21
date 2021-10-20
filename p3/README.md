@@ -78,7 +78,7 @@ Your task is to implement the `FileScraper` class to scrape the
 content of this directory.
 
 The `go` method in the `FileScraper` class should read one of the txt
-files and return a list of it's children.  Whenever `go` reads a file,
+files and return a list of its children.  Whenever `go` reads a file,
 it should also append the BFS string (line 3 of the file) to the
 `BFSorder` list and append the DFS string (line 4 of the file) to the
 `DFSorder` list.  For example, you should be able to run the following
