@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 7: Web
 
 In this part, you'll build a simple Flask game, called "Guess that
