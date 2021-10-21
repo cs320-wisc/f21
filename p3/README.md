@@ -114,7 +114,7 @@ simpler overall):
 3. also, as there is no `Node` class, we can't use something like `self.children` or `node.children` to learn the nodes of the class.  You should use the `go` method you just wrote for this purpose instead.
 
 We will only ever do one search on your graph object, so there's no
-need to ever clear out your `visited` list. (However, you will update `visited`, `BFSorder`, and `DFSorder` in the next class you make (`Webscraper`) to allow for multiple succesive searches.) 
+need to ever clear out your `visited` list. (However, you will need to update `visited`, `BFSorder`, and `DFSorder` in the next class you make (`Webscraper`) to allow for multiple succesive searches.) 
 
 We've arranged the extra info in each file so that the correct search order will lead to recognizable words.  For example, if you run:
 
