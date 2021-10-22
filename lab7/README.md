@@ -1,5 +1,24 @@
 # Lab 7: Web
 
+## Debug Exercise
+
+In addition to regular lab material (below), we'll now sometimes have
+extra debug exercises.
+
+Do a `git pull` on your VM to get the code [here](../debug/d6).  From
+SSH (in the `d6` directory) run the following:
+
+```
+python3 main.py
+```
+
+There are two bugs in main.py.  See if you can fix them so that the
+page keeps track of how many times the link is clicked.  These bugs
+are similar to ones we've often seen in student code for P4, so
+hopefully practicing now will save you time later.
+
+## Lab Overview
+
 In this part, you'll build a simple Flask game, called "Guess that
 Function!".  You'll also learn `curl`; `curl` is like `cat`, but for
 sending web requests instead of reading files.
