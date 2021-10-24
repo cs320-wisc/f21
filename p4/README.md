@@ -167,7 +167,7 @@ Open your web browser and go to `http://your-ip:5000` to see your page
 Requirements:
 
 * Going to `http://your-ip:port/browse.html` should return the content for `browse.html`, and similarly for the other pages.
-* The index.html page should have hyperlinks to all the other pages. Slide 4 of [this powerpoint](https://tyler.caraza-harter.com/cs320/s21/lec/16-selenium/slides.pdf) has some nice examples. (Be sure to not include your IP here! A relative path is fine.)
+* The index.html page should have hyperlinks to all the other pages. Slide 5 of [this powerpoint](https://tyler.caraza-harter.com/cs320/f21/lec/17-selenium/slides.pdf) has some nice examples. (Be sure to not include your IP here! A relative path is fine.)
 * You should put whatever content you think makes sense on the pages.  Just make sure that they all start with an `<h1>` heading, giving the page a title.
 
 ## Browse
@@ -314,7 +314,7 @@ to it or replace something in it.
 Implement a dashboard on your homepage showing at least 3 SVG images. 
 The SVG images must correspond to at least 2 different flask routes, i.e., 
 one route must be used at least twice with different query strings (resulting in different plots), 
-similar to the [lecture reading](https://tyler.caraza-harter.com/cs320/s21/lec/21-dashboards/reading.html).
+similar to the [lecture reading](https://tyler.caraza-harter.com/cs320/f21/lec/22-dashboards/reading.html).
 
 ### Requirements
 
