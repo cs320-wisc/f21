@@ -503,7 +503,7 @@ def ab_test_helper(click_through=[], best=0):
     return points
 
 
-@test(points=30)
+@test(points=25)
 def ab_test():
     points = 0
     points += ab_test_helper(click_through=[0], best=0)
@@ -511,14 +511,13 @@ def ab_test():
     points += ab_test_helper(click_through=[0, 2, 4, 6, 8, 3, 5, 7, 9], best=0)
     points += ab_test_helper(click_through=[2, 4, 6, 8, 1, 3, 5, 7, 9], best=1)
     points += ab_test_helper(click_through=[2, 4, 6, 8, 5, 7, 9], best=0)
-    points += ab_test_helper(click_through=[0, 6, 8, 3, 5, 7, 9], best=1)
 
     if only_varied_query_str:
         points -= 2
     return points
 
 
-@test(points=20)
+@test(points=25)
 def dashboard_examples():
     points = 0
 
@@ -563,10 +562,10 @@ def dashboard_examples():
             num_valid_svg += 1
 
     if num_valid_svg >= 3:
-        points += 20
+        points += 25
     else:
         print(f"Atleast 3 unique SVGs required, only {len(num_valid_svg)} found.")
-        points += 20 * num_valid_svg / 3
+        points += 25 * num_valid_svg / 3
 
     return points
 
