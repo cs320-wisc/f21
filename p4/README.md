@@ -4,10 +4,11 @@
 
 ## Corrections / Clarifications
 
-* [March 10th]: Fixed SVG counting error.
-* [March 8th]: Use `threaded=False` in `app.run`.
-* [March 8th]: FAQ post [here](https://piazza.com/class/kskk56h2ohc7lg).
-* [March 7th]: README, tester added.
+* none yet
+
+[FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=446)
+
+https://piazza.com/class/kskk56h2ohc7lg
 
 ## Handin
 
@@ -23,50 +24,24 @@ file alongside your directory:
 zip ../p4.zip main.py main.csv *.html
 ```
 
-If you haven't installed `zip` before, you might see this:
-
-```
-Command 'zip' not found, but can be installed with:
-
-apt install zip
-Please ask your administrator.
-```
-
-Follow the suggestion by running the `apt install zip` command
-suggested.  Of course, only the root user can install software with
-`apt`, so you'll need to tweak the suggested command by adding `sudo`
-to the beginning.
-
-Once you have the .zip ready, you can download it to your laptop (via
-Jupyter) then upload it to the site.
-
-**Important:** make sure your program is named `main.py` (we've been more 
-flexible about this in the past, but naming it something else causes 
-problems for us now that it's in a zip).
+**Important:** make sure your program is named `main.py` (we've been
+more flexible about this in the past, but naming it something else
+causes problems for us now that it's in a zip).
 
 ## Overview
 
 In this project, you'll build a website for sharing a dataset -- you
-get to pick the dataset!  There's a lot of relevant topics right now, 
-like COVID-19, the election, fires, etc., so try to pick something relevant 
-to what's been going on lately that you're passionate about! (More on 
-possible sources for data later)
+get to pick the dataset (More on possible sources for data later)!
 
 You'll use the flask framework for the site, which will have the
 following features: (1) multiple plots on the home page, (2) a page
 for browsing through the table behind the plots, (3) a link to a
-donation page that is optimized via A/B testing, and (4) a subscribe
-button that only accepts valid email addresses.
-
-Creating a web application is a very new kind of programming,
-different from writing code in a notebook or creating a `.py` module.
-So get started soon!  Our office hours are always boring the first
-week a project is released and crazy the week it is due, so starting
-early is a good way to get a larger slice of TA/instructor time.
+donation page that is optimized via A/B testing, (4) a subscribe
+button that only accepts valid email addresses, and (5) robots.txt and
+429 requests discouraging access to the browse page.
 
 Your `.py` file may be short, perhaps <100 lines, but it will probably
 take a fair bit of time to get those lines right.
-
 
 ## Setup
 
@@ -75,10 +50,6 @@ First, install some things:
 ```
 pip3 install Flask lxml html5lib beautifulsoup4
 ```
-
-Download `tester.py` -- as always, run it often!  You'll create the rest of the files from scratch.  
-
-**Note:** Running `tester.py` locally can be very helpful and time-saving for you if you haven't already been doing so. For the most part, this will let you know how your code will perform against our tests. While we still may take points off, this is a good way to ensure nothing is very off from what we're expecting. 
 
 # Group Part (75%)
 
@@ -91,13 +62,12 @@ The file should have between 10 and 1000 rows and between 3 and 15
 columns.  Feel free to drop rows/columns from your original data
 source if necessary.
 
-**Mandatory**: Leave a comment in your `main.py` about the source of your 
-data and another comment about an interesting graph you could make using 
-this data. (Just be creative and show us that you've thought about your 
-data a bit)
+**Mandatory**: Leave a comment in your `main.py` about the source of
+your data.
 
-Two good places to check while looking for a dataset are [Kaggle](https://www.kaggle.com/datasets) and 
-Google's [Dataset Search](https://datasetsearch.research.google.com/). 
+Two good places to check while looking for a dataset are
+[Kaggle](https://www.kaggle.com/datasets) and Google's [Dataset
+Search](https://datasetsearch.research.google.com/).
 
 ## Pages
 
@@ -157,9 +127,10 @@ trh@instance-1:~/p4$ python3 main.py
  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 ```
 
-This program runs indefinitely, until you kill it with `CTRL+C` (meaning press `CTRL` and `C` at the same time).
-Unfortunately, you may need to restart each time for new changes to
-show up (unless you find a way to configure flask otherwise).
+This program runs indefinitely, until you kill it with `CTRL+C`
+(meaning press `CTRL` and `C` at the same time).  Unfortunately, you
+may need to restart each time for new changes to show up (unless you
+find a way to configure flask otherwise).
 
 Open your web browser and go to `http://your-ip:5000` to see your page
 ("your-ip" is the IP you use to SSH to your VM).
@@ -167,7 +138,7 @@ Open your web browser and go to `http://your-ip:5000` to see your page
 Requirements:
 
 * Going to `http://your-ip:port/browse.html` should return the content for `browse.html`, and similarly for the other pages.
-* The index.html page should have hyperlinks to all the other pages. Slide 5 of [this powerpoint](https://tyler.caraza-harter.com/cs320/f21/lec/17-selenium/slides.pdf) has some nice examples. (Be sure to not include your IP here! A relative path is fine.)
+* The index.html page should have hyperlinks to all the other pages. Slide 5 of [this powerpoint](https://tyler.caraza-harter.com/cs320/f21/lec/17-selenium/slides.pdf) has some nice examples. (Be sure to not include your IP here! A relative path is necessary to pass our tests.)
 * You should put whatever content you think makes sense on the pages.  Just make sure that they all start with an `<h1>` heading, giving the page a title.
 
 ## Browse
@@ -197,7 +168,6 @@ string. For example, `"<html>{}<html>".format("hello")` would insert `"hello"`
 into the middle of a string containing HTML code. 
 
 **Hint 2:** look into `_repr_html_` for DataFrames (or possibly `to_html()`).
-
 
 ## Emails
 
@@ -264,18 +234,17 @@ Fill in the `????` parts in the above code so that it:
 2. writes each valid email address on its own line in `emails.txt`
 3. sternly warns the user if they entered an invalid email address to stop being so careless (you choose the wording)
 
-Also find a way to fill the variable `n` with the number of users that have subscribed so far, 
-including the user that just got accepted. 
+Also find a way to fill the variable `n` with the number of users that
+have subscribed so far, including the user that just got added.
 
-Note: Although it will be talked about more later, you can find information about 
-`jsonify` [here](https://www.kite.com/python/docs/flask.jsonify) if you're curious right now. 
+Note: you can find information about `jsonify`
+[here](https://www.kite.com/python/docs/flask.jsonify).
 
 ## Donations
 
-On your donations page, write some text, making your best plea for funding.
-
-Then, let's find out the best design for the homepage, so that people
-are most likely to click the link to the donations page.
+On your donations page, write some text, making your best plea for
+funding.  Then, let's find out the best design for the homepage, so
+that people are most likely to click the link to the donations page.
 
 We'll do an A/B test.  Create two version of the homepage, A and B.
 They should differ in some way, perhaps trivial (e.g., maybe the link
@@ -295,32 +264,31 @@ showing version A or B.
   they took a link from version A or B of the homepage.  The easiest
   way is with query strings.  On version A of the homepage, instead of
   having a regular link to "donate.html", link to
-  "donate.html?from=A", and in the link on version B to
-  donate.html, use "donate.html?from=B".  Then the handler for
-  the "donate.html" route can keep count of how much people are
-  using the links on both versions of the home page. (Hint 1 of the API 
-  section is a good refresher for pulling A/B out of the query string.) 
+  "donate.html?from=A", and in the link on version B to donate.html,
+  use "donate.html?from=B".  Then the handler for the "donate.html"
+  route can keep count of how much people are using the links on both
+  versions of the home page.
   
-**Hint 3:** You shouldn't need to have two different versions of your homepage 
-to make this work. Once you read your index.html file into your program, you 
-can edit it. At that point it should be a string, so you could add something 
-to it or replace something in it. 
-
+**Hint 3:** You shouldn't need to have two different versions of your
+homepage to make this work. You could use the templating approach:
+once you read your index.html file into your program, you can edit
+it. At that point it should be a string, so you could add something to
+it or replace something in it.
 
 # Individual Part (25%)
 
 ## Dashboard
 
-Implement a dashboard on your homepage showing at least 3 SVG images. 
-The SVG images must correspond to at least 2 different flask routes, i.e., 
-one route must be used at least twice with different query strings (resulting in different plots), 
-similar to the [lecture reading](https://tyler.caraza-harter.com/cs320/f21/lec/22-dashboards/reading.html).
+Implement a dashboard on your homepage showing at least 3 SVG images.
+The SVG images must correspond to at least 2 different flask routes,
+i.e., one route must be used at least twice with different query
+strings (resulting in different plots), similar to the [lecture
+reading](https://tyler.caraza-harter.com/cs320/f21/lec/22-dashboards/reading.html).
 
 ### Requirements
 
 * All plots are based on the data chosen for `browse.html`, but you are free to choose what is plotted. 
 Plots should have labels for both axes and optionally a title.
-
 * Similarly, there is no restriction on the choice of query string parameters, 
 except that the resulting plots should be distinct.
 

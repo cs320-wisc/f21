@@ -229,7 +229,12 @@ def app_req(path, expect_str=True, expect_errors=False, method="GET", input_body
 
     body = body.getvalue()
     if expect_str:
-        body = str(body, "utf-8")
+        try:
+            body = str(body, "utf-8")
+        except UnicodeDecodeError:
+            pass
+        if not isinstance(body, str):
+            raise TypeError(f"Expected request {path} to return a string encoded as UTF-8")
     return status, dict(headers), body
 
 
@@ -257,7 +262,11 @@ def has_pages():
 
     svg_points = 0
     for link in svg_path_ll:
-        status, headers, body = app_req(link)
+        try:
+            status, headers, body = app_req(link)
+        except TypeError as e:
+            print(e)
+            continue
         if status == "200 OK":
             svg_points += 1
 
@@ -527,10 +536,9 @@ def dashboard_examples():
     page = BeautifulSoup(body, "lxml")
     svg_path_ll = page.find_all("img", src=re.compile("\S+.svg\S*"))
     svg_path_ll = [svg_path["src"] for svg_path in svg_path_ll]
-    svg_set = set()
 
     if len(svg_path_ll) < 3:
-        print(f"Expected atleast three SVGs, but found {len(svg_path_ll)} SVGs.")
+        print(f"Expected at least three SVGs, but found {len(svg_path_ll)} SVGs.")
         return points
 
     svg_route_ll = page.find_all("img", src=re.compile("(\S+?.svg)"))
@@ -538,33 +546,38 @@ def dashboard_examples():
 
     if len(svg_route_set) < 2:
         print(
-            f"Expected atleast two unique routes, but found {len(svg_route_set)} routes."
+            f"Expected at least two unique routes, but found {len(svg_route_set)} routes."
         )
         return points
 
     num_valid_svg = 0
     for e, svg_path in enumerate(svg_path_ll):
-        status, headers, body = app_req(svg_path)
-
-        svg_set.add(body)
+        try:
+            status, headers, body = app_req(svg_path)
+        except TypeError as e:
+            print(e)
+            continue
 
         # Save to temporary path
         fname = f"/tmp/svg_out_{e}.svg"
         with open(fname, "w") as f:
             f.write(body)
 
-        doc = ET.parse(fname).getroot()
-        # Check if XML is a SVG
-        if "svg" not in doc.tag:
-            print(f"{svg_path} doesn't seem to be a SVG.")
-            continue
-        else:
-            num_valid_svg += 1
+        try:
+            doc = ET.parse(fname).getroot()
+            # Check if XML is a SVG
+            if "svg" not in doc.tag:
+                print(f"{svg_path} doesn't seem to be a SVG.")
+                continue
+            else:
+                num_valid_svg += 1
+        except ET.ParseError:
+            print(f"{svg_path} is not parseable as a SVG.")
 
     if num_valid_svg >= 3:
         points += 25
     else:
-        print(f"Atleast 3 unique SVGs required, only {len(num_valid_svg)} found.")
+        print(f"Atleast 3 unique SVGs required, only {num_valid_svg} found.")
         points += 25 * num_valid_svg / 3
 
     return points
