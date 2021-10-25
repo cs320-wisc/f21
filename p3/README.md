@@ -138,7 +138,7 @@ sudo apt -y install chromium-browser
 ```
 
 When it's all done, run both of the following, and verify that both
-versions start with 94 (like "94.X.X.X"):
+versions is 90+ (like "9X.X.X.X"):
 
 ```
 chromium-browser --version
