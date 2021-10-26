@@ -124,17 +124,14 @@ trh@instance-1:~/p4$ python3 main.py
 ```
 
 This program runs indefinitely, until you kill it with `CTRL+C`
-(meaning press `CTRL` and `C` at the same time).  Unfortunately, you
-may need to restart each time for new changes to show up (unless you
-find a way to configure flask otherwise).
-
-Open your web browser and go to `http://your-ip:5000` to see your page
-("your-ip" is the IP you use to SSH to your VM).
+(meaning press `CTRL` and `C` at the same time).  Open your web
+browser and go to `http://your-ip:5000` to see your page ("your-ip" is
+the IP you use to SSH to your VM).
 
 Requirements:
 
 * Going to `http://your-ip:port/browse.html` should return the content for `browse.html`, and similarly for the other pages.
-* The index.html page should have hyperlinks to all the other pages. Slide 5 of [this powerpoint](https://tyler.caraza-harter.com/cs320/f21/lec/17-selenium/slides.pdf) has some nice examples. (Be sure to not include your IP here! A relative path is necessary to pass our tests.)
+* The index.html page should have hyperlinks to all the other pages.  Be sure to not include your IP here! A relative path is necessary to pass our tests.
 * You should put whatever content you think makes sense on the pages.  Just make sure that they all start with an `<h1>` heading, giving the page a title.
 
 ## Browse
@@ -221,7 +218,7 @@ def email():
     if re.match(r"????", email): # 1
         with open("emails.txt", "a") as f: # open file in append mode
             f.????(email + ????) # 2
-        return jsonify("thanks, you're subscriber number {}!".format(n))
+        return jsonify(f"thanks, you're subscriber number {n}!")
     return jsonify(????) # 3
 ```
 
@@ -233,14 +230,14 @@ Fill in the `????` parts in the above code so that it:
 Also find a way to fill the variable `n` with the number of users that
 have subscribed so far, including the user that just got added.
 
-Note: you can find information about `jsonify`
-[here](https://www.kite.com/python/docs/flask.jsonify).
+**Note:** you can find information about `jsonify`
+[here](https://flask.palletsprojects.com/en/2.0.x/api/#flask.json.jsonify).
 
 ## Donations
 
 On your donations page, write some text, making your best plea for
-funding.  Then, let's find out the best design for the homepage, so
-that people are most likely to click the link to the donations page.
+funding.  Then, let's find the best design for the homepage, so that
+people are most likely to click the link to the donations page.
 
 We'll do an A/B test.  Create two version of the homepage, A and B.
 They should differ in some way, perhaps trivial (e.g., maybe the link
@@ -265,11 +262,11 @@ showing version A or B.
   route can keep count of how much people are using the links on both
   versions of the home page.
   
-**Hint 3:** You shouldn't need to have two different versions of your
-homepage to make this work. You could use the templating approach:
-once you read your index.html file into your program, you can edit
-it. At that point it should be a string, so you could add something to
-it or replace something in it.
+**Hint 3:** You don't necessarily need to have two different versions
+of your homepage to make this work. You could use the templating
+approach: once you read your index.html file into your program, you
+can edit it. At that point it should be a string, so you could add
+something to it or replace something in it.
 
 # Individual Part (25%)
 
@@ -287,7 +284,7 @@ You can manually test your robots.txt with the following:
 from urllib.robotparser import RobotFileParser
 r = RobotFileParser("http://VM_IP:5000/robots.txt")
 r.read()
-r.can_fetch("hungrycaterpillar", "http://VM_IP:5000/browse.html")
+r.can_fetch("hungrycaterpillar", "http://VM_IP:5000/browse.html") # should be False
 ```
 
 ## Dashboard
