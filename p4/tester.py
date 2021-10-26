@@ -10,6 +10,7 @@ from collections import namedtuple
 from datetime import datetime
 from io import StringIO, BytesIO
 from xml.etree import ElementTree as ET
+from urllib.robotparser import RobotFileParser
 
 import numpy as np
 import pandas as pd
@@ -525,8 +526,33 @@ def ab_test():
         points -= 2
     return points
 
+@test(points=5)
+def robo_test():
+    base_url = "http://some-url.com"
+    status, headers, body = app_req("/robots.txt")
+    points = 1
+    if headers.get('Content-Type') == 'text/plain':
+        points += 1
+    else:
+        print(f"Need plan text as content type: {headers}")
 
-@test(points=25)
+    r = RobotFileParser(base_url + "/robots.txt")
+    r.parse(body.splitlines())
+
+    for crawler in ["hungrycaterpillar", "busyspider", "other"]:
+        for page in ["/index.html", "/browse.html"]:
+            page = base_url + page
+            fetchable = r.can_fetch(crawler, page)
+            name = f"can_fetch({repr(crawler)}, {repr(page)})"
+            err = is_expected(actual=fetchable, name=name)
+            if err != None:
+                print(f"unexpected results for {name}: {err}")
+            else:
+                points += 0.5
+
+    return int(points)
+
+@test(points=20)
 def dashboard_examples():
     points = 0
 
@@ -575,13 +601,12 @@ def dashboard_examples():
             print(f"{svg_path} is not parseable as a SVG.")
 
     if num_valid_svg >= 3:
-        points += 25
+        points += 20
     else:
         print(f"Atleast 3 unique SVGs required, only {num_valid_svg} found.")
-        points += 25 * num_valid_svg / 3
+        points += 20 * num_valid_svg / 3
 
     return points
-
 
 ########################################
 # RUNNER

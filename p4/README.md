@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Project 4: Building a Data Website
 
 ## Corrections / Clarifications
@@ -7,8 +5,6 @@
 * none yet
 
 [FAQ Piazza Post](https://piazza.com/class/kskk56h2ohc7lg?cid=446)
-
-https://piazza.com/class/kskk56h2ohc7lg
 
 ## Handin
 
@@ -276,6 +272,23 @@ it. At that point it should be a string, so you could add something to
 it or replace something in it.
 
 # Individual Part (25%)
+
+## robots.txt
+
+Your application should have a "robots.txt".  Most
+crawlers/agents should be allowed to crawl anything.  User-agent
+"busyspider" should be blocked from everything and User-agent
+"hungrycaterpillar" should be blocked from one page only:
+"browse.html".
+
+You can manually test your robots.txt with the following:
+
+```python
+from urllib.robotparser import RobotFileParser
+r = RobotFileParser("http://VM_IP:5000/robots.txt")
+r.read()
+r.can_fetch("hungrycaterpillar", "http://VM_IP:5000/browse.html")
+```
 
 ## Dashboard
 

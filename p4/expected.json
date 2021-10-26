@@ -1,0 +1,8 @@
+{
+  "can_fetch('hungrycaterpillar', 'http://some-url.com/index.html')": true,
+  "can_fetch('hungrycaterpillar', 'http://some-url.com/browse.html')": false,
+  "can_fetch('busyspider', 'http://some-url.com/index.html')": false,
+  "can_fetch('busyspider', 'http://some-url.com/browse.html')": false,
+  "can_fetch('other', 'http://some-url.com/index.html')": true,
+  "can_fetch('other', 'http://some-url.com/browse.html')": true
+}
