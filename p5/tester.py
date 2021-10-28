@@ -490,38 +490,38 @@ def world():
     return points
 
 @test(points=25)
-def phone():
+def zipcode():
     points = 25;
     zname = "docs.zip"
     
-    actual = run("phone", zname).strip().split("\n")
-    actual_json['phone'] = actual
+    actual = run("zipcode", zname).strip().split("\n")
+    actual_json['zipcode'] = actual
     
     # open expected
     with open('expected.json', 'r') as f:
         expected_json = json.load(f)
-        expected = set(expected_json['phone'])
+        expected = set(expected_json['zipcode'])
     
     # no duplicated check
     if len(actual) - len(set(actual)) > 0 :
-        print("(-10) There are duplicated phone numbers!")
-        print("Duplicated phone numbers and counts")
+        print("(-10) There are duplicated zip codes!")
+        print("Duplicated zip codes and counts")
         
-        # count phone numbers
+        # count zip codes
         wc = defaultdict(int)
-        for phone_number in actual:
-            wc[phone_number] += 1
+        for zipcode in actual:
+            wc[zipcode] += 1
             
-        # show duplicated phone numbers
+        # show duplicated zip codes
         duplicated_count = 0
         print_threshold = 10
-        for phone_number in wc:
-            if wc[phone_number] > 1:
+        for zipcode in wc:
+            if wc[zipcode] > 1:
                 duplicated_count += 1
                 if duplicated_count <= print_threshold:
-                    print(phone_number, f", count: {wc[phone_number]}")
+                    print(zipcode, f", count: {wc[zipcode]}")
         if duplicated_count > print_threshold:
-            print(f"... [{duplicated_count-print_threshold}] more numbers are duplicated.")
+            print(f"... [{duplicated_count-print_threshold}] more zip codes are duplicated.")
         points -= 10
     
     # missing values check
@@ -531,13 +531,13 @@ def phone():
     missed_count = len(missed)
     points -= missed_count / len(expected) * weight
     if missed_count > 0:
-        print(f"Total {missed_count} numbers are missed!")
+        print(f"Total {missed_count} zip codes are missed!")
         
     for pn in sorted(missed)[:10]:
-        print(f"missed phone number: {pn}")
+        print(f"missed zip code: {pn}")
     
     if missed_count > 10:
-        print(f"... [{missed_count-10}] more numbers are missed.")
+        print(f"... [{missed_count-10}] more zip codes are missed.")
         
     points = max(0, points)  
     

@@ -18,15 +18,10 @@ Your `main.py` will support four commands:
 * `ip_check`: given one or more IP addresses, lookup the associated regions
 * `sample`: create a smaller, sorted file from a bigger file, also adding regional info
 * `world`: create a map of the world, colored based on frequency of web requests to EDGAR
-* `phone`: dump out a list of phone numbers appearing in the docs referenced in the web logs
+* `zipcode`: dump out a list of zip codes appearing in the docs referenced in the web logs
 
 ## Corrections/Clarifications
-* [March 24] Update tester (relieve performance check about ip_check, fix a bug where Exception gives score.)
 
-* [March 22] README jan1.zip --> large.zip
-* [March 21] Add tester.py, expected.json, (sample command) move sorting requirements from additional requirements to main requirements.
-* [March 21] Fix small.zip csv file name (test.csv -> small.csv)
-* [March 20] Add `pip3 install --upgrade pip` to pacakages
 
 ## Packages
 
@@ -57,22 +52,20 @@ low,high,code,region
 ...
 ```
 
-The first two numbers are IP ranges (inclusive on both ends).  The IP
+The first two numbers are IP ranges (inclusive on both ends).  For example, the IP
 address 16777473 belongs to China because it is between 16777472 and
-16778239, for example.
+16778239.
 
 IP addresses are more commonly represented as four-part numbers, like
 "34.67.75.25".  To convert an address like this to an integer, you can
-use the following (see this and other approaches here:
-https://stackoverflow.com/questions/9590965/convert-an-ip-string-to-a-number-and-vice-versa):
-
+use the following:
 ```
 import netaddr
 int(netaddr.IPAddress("34.67.75.25"))
 ```
+You can refer this and more approaches here: https://stackoverflow.com/questions/9590965/convert-an-ip-string-to-a-number-and-vice-versa.
 
-You should use `time.time()` calls before and after the code you write
-to lookup the region for an IP address to measure how long it takes.
+You also need to use `time.time()` calls before and after to measure the time it takes for your code to lookup the region for an IP address.
 
 Say somebody runs your program like this, with four IP addresses:
 
@@ -149,7 +142,7 @@ similar consecutive lookups efficiently.
 
 Hint 1: You may refer to wc.py of project 1 to print a JSON-formatted list of dicts.
 
-Hint 2: Basic strategy is to keep previous index and use it again for the next time so that consecutive ips can be searched very fast. Another strategy is to apply binary search - in this case, execution time will be improved not only for consecutive ips, but for all ips. The tester will compare the execution time with naive linear search.
+Hint 2: Basic strategy is to keep previous index and use it again for the next time so that consecutive ips can be searched very fast. Another strategy is to apply binary search (note that IP addresses in `ip2location.csv` is sorted) - in this case, execution time will be improved not only for consecutive ips, but for all ips. The tester will compare the execution time with naive linear search.
 
 ## Part 2: `sample`
 
@@ -188,24 +181,24 @@ ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,cra
 
 1) sampling data at regular intervals (the interval is given as input)
 
-2) sort data by IP in ascending order
+2) sort sampled data by IP addresses in ascending order
 
 3) add a column ('region') at the end that shows the region from which the web request originated
 
 4) write another zip file based on preprocessed data
 
-This one takes three arguments:
+`sample` command takes three arguments:
 
 * input zip (zip1)
 * output zip (zip2)
 * stride (mod)
 
 If stride is 10, then rows 0, 10, 20, 30, etc. will be in the sample.
-If stride is 100, then 0, 100, 200, 300, etc. will be in the sample.
+If stride is 100, then rows 0, 100, 200, 300, etc. will be in the sample.
 Row 0 refers to the first row of actual data, not the header (the
 header always needs to be written to the new file).
 
-In the new zip file, rows should be sorted ascending by IP (as converted to ints in the previous command), in ascending order.  It's OK to have all the rows in memory at once that are going to be written to the new .zip (this makes sorting easier)
+In the new zip file, rows should be sorted ascending by IP (as converted to ints in the previous command) in ascending order.  It's OK to have all the rows in memory at once that are going to be written to the output zip (this makes sorting easier)
 
 To add a column 'region', you can apply a very similar logic with ip_check. However, EDGAR tries to anonymize IP addresses by replacing some digits with letters, as in "157.55.39.eja".  For sorting and lookup purposes, replace letters with zeros (for example, "157.55.39.000").  The unmodified versions of the IP addresses should still appear in the first column of the new file, though.
 
@@ -221,7 +214,7 @@ python3 main.py sample large.zip tiny.zip 30000
 unzip -p tiny.zip
 ```
 
-Output (from the second command):
+Expected output (from the second command):
 
 ```
 ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler,browser,region
@@ -235,14 +228,14 @@ ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,cra
 
 Additional requirements:
 
-* don't do anything to read the entire data from the large zip to memory (`pd.read_csv` does this, so is not an option).  Looping over a `csv.reader` does not pull all the data into memory.
+* Don't do anything that will read the entire data from the large zip to memory (`pd.read_csv` does this, so is not an option).  Looping over a `csv.reader` does not pull all the data into memory.
 * we recommend using Python's `sort` or `sorted`.  If you want to use something else, you can, but if so, learn about "stable sorting" (https://www.quora.com/What-is-the-difference-between-a-stable-and-unstable-sort/answer/Rahul-Kumar-6717?ch=10&share=2f60372f&srid=2ByvL) and make sure whatever you use is stable, like the built-in Python sorting functions
 
 ## Part 3: `world`
 
 It should be possible to run `python3 main.py world small.zip
 world.svg` to produce an image named "world.svg" that looks something
-like this (check by opening it in your browser):
+like this (check by downloading and opening it in your browser):
 
 <img src="world.svg" width=800>
 
@@ -276,7 +269,7 @@ Hint 2. You may want to make a new column to world by counting the value of 'reg
 
 # Individual Part (25%)
 
-## Part 4: `phone`
+## Part 4: `zipcode`
 
 Looking at the `cik`, `accession`, and `extention` fields tells you what web resoure a user was requesting (in particular, each company has it's own `cik`):
 
@@ -291,31 +284,33 @@ For this row, we can construct the following URL from `1461219.0`, `0000000000-1
 https://www.sec.gov/Archives/edgar/data/1461219/0001209191-21-001287-index.htm
 
 We have already downloaded all the docs corresponding to rows in
-`small.zip` for you and placed them in `docs.zip`.  Use regular
-expressions to see how many 10-digit phone numbers (like
-`980-221-3235` and `(212) 250-5883` and `(212)790-0000`) you can find
-in these files.  Before doing the regex searches, you should read the
-text in of each file directly into a string (even if the file ends
-with ".htm" or similar, don't both using BeautifulSoup).
+`small.zip` for you and placed them in `docs.zip`.  Use **regular
+expressions** to see how many zip codes for states NY, CA, WI, and IL you can find in these files. 
+You need to find both the 5-digit zip codes format (like `10003`) and the 5-dight zip codes and 4-digit add-on codes format (like `10017-2630`). Before doing the regex searches, you should read the
+text of each file directly into a string (even if the file ends
+with ".htm" or similar, don't use BeautifulSoup).
 
-The command is `python3 main.py phone docs.zip`.  Just print each
-phone number on its own line (the order doesn't matter, but there
-shouldn't be any duplicates!):
+The command is `python3 main.py zipcode docs.zip`.  Just print each zip codes
+on its own line (The order doesn't matter, but there
+shouldn't be any duplicates. Note 10003 and 10003-3019 are not counted as duplicates.):
 
 ```
-(212) 250-5883
-(212) 270-6000
-(212) 328-9521
-(212) 376-4305
-(212) 421-4100
-(212) 659-2050
+10003
+10003-3019
+10004
+10005
+10007
+10013
 ...
 ```
 
-Hint. In your `ZippedCSVReader.rows` method of P2, you had to read in
-every file in a zip that ended with .csv.  This is a bit similar,
+Hint 1. In your `ZippedCSVReader.rows` method of P2, you had to read in
+every file in a zip that ended with .csv.  
+is a bit similar,
 except that you'll read every file (regardless of extension), and
 you'll just load them as strings (with a `.read()`).
+
+Hint 2. `|` character in the "More Metacharacters" section of [this link](https://docs.python.org/3/howto/regex.html), the "Grouping" section, and `(?:...)` in the "Non-capturing and Named Groups" sections from the same link can be helpful. 
 
 # Conclusion
 
