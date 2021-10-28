@@ -30,9 +30,12 @@ You'll need to install some packages:
 ```
 pip3 install --upgrade pip
 pip3 install geopandas shapely descartes geopy mapclassify netaddr
-```
+``` 
+
 
 # Group Part (75%)
+
+Be sure to run `python3 tester.py` regularly to estimate your grade. Additional printing other than the asked solution will cause the tester to give 0s, so please remove additional printing before you run `tester.py`. 
 
 ## Part 1: `ip_check`
 
