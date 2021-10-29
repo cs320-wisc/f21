@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, request
 from matplotlib import pyplot as plt
 # I/O => Input/Output
 from io import StringIO, BytesIO
@@ -13,7 +13,10 @@ purchases = [3,2,6]
 
 @app.route("/insert", methods=["POST"])
 def insert_page():
-    return "TODO"
+    nums = str(request.get_data(), "utf-8").split(",")
+    for x in nums:
+        purchases.append(float(x))
+    return f"we now have {len(purchases)} nums\n"
 
 @app.route("/")
 def home():
