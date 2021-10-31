@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 8: Smile!
 
 You may have heard that [face-recognition
@@ -89,8 +87,19 @@ pd.Series(counts).sort_values().plot.barh(fontsize=20, color="k")
 
 <img src="faces.png" width=400>
 
-# Optional Challenge: Making Everybody Happy
+# Making Everybody Happy
 
 Can you use `re.sub` to make all the mouths happy (i.e., `)`)?  You'll
 need to use `\g<N>` to keep the eyes and nose the same while replacing
 the mouths.
+
+# Debug Exercise
+
+One of the trickier errors to understand is when the code inside an
+"except:" block that is handling an exception triggers a second
+exception.  Both exceptions end up as part of the traceback printed.
+
+To get practice looking and these errors and fixing such code, try
+fixing the `divide.py` program here:
+
+https://github.com/cs320-wisc/f21/tree/main/debug/d7
