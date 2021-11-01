@@ -9,6 +9,7 @@ import subprocess, traceback, sys, json
 from subprocess import Popen
 import importlib as imp
 import os
+import time
 
 options = Options()
 options.headless = True
@@ -207,6 +208,7 @@ def main():
     # shut down application.py 
     p.terminate()
     
+    time.sleep(5) # wait for shutdown
     
     
  # trick to make WebScraper fail if it is not specified. Future TA could probably do this more cleanly by rewriting the code above, but it works! 
