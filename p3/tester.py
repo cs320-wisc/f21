@@ -9,6 +9,7 @@ import subprocess, traceback, sys, json
 from subprocess import Popen
 import importlib as imp
 import os
+import time
 
 options = Options()
 options.headless = True
@@ -132,6 +133,7 @@ def main():
     labels1=["FileScraper.dfs_search(node)",\
             "FileScraper.bfs_search(node)",\
             "FileScraper.go(url)"]
+    errors=[]
     for j,test_fn in enumerate(test_revised):
         score=0
         try:
@@ -141,7 +143,9 @@ def main():
         except Exception as e:
             print("TEST EXCEPTION:", str(e))
             traceback.print_exc()
-        
+            errors.append(f"{test_fn.__name__} : {e}")
+            
+       
         results["score"] += score
         results[test_fn.__name__] = score
         print(f"\nScore : {score} out of 1.0")
@@ -176,6 +180,7 @@ def main():
     
     # for each test get the score from each test, 
     #if it throws an error print out that error to console
+    
     for j,test_fn in enumerate(tests):
         score=0
         try:
@@ -185,9 +190,10 @@ def main():
         except Exception as e:
             print("TEST EXCEPTION:", str(e))
             traceback.print_exc()
+            errors.append(f"{test_fn.__name__} : {e}")
+            
         # increment the total score
         # print out score for that functon test
-#         print("score after testing: %i"%score)
         results["score"] += score
         results[test_fn.__name__] = score
         print(f"\nScore : {score} out of 1.0")
@@ -197,7 +203,7 @@ def main():
     # close the chromium window
     my_window.close()
     results["score"] *= 100 / (len(tests)+len(test_revised))
-    
+    results["errors"]=errors
     print(f"\n\nFinal score:%0.2f"%results["score"])
     with open("results.json", "w") as f:
         json.dump(results, f, indent=True)
@@ -207,6 +213,7 @@ def main():
     # shut down application.py 
     p.terminate()
     
+    time.sleep(5) # wait for shutdown
     
     
  # trick to make WebScraper fail if it is not specified. Future TA could probably do this more cleanly by rewriting the code above, but it works! 
