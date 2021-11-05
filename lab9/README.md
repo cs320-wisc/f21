@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 9: Geographic Maps
 
 We'll be talking more about geopandas in the next lecture, but for
