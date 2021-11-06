@@ -22,6 +22,8 @@ Your `main.py` will support four commands:
 
 ## Corrections/Clarifications
 
+[Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
+
 
 ## Packages
 
@@ -289,7 +291,7 @@ https://www.sec.gov/Archives/edgar/data/1461219/0001209191-21-001287-index.htm
 We have already downloaded all the docs corresponding to rows in
 `small.zip` for you and placed them in `docs.zip`.  Use **regular
 expressions** to see how many zip codes for states NY, CA, WI, and IL you can find in these files. 
-You need to find both the 5-digit zip codes format (like `10003`) and the 5-dight zip codes and 4-digit add-on codes format (like `10017-2630`). Before doing the regex searches, you should read the
+You need to find both the 5-digit zip codes format (like `10003`) and the 5-dight zip codes plus 4-digit add-on codes format (like `10017-2630`). Before doing the regex searches, you should read the
 text of each file directly into a string (even if the file ends
 with ".htm" or similar, don't use BeautifulSoup).
 
@@ -313,7 +315,6 @@ is a bit similar,
 except that you'll read every file (regardless of extension), and
 you'll just load them as strings (with a `.read()`).
 
-Hint 2. `|` character in the "More Metacharacters" section of [this link](https://docs.python.org/3/howto/regex.html), the "Grouping" section, and `(?:...)` in the "Non-capturing and Named Groups" sections from the same link can be helpful. 
 
 # Conclusion
 
