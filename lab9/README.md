@@ -12,7 +12,7 @@ sudo apt install -y python3-rtree
 ```
 
 Let's say you want to plot a map of Europe, showing major cities and
-shading countries by popluation.  Past+run the following:
+shading countries by popluation.  Paste+run the following:
 
 ```python
 import geopandas
