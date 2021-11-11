@@ -220,20 +220,12 @@ def gen(row_count=10, sort=False, name=None):
 
 def svg_analyze(fname):
     doc = minidom.parse(fname)
-
     
-    try:
-        stats = {
-            "paths": 0,
-            "colors": set(),
-            "width": float(doc.getElementsByTagName("svg")[0].getAttribute("width").replace("pt", ""))
-        }
-    except: # don't think this is needed but just to be safe I guess
-        stats = {
-            "paths": 0,
-            "colors": set(),
-            "width": float(doc.getElementsByTagName("svg")[0].getAttribute("width").split(".")[0])
-        }
+    stats = {
+        "paths": 0,
+        "colors": set(),
+        "width": float(doc.getElementsByTagName("svg")[0].getAttribute("width").replace("pt", ""))
+    }
 
     rgb = [0, 0, 0]
 
@@ -262,7 +254,7 @@ def run(*args):
     print("RUN:", " ".join(args))
     output = subprocess.check_output(
         args, stderr=subprocess.STDOUT,
-        timeout=90, # add time limit
+        timeout=30, # add time limit
         universal_newlines=True
     )
     return output
@@ -355,138 +347,54 @@ def ip_check():
     return max(points, 0)
 
 @test(points=25)
-def sample():
-    points = 25
-    zname = "large.zip"
-    zout = "small_samp.zip"
-    stride = 1000
+def region():
     start_time = time.time()
     try:
-        run("sample", zname, zout, stride) # include stride of test data set
+        run("region", "server_log.zip", "temp.zip")
     except subprocess.TimeoutExpired:
-        print("Execution time for sample should be less than 90 seconds")
+        print("Execution time for sample should be less than 30 seconds")
         return 0
-        
+
     elapsed_time = time.time() - start_time # check later since sort should be checked first.
-    
-    # write on actual_json
-    actual_count = 0
-    for i, row in enumerate(zip_csv_iter(zout)):
-        actual_json[f"sample_{i}"] = row
-        actual_count += 1
-
-    # open expected
-    with open("expected.json") as f:
-        expected_json = json.load(f)
-    
-    expected_count = 0
-    for key in expected_json:
-        if "sample" in key:
-            expected_count += 1
-    
-    unit_points = points / expected_count
-    
-    # 'region' column check
-    if 'region' not in actual_json[f"sample_{0}"]:
-        print(f"(-10) 'region' column not found!")
-        points -= 10
-        
-        
-    # 'sort' check, brute force strategy: search all rows to find matched one
-    found_all = True
-    not_sorted = False
-    found_rows = 0
-    if expected_count == actual_count:
-        
-        
-        # compare all examples (175 rows)
-        for i in range(expected_count):
-            found = False
-            expected_row = expected_json[f"sample_{i}"]
-            
-            # search all actual
-            for j in range(expected_count):
-                actual_row = actual_json[f"sample_{j}"]
-                if expected_row == actual_row:
-                    found = True
-                    found_rows += 1
-                    break
-            
-            # not found    
-            if not found:
-                found_all = False
-            elif i != j: # found in different index
-                not_sorted = True
-         
-        if found_all and not_sorted:
-            print(f"(-10) All rows are found, but the order is incorrect. Make sure your sort.")
-            points -= 10
-    
-    # elapsed time check
-    if elapsed_time > 20:
-        print("(-10) sample command can be optimized further. (<= 20secs), elapsed time:", np.round(elapsed_time, 5))
-        print("Make sure you have an O(M+N) implementation")
-        points -= 10
-    
-    # incorrect rows check - check it only when it is not the matter of 'region' column or sort
-    if ('region' in actual_json[f"sample_{0}"]) and (not (found_all and not_sorted)):
-        print_threshold = 5
-        incorrect_count = 0
-        for i in range(expected_count):
-            try: # compare rows
-                actual_row = actual_json[f"sample_{i}"]
-                expected_row = expected_json[f"sample_{i}"]
-                if actual_row != expected_row:
-                    incorrect_count += 1
-                    if incorrect_count <= print_threshold:
-                        print(f"---row {i}---")
-                        print(f"expected row: {expected_row}")
-                        print(f"found row: {actual_row}")
-            except KeyError as e:
-                incorrect_count += 1
-                if incorrect_count < print_threshold:
-                        print(f"---row {i}---")
-                        print(f"missed row {i}: {expected_row}")
-
-        if incorrect_count > print_threshold:
-            print(f"... [{incorrect_count - print_threshold}] more rows are incorrect or missed.")
-
-        if incorrect_count > 0:
-            print(f"Total {incorrect_count} rows are incorrect or missed.")
-            points -= incorrect_count * unit_points
-
-    points = max(0, points)
-    return points
-
-@test(points=25)
-def world():
-    zname = "small.zip"
-    points = 25
-    
-    svg = "world_output.svg"
-    if os.path.exists(svg):
-        os.remove(svg)
-    run("world", zname, svg)
-    stats = svg_analyze(svg)
-
-    print(stats)
-    
-    if stats["paths"] < 270 or stats["paths"] > 300:
-        print("%s doesn't look like a world map" % svg)
+    if elapsed_time > 30:
+        print("Execution time for sample should be less than 30 seconds")
         return 0
+
+    points = 0
+
+    df = pd.read_csv("temp.zip")
+    err = is_expected(len(df), "row_count")
+    if err:
+        print(err)
+    else:
+        points += 5
+
+    ips = df["ip"]
+    err = is_expected(str(ips.dtype), "ip_column_dtype")
+    if err:
+        print(err)
+    else:
+        points += 10
+
+        for i in range(len(ips) - 1):
+            if ips.iat[i] > ips.iat[i+1]:
+                print("IPs not in ascending order")
+                points -= 5
+                break
+
+    regions = dict(zip(df["ip"].values, df["region"].values))
     
-    if stats["paths"] > 284:
-        print("ERROR: please remove Antartica")
-        points -= 10
+    errors = []
+    for ip, region in regions.items():
+        assert isinstance(region, str)
+        err = is_expected(region, f"region-for-ip-{ip}")
+        if err:
+            errors.append(err)
+    if errors:
+        print(errors[0])
+    else:
+        points += 10
 
-    if stats["colors"] < 3:
-        print("ERROR: use more different shades to represent traffic levels")
-        points -= 10
-
-    if stats["width"] < 450:
-        print("ERROR: make the plot wider")
-        points -= 5
-        
     return points
 
 @test(points=25)
@@ -542,6 +450,48 @@ def zipcode():
     points = max(0, points)  
     
     return points 
+
+@test(points=25)
+def geo():
+    points = 0
+    expected_shape_count = [74, 288, 18, 15, 27]
+
+    for proj in (3035, 4036, 4144, 4248, 4555):
+        proj = str(proj)
+        out = proj + ".svg"
+        if os.path.exists(out):
+            os.remove(out)
+
+        run("geo", "region.zip", proj, out)
+        if os.path.exists(out):
+            points += 1
+        else:
+            print(f"{out} not found")
+            continue
+
+        try:
+            stats = svg_analyze(out)
+        except Exception as e:
+            print("ERROR ANALYZING "+out)
+            print(e)
+            continue
+
+        points += 1
+
+        if stats["colors"] < 3 or stats["colors"] > 5:
+            print(f"the colors in {out} do not appear correct")
+        else:
+            points += 1
+
+        expected = expected_shape_count.pop(0)
+        actual = stats["paths"]
+
+        if (expected-10 <= actual <= expected+10) or (expected*0.75 <= actual <= expected*1.25):
+            points += 2
+        else:
+            print(f"expected about {expected} shapes in {out} but found {actual}")
+
+    return points
 
 ########################################
 # RUNNER
