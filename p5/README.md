@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # P5: EDGAR Web Logs
 
 In the US, public companies need to regularly file
@@ -16,14 +14,15 @@ EDGAR web logs.  We'll provide with data from a subset of one day.
 Your `main.py` will support four commands:
 
 * `ip_check`: given one or more IP addresses, lookup the associated regions
-* `sample`: create a smaller, sorted file from a bigger file, also adding regional info
-* `world`: create a map of the world, colored based on frequency of web requests to EDGAR
+* `region`: copy a zipped file of requests, adding region info and sorting the output
 * `zipcode`: dump out a list of zip codes appearing in the docs referenced in the web logs
+* `geo`: create a map of countries in a given region, colored based on frequency of web requests to EDGAR
 
 ## Corrections/Clarifications
 
-[Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
+* none yet
 
+[Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
 ## Packages
 
@@ -31,9 +30,9 @@ You'll need to install some packages:
 
 ```
 pip3 install --upgrade pip
-pip3 install geopandas shapely descartes geopy mapclassify netaddr
-``` 
-
+pip3 install geopandas shapely descartes geopy netaddr
+sudo apt install -y python3-rtree
+```
 
 # Group Part (75%)
 
@@ -64,11 +63,11 @@ address 16777473 belongs to China because it is between 16777472 and
 IP addresses are more commonly represented as four-part numbers, like
 "34.67.75.25".  To convert an address like this to an integer, you can
 use the following:
-```
+
+```python
 import netaddr
 int(netaddr.IPAddress("34.67.75.25"))
 ```
-You can refer this and more approaches here: https://stackoverflow.com/questions/9590965/convert-an-ip-string-to-a-number-and-vice-versa.
 
 You also need to use `time.time()` calls before and after to measure the time it takes for your code to lookup the region for an IP address.
 
@@ -83,12 +82,14 @@ command should run and pull in the relevant command line data (be sure
 to read about `sys.argv` if you need a refresher on how it works).
 
 ```python
+import sys
+
 def main():
     if len(sys.argv) < 2:
         print("usage: main.py <command> args...")
     elif sys.argv[1] == "ip_check":
         ips = sys.argv[2:]
-        # TODO: call a function you write that does IP checking
+        # TODO: call function(s) you write to do IP checking
     # TODO: other commands
     else:
         print("unknown command: "+sys.argv[1])
@@ -145,31 +146,40 @@ need to look up countries/regions for a large number of IP addresses that are
 in sorted order, and it will be quite slow overall if you can't do
 similar consecutive lookups efficiently.
 
-Hint 1: You may refer to wc.py of project 1 to print a JSON-formatted list of dicts.
+**Hint:** a slow way to find IP address would be loop over all the
+  indexes corresponding to rows of the `ip2location.csv` file (0, 1,
+  2, ..., N-1) each time another IP is looked up.  An alternative is
+  to keep track of the index (as a global variable) of the row in the
+  CSV that matches the previous IP that was looked up.  Say the
+  previous IP corresponded to row 1020, and the current IP being
+  looked up corresponds to row 2025.  Then you could loop over fewer
+  indexes (1020, 1021, 1022, 1023, 1024, 1025).  This is possible
+  because `ip2location.csv` is already sorted for you.  Of course,
+  sometimes the IP being looked up will be smaller than the previous
+  one, and you will have to loop downward (1025, 1024, 1023, ...).
 
-Hint 2: Basic strategy is to keep previous index and use it again for the next time so that consecutive ips can be searched very fast. Another strategy is to apply binary search (note that IP addresses in `ip2location.csv` is sorted) - in this case, execution time will be improved not only for consecutive ips, but for all ips. The tester will compare the execution time with naive linear search.
-
-## Part 2: `sample`
+## Part 2: `region`
 
 Take a look at the list of daily zips and CSV documentation on the EDGAR site:
 * https://www.sec.gov/dera/data/edgar-log-file-data-set.html
 * https://www.sec.gov/files/EDGAR_variables_FINAL.pdf
 
-We have provided a `large.zip` file, which is a subset of the records
-from `log20170101.zip`.  You'll be creating lots of zip files for this
-projects, so you'll want to know some command line techniques to
-troubleshoot.
+We have provided a `server_log.zip` file, which is a subset of the
+records from `log20170101.zip`.  You'll be creating lots of zip files
+for this projects, so you'll want to know some command line techniques
+to troubleshoot.
 
 View names of files in a zip file:
 
 ```
-unzip -l large.zip
+unzip -l server_log.zip
 ```
 
-View start of a file inside of a zip file (change "head" to "tail" to see the end):
+View the start of a file inside of a zip file (change "head" to "tail"
+to see the end):
 
 ```
-unzip -p large.zip large.csv | head -n 5
+unzip -p server_log.zip rows.csv | head -n 5
 ```
 
 The expected result is:
@@ -182,99 +192,35 @@ ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,cra
 108.39.205.jga,2017-01-01,00:00:01,0.0,354950.0,0000950123-09-011236,-index.htm,200.0,8718.0,1.0,0.0,0.0,10.0,0.0,
 ```
 
-`sample` command will do the following data preprocessing.
-
-1) sampling data at regular intervals (the interval is given as input)
-
-2) sort sampled data by IP addresses in ascending order
-
-3) add a column ('region') at the end that shows the region from which the web request originated
-
-4) write another zip file based on preprocessed data
-
-`sample` command takes three arguments:
-
-* input zip (zip1)
-* output zip (zip2)
-* stride (mod)
-
-If stride is 10, then rows 0, 10, 20, 30, etc. will be in the sample.
-If stride is 100, then rows 0, 100, 200, 300, etc. will be in the sample.
-Row 0 refers to the first row of actual data, not the header (the
-header always needs to be written to the new file).
-
-In the new zip file, rows should be sorted ascending by IP (as converted to ints in the previous command) in ascending order.  It's OK to have all the rows in memory at once that are going to be written to the output zip (this makes sorting easier)
-
-To add a column 'region', you can apply a very similar logic with ip_check. However, EDGAR tries to anonymize IP addresses by replacing some digits with letters, as in "157.55.39.eja".  For sorting and lookup purposes, replace letters with zeros (for example, "157.55.39.000").  The unmodified versions of the IP addresses should still appear in the first column of the new file, though.
-
-To write a new zip file, you may refer to [sample code](sample_hints.md) for copying subsets of
-data from one zipped CSV to another (no need to read or follow these
-patterns if you already know how you want to do this).
-
-For example, we can run with a stride of 30000, then check our output:
+Your `region` command will be run as follows to infer region based on IP address:
 
 ```
-python3 main.py sample large.zip tiny.zip 30000
-
-unzip -p tiny.zip
+python3 main.py region server_log.zip server_log2.zip
 ```
 
-Expected output (from the second command):
+There will be a `rows.csv` in `server_log2.zip` like the one in `server_logs.zip` with three differences:
 
-```
-ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler,browser,region
-52.45.218.ihf,2017-01-01,10:23:25,0.0,827156.0,0001341522-06-000030,.txt,200.0,5974.0,0.0,0.0,0.0,10.0,0.0,,United States of America
-54.212.94.jcd,2017-01-01,03:31:36,0.0,1461219.0,0000000000-13-001261,-index.htm,301.0,243.0,1.0,0.0,1.0,10.0,0.0,,United States of America
-104.197.32.ihd,2017-01-01,00:00:00,0.0,1111711.0,0001193125-12-324016,-index.htm,200.0,7627.0,1.0,0.0,0.0,10.0,0.0,,United States of America
-107.23.181.jje,2017-01-01,07:01:00,0.0,1330399.0,0001299933-16-003371,edgar/data/1330399/-,200.0,7065.0,1.0,0.0,0.0,10.0,0.0,,United States of America
-107.178.195.bbb,2017-01-01,19:57:16,0.0,1584509.0,0001584509-16-000514,armk-20160930_pre.xml,200.0,68682.0,0.0,0.0,0.0,10.0,0.0,,United States of America
-157.55.39.eja,2017-01-01,15:07:47,0.0,1030469.0,0000950144-09-002256,g18073exv31w2.htm,301.0,625.0,0.0,0.0,0.0,10.0,0.0,,United States of America
-```
+1. the `ip` column will be converted to an int (use `netaddr` as
+before).  Some digits are censored as random letters in the dataset.
+Any such letters can be replaced with zeros for simplicity (for
+example, `104.197.32.ihd` becomes `104.197.32.000`) prior to int conversion.
+2. the rows will be sorted by the `ip` column, ascending.
+3. a `region` column will be added, computed based on the IP, hopefully reusing code/function(s) you built for your `ip_check` command
 
-Additional requirements:
+We covered reading zip files on lab 3: https://github.com/cs320-wisc/f21/blob/main/lab3/part2.md
 
-* Don't do anything that will read the entire data from the large zip to memory (`pd.read_csv` does this, so is not an option).  Looping over a `csv.reader` does not pull all the data into memory.
-* we recommend using Python's `sort` or `sorted`.  If you want to use something else, you can, but if so, learn about "stable sorting" (https://www.quora.com/What-is-the-difference-between-a-stable-and-unstable-sort/answer/Rahul-Kumar-6717?ch=10&share=2f60372f&srid=2ByvL) and make sure whatever you use is stable, like the built-in Python sorting functions
-
-## Part 3: `world`
-
-It should be possible to run `python3 main.py world small.zip
-world.svg` to produce an image named "world.svg" that looks something
-like this (check by downloading and opening it in your browser):
-
-<img src="world.svg" width=800>
-
-The title, border, and legend are optional.  Mandatory: Antarctica is
-not shown, color indicates the number of web requests
-originating from a region, and the map is bigger than the default
-created by `GeoDataFrame.plot`.
-
-Here's a basic world map you can start from:
+You can also write CSVs inside zip files like this:
 
 ```python
-import geopandas
-world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
-world.plot()
+with ZipFile(????, "w", compression=ZIP_DEFLATED) as zf:
+    with zf.open(????, "w") as f:
+        df.to_csv(f, index=False)
 ```
 
-<img src="blue-map.png" width=300>
+Your `region` command should not take more than 30 seconds to run on
+our testing machine.
 
-[This link](https://geopandas.org/mapping.html) has a lot of examples for 
-plotting with geopandas.
-
-Many of the region names are identical in the IP2Location(:tm:) and
-`naturalearth_lowres` GeoDataFrame.  In cases where the names are
-slightly different, you don't need to worry about shading for that
-region.
-
-Hint 1. To hide Antarctica, you may look into 'continent' column of `world`.
-
-Hint 2. You may want to make a new column to world by counting the value of 'region' column in zip file data.
-
-
-# Individual Part (25%)
-
-## Part 4: `zipcode`
+## Part 3: `zipcode`
 
 Looking at the `cik`, `accession`, and `extention` fields tells you what web resoure a user was requesting (in particular, each company has it's own `cik`):
 
@@ -295,9 +241,25 @@ You need to find both the 5-digit zip codes format (like `10003`) and the 5-digh
 text of each file directly into a string (even if the file ends
 with ".htm" or similar, don't use BeautifulSoup).
 
-The command is `python3 main.py zipcode docs.zip`.  Just print each zip codes
-on its own line (The order doesn't matter, but there
-shouldn't be any duplicates. Note 10003 and 10003-3019 are not counted as duplicates.):
+Here is an example of an address in one of the files:
+
+```
+2525 DUPONT DR IRVINE CA 92612
+```
+
+Note that the format does not include a comma between state and zip.
+You need to find both the 5-digit zip codes format (like `10003`) and
+the 5-dight zip codes and 4-digit add-on codes format (like
+`10017-2630`).
+
+Before doing the regex searches, you should read the text of each file
+directly into a string (even if the file ends with ".htm" or similar,
+don't use BeautifulSoup).
+
+The command is `python3 main.py zipcode docs.zip`.  Just print each
+zip codes on its own line.  The order doesn't matter, but there
+shouldn't be any duplicates.  Note 10003 and 10003-3019 are not
+counted as duplicates:
 
 ```
 10003
@@ -309,12 +271,41 @@ shouldn't be any duplicates. Note 10003 and 10003-3019 are not counted as duplic
 ...
 ```
 
-Hint 1. In your `ZippedCSVReader.rows` method of P2, you had to read in
-every file in a zip that ended with .csv.  
-is a bit similar,
-except that you'll read every file (regardless of extension), and
-you'll just load them as strings (with a `.read()`).
+# Individual Part (25%)
 
+## Part 4: `geo`
+
+It should be possible to run `python3 main.py geo region.zip 3035
+out.svg` to produce an image named "out.svg" that looks something
+like this (check by downloading and opening it in your browser):
+
+<img src="geo.svg" width=400>
+
+You can use the `naturalearth_lowres` shapefile that comes with
+geopandas to create the map.  The color should be based on number of
+occurences in `region.zip` (0 is gray, 1-999 is orange, 1000+ is red).
+For simplicity, you can ignore rows in `region.zip` where the country
+name doesn't exactly match the names in `naturalearth_lowres`.
+
+`3035` is the ID of an EPSG projection (your code should works with
+others too, like 4036, 4144, 4248, and 4555).  You can look it up like
+this:
+
+```python
+import pyproj
+crs = pyproj.CRS.from_epsg(proj)
+```
+
+You should use `GeoDataFrame.to_crs` to use the projection with the
+given ID.  You should also crop the map to that region only.  You can
+find the projection window with things like `crs.area_of_use.west` for
+the left side (and similar for other sides).
+
+Note that geopandas has a bug
+(https://github.com/geopandas/geopandas/pull/2224) that mixes up the
+colors of polygons when some polygons are empty, as happens after
+cropping an image.  Consider using `GeoDataFrame.is_empty` to filter
+these out.
 
 # Conclusion
 
