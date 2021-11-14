@@ -462,7 +462,7 @@ def geo():
         if os.path.exists(out):
             os.remove(out)
 
-        run("geo", "region.zip", proj, out)
+        run("geo", proj, out)
         if os.path.exists(out):
             points += 1
         else:

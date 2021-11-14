@@ -278,16 +278,17 @@ counted as duplicates:
 
 ## Part 4: `geo`
 
-It should be possible to run `python3 main.py geo region.zip 3035
+It should be possible to run `python3 main.py geo 3035
 out.svg` to produce an image named "out.svg" that looks something
 like this (check by downloading and opening it in your browser):
 
 <img src="geo.svg" width=400>
 
 You can use the `naturalearth_lowres` shapefile that comes with
-geopandas to create the map.  The color should be based on number of
-occurences in `region.zip` (0 is gray, 1-999 is orange, 1000+ is red).
-For simplicity, you can ignore rows in `region.zip` where the country
+geopandas to create the map. `server_log2.zip` is created in part 2 by the region command. 
+The color should be based on number of
+occurences in `server_log2.zip` (0 is gray, 1-999 is orange, 1000+ is red). 
+For simplicity, you can ignore rows in `server_log2.zip` where the country
 name doesn't exactly match the names in `naturalearth_lowres`.
 
 `3035` is the ID of an EPSG projection (your code should works with
