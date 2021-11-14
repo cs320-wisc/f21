@@ -20,7 +20,7 @@ Your `main.py` will support four commands:
 
 ## Corrections/Clarifications
 
-* none yet
+* change `region.zip` to `server_log2.zip`
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
