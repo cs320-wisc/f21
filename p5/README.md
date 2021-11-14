@@ -13,7 +13,7 @@ EDGAR web logs.  We'll provide with data from a subset of one day.
 
 Your `main.py` will support four commands:
 
-* `ip_check`: given one or more IP addresses, lookup the associated regions
+* `ip_check`: given one or more IP addresses, lookup the associated regions, and print the results
 * `region`: copy a zipped file of requests, adding region info and sorting the output
 * `zipcode`: dump out a list of zip codes appearing in the docs referenced in the web logs
 * `geo`: create a map of countries in a given region, colored based on frequency of web requests to EDGAR
@@ -43,7 +43,7 @@ Be sure to run `python3 tester.py` regularly to estimate your grade. Additional 
 Your program should have an `ip_check` command that takes one or more
 IP addresses.  It should use the `ip2location.csv` (borrowed from
 https://lite.ip2location.com/database/ip-country) to lookup what
-country/region owns a particular IP address.  The CSV file looks like
+country/region owns a particular IP address.  It should then print a json-formatted string.  The CSV file looks like
 this:
 
 ```
