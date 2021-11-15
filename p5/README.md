@@ -91,7 +91,7 @@ def main():
         print("usage: main.py <command> args...")
     elif sys.argv[1] == "ip_check":
         ips = sys.argv[2:]
-        # TODO: call function(s) you writhttp://34.67.231.183:2020/termie to do IP checking
+        # TODO: call function(s) you write to do IP checking
     # TODO: other commands
     else:
         print("unknown command: "+sys.argv[1])
