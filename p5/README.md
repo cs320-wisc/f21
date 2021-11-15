@@ -20,7 +20,9 @@ Your `main.py` will support four commands:
 
 ## Corrections/Clarifications
 
-* change `region.zip` to `server_log2.zip`
+* changed `region.zip` to `server_log2.zip`
+* added clarification to output of `check_ip`
+* updated example in Part 3 to match given url
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
@@ -89,7 +91,7 @@ def main():
         print("usage: main.py <command> args...")
     elif sys.argv[1] == "ip_check":
         ips = sys.argv[2:]
-        # TODO: call function(s) you write to do IP checking
+        # TODO: call function(s) you writhttp://34.67.231.183:2020/termie to do IP checking
     # TODO: other commands
     else:
         print("unknown command: "+sys.argv[1])
@@ -226,11 +228,11 @@ Looking at the `cik`, `accession`, and `extention` fields tells you what web res
 
 ```
 ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler,browser,region
-54.212.94.jcd,2017-01-01,03:31:36,0.0,1461219.0,0000000000-13-001261,-index.htm,301.0,243.0,1.0,0.0,1.0,10.0,0.0,,United States of America
+54.212.94.jcd,2017-01-01,03:31:36,0.0,1461219.0,0001209191-21-001287,-index.htm,301.0,243.0,1.0,0.0,1.0,10.0,0.0,,United States of America
 ...
 ```
 
-For this row, we can construct the following URL from `1461219.0`, `0000000000-13-001261`, and `-index.htm`:
+For this row, we can construct the following URL from `1461219.0`, `0001209191-21-001287`, and `-index.htm`:
 
 https://www.sec.gov/Archives/edgar/data/1461219/0001209191-21-001287-index.htm
 
