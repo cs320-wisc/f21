@@ -24,6 +24,7 @@ Your `main.py` will support four commands:
 * added clarification to output of `check_ip`
 * updated example in Part 3 to match given url
 * fixed zipcode expected output
+* Nov 16: read note about `.iloc` and `.loc` in FAQ, or your code may run too slowly
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
