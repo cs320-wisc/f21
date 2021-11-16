@@ -23,6 +23,7 @@ Your `main.py` will support four commands:
 * changed `region.zip` to `server_log2.zip`
 * added clarification to output of `check_ip`
 * updated example in Part 3 to match given url
+* fixed zipcode expected output
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
