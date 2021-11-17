@@ -13,14 +13,18 @@ EDGAR web logs.  We'll provide with data from a subset of one day.
 
 Your `main.py` will support four commands:
 
-* `ip_check`: given one or more IP addresses, lookup the associated regions
+* `ip_check`: given one or more IP addresses, lookup the associated regions, and print the results
 * `region`: copy a zipped file of requests, adding region info and sorting the output
 * `zipcode`: dump out a list of zip codes appearing in the docs referenced in the web logs
 * `geo`: create a map of countries in a given region, colored based on frequency of web requests to EDGAR
 
 ## Corrections/Clarifications
 
-* none yet
+* changed `region.zip` to `server_log2.zip`
+* added clarification to output of `check_ip`
+* updated example in Part 3 to match given url
+* fixed zipcode expected output
+* Nov 16: read note about `.iloc` and `.loc` in FAQ, or your code may run too slowly
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
@@ -43,7 +47,7 @@ Be sure to run `python3 tester.py` regularly to estimate your grade. Additional 
 Your program should have an `ip_check` command that takes one or more
 IP addresses.  It should use the `ip2location.csv` (borrowed from
 https://lite.ip2location.com/database/ip-country) to lookup what
-country/region owns a particular IP address.  The CSV file looks like
+country/region owns a particular IP address.  It should then print a json-formatted string.  The CSV file looks like
 this:
 
 ```
@@ -226,11 +230,11 @@ Looking at the `cik`, `accession`, and `extention` fields tells you what web res
 
 ```
 ip,date,time,zone,cik,accession,extention,code,size,idx,norefer,noagent,find,crawler,browser,region
-54.212.94.jcd,2017-01-01,03:31:36,0.0,1461219.0,0000000000-13-001261,-index.htm,301.0,243.0,1.0,0.0,1.0,10.0,0.0,,United States of America
+54.212.94.jcd,2017-01-01,03:31:36,0.0,1461219.0,0001209191-21-001287,-index.htm,301.0,243.0,1.0,0.0,1.0,10.0,0.0,,United States of America
 ...
 ```
 
-For this row, we can construct the following URL from `1461219.0`, `0000000000-13-001261`, and `-index.htm`:
+For this row, we can construct the following URL from `1461219.0`, `0001209191-21-001287`, and `-index.htm`:
 
 https://www.sec.gov/Archives/edgar/data/1461219/0001209191-21-001287-index.htm
 
@@ -278,16 +282,17 @@ counted as duplicates:
 
 ## Part 4: `geo`
 
-It should be possible to run `python3 main.py geo region.zip 3035
+It should be possible to run `python3 main.py geo 3035
 out.svg` to produce an image named "out.svg" that looks something
 like this (check by downloading and opening it in your browser):
 
 <img src="geo.svg" width=400>
 
 You can use the `naturalearth_lowres` shapefile that comes with
-geopandas to create the map.  The color should be based on number of
-occurences in `region.zip` (0 is gray, 1-999 is orange, 1000+ is red).
-For simplicity, you can ignore rows in `region.zip` where the country
+geopandas to create the map. `server_log2.zip` is created in part 2 by the region command. 
+The color should be based on number of
+occurences in `server_log2.zip` (0 is gray, 1-999 is orange, 1000+ is red). 
+For simplicity, you can ignore rows in `server_log2.zip` where the country
 name doesn't exactly match the names in `naturalearth_lowres`.
 
 `3035` is the ID of an EPSG projection (your code should works with

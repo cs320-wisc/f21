@@ -1,8 +1,12 @@
-# DRAFT (don't start yet)
-
 # Lab 10: Regression and SQL JOIN
 
-## Part 1: time to shuffle
+# Debug Exercise
+
+Try to fix the bugs in the following notebook that uses geopandas:
+
+https://github.com/cs320-wisc/f21/tree/main/debug/d8
+
+## Lab Part 1: time to shuffle
 
 This method randomly re-arranges the items in a list:
 https://docs.python.org/3/library/random.html#random.shuffle.  The
@@ -72,7 +76,7 @@ piece of work.  Or, better, replace `random.shuffle(nums)` with
 `nums.sort()`, which as complexity O(N log N), as re-check how
 accurate the predictions are.
 
-## Part 2: SQL JOIN
+## Lab Part 2: SQL JOIN
 
 Let's review SQL, then learn a very important new operator, JOIN.
 First, create a database with information about sales at two grocery
