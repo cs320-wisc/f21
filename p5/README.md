@@ -25,6 +25,7 @@ Your `main.py` will support four commands:
 * updated example in Part 3 to match given url
 * fixed zipcode expected output
 * Nov 16: read note about `.iloc` and `.loc` in FAQ, or your code may run too slowly
+* Nov 20: in tester.py modified `temp.zip` to `server_log2.zip`
 
 [Piazza FAQ Post](https://piazza.com/class/kskk56h2ohc7lg?cid=576)
 
