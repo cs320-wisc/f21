@@ -184,7 +184,7 @@ plt.imshow(matrix)
 
 It should look like this:
 
-<img src="dane.jpg" width=400>
+<img src="dane.png" width=400>
 
 Browse the legend here: https://www.mrlc.gov/data/legends/national-land-cover-database-2019-nlcd2019-legend
 
