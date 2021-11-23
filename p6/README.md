@@ -1,90 +1,12 @@
-# DRAFT (don't start yet)
-
-# P6: Wisconsin Land Use
-
-## Corrections/Clarifications
-
-* [April 5th]: Reduce rounding sensitivity
-* [April 3rd]: Re-run build dataset, refreshed all outputs, plots and expected.json. 
-* [April 3rd]: Revert back to 16 questions, removed repeating Q9. 
-* [April 3rd]: Fixed number of questions, Q9 was repeated (17 questions now). 
-For outputs with floats (including list and tuple), tester has a tolerance.
-* [April 3rd]: Fixed typo in Q9. `area0320.py` -> `area0320.npy`.
-* [April 2nd]: Tester released. Requires `ffmpeg` installed for Q16. Download `expected.json` too.
+# Project 6: Regression Models
 
 ## Overview
 
-In this project, you'll predict land development in Wisconsin based on nearby land type
-(water, forest, agriculture, etc).  The project data is derived from [this
-dataset](https://www.mrlc.gov/data/nlcd-land-cover-conus-all-years), which
-breaks the United States into 30m squares and categorizes how those
-chunks of land are being used.
+We will be predicting population of counties in Wisconsin using regression models.  You'll need to extract data from three different datasets to construct DataFrames suitable for training:
 
-Take a look
-[here](https://www.mrlc.gov/data/legends/national-land-cover-database-2016-nlcd2016-legend)
-to see the different ways land is used. Although the data covers the
-whole US, we'll be looking at a sampling of places in WI.  Here's an
-example of the land use around Madison:
-
-<img src="imgs/good-colors.png" width=600>
-
-The dataset is large (~10 GB across years), so we've already sampled
-it for you.  We'll provide land use data for the following points:
-
-<img src="imgs/wi-sample.png" width=400>
-
-We'll provide metrics about how land is used at each location
-represented by a **red dot**.  You'll use those points for part 1 of
-the project to train regression models that can predict how much land
-is developed based on various characteristics such as the amount of
-nearby water.  You'll evaluate how well those models perform in part
-2.
-
-For part 3 of the project, you'll write your own code to calculate
-those metrics based on raw land-use maps at locations corresponding to
-the each **gray dot**.
-
-You'll do all your work in a fresh main.ipynb notebook. When answering question 1, start with a #q1 comment, and so on. Be sure to run the tester regularly.  You should download the following to get started
-
-## Dataset
-
-In addition to `tester.py` and `expected.json`, please download the following dataset files:
- * `data/images.db`
- * `data/images.zip`
- * `data/madison.zip`
-
-The main dataset you'll need to get started is a sqlite database
-called `data/images.db`.  It contains a table called sample with the
-following columns:
-
-* `file_name`: name of the map file from which land use metrics were calculated
-* `lat`: latitude
-* `lon`: longitude
-* `water_ratio`, `forest_ratio`, `agriculture_ratio`: 
-area covered by water bodies / forests / used for agriculture. Between 0...1.  
-* `district_id`: which [congressional districts](https://en.wikipedia.org/wiki/Wisconsin%27s_congressional_districts) (shown below), a categorical variable.  The IDs are arbitrary, you have to `JOIN` with the `district` table on `district_id` to get actual district names.
-
-<img src="imgs/congressional_districts.png" alt="congressional-districts" width=600>
-
-* `developed_ratio`: development ratio, the output variable that you'll try to predict.
-
-The `sample` table contains 2000 rows.  The first 400 rows contain to
-the red points in the earlier map, and you'll use those for your initial
-analysis.
-
-The remaining 1600 are missing metrics in several columns.  Before you
-can use those in later analysis, you'll need to compute those metrics
-from raw maps, which are represented as numpy arrays inside the
-`data/images.zip` file.
-
-`madison.zip` contains seven images showing how Madison's land use has
-evolved over the years.  You'll use this to create an animation in
-part 4.
-
-We generate `images.db` and `images.zip` via our build-dataset.ipynb
-notebook.  You're welcome to look at how it works if you're curious,
-but it's not really related to what you'll do for P6, and uses several
-things we haven't talked about in CS 320.
+* `counties.geojson` - population and boundaries of each county 
+* `counties_tracts.db` - details about housing units per tract (counties are sub-divided into tracts)
+* `land.zip` - details about land use (farm, forest, developed, etc.) in WI
 
 # Group Part (75%)
 
@@ -94,276 +16,166 @@ help from 320 staff (mentors, TAs, instructor).  You <b>may not</b>
 seek receive help from other 320 students (outside your group) or
 anybody outside the course.
 
-## Part 1: Linear Regression
+## Model 1: Area to Population
 
-We'll train models to predict `developed_ratio` (percent of land
-developed) based on how land is used nearby.  We'll be splitting the
-first 400 rows of the `sample` table into a training and test dataset.
-Fill in the SQL connection code and query string in the following
-snippet to generate these:
+### Q1: How many counties are in Wisconsin?
+
+`counties.geojson` is probably the easiest dataset to start working with, but you could also determine this with a query to the `counties_tracts.db` if you prefer.
+
+### Q2: What is the population of each county in WI?
+
+Answer with a geopandas plot that has a legend.  The population is in the `POP100` column.
+
+### Dataset 1
+
+Let's construct a dataset we can use to train a model.  Read `counties.geojson` into a GeoDataFrame (if you haven't already done so).
+
+Add a column to your GeoDataFrame specifying `AREALAND` for each county.  You can find this info in the `counties_tracts.db` database.  Hints:
+
+* this has an example of how to connect to a DB: https://docs.python.org/3/library/sqlite3.html
+* this has some examples of how to use `read_sql` on a DB connection to execute a query: https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html
+* a great first query for an unfamiliar DB is `pd.read_sql("""SELECT * FROM sqlite_master""", conn)`.  That will show you all the tables the DB has.
+* try running `pd.read_sql("""SELECT * FROM ????""", conn)` for each table name to see what all the tables look like
+
+After you've added `AREALAND` to your GeoDataFrame, use `train_test_split` to split the rows into `train` and `test` datasets.
+
+By default, `train_test_split` randomly shuffles the data differently each time it runs.  Pass `random_state=320` as a parameter so that it shuffles the same way as it did for us (so that you get the answers the tester expects).
+
+### Q3: What are the counties in the test dataset?
+
+Answer with a list, in the same order as the names appear in the DataFrame.
+
+### Q4: How much variance in the `POP100` can a `LinearRegression` model predict based only on `AREALAND`?
+
+`fit` the model to your `train` dataset and `score` it on your `test` dataset.
+
+### Q5: What is the expected population of a county with 500 square miles of area, according to the model?
+
+Consult the Census documentation to learn what units the data is in, and do any conversions necessary to answer the question: https://tigerweb.geo.census.gov/tigerwebmain/TIGERweb_attribute_glossary.html
+
+Assume there are exactly 2.59 kilometers per mile for the purposes of your calculation.
+
+## Model 2: Housing Units to Population
+
+### Dataset 2
+
+Construct this dataset (split into train/test) the same way you constructed Dataset 1, but instead of `AREALAND`, have a `HU100` column that specifies housing units per county.
+
+The query to get housing units per county is complicated!  County names are in the `counties` table and `HU100` values are in the `tracts` table.  Fortunately, both tables have a `COUNTY` column you can use to combine.  See lab for hints.
+
+### Q6: What are the HU100 values for the counties in the train dataset?
+
+Answer with a `dict`.
+
+### Q7: How much variance in the `POP100` can a `LinearRegression` model predict based only on `HU100`?
+
+Answer with the average of 5 scores produced by `cross_val_score` on the training data (https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html).
+
+### Q8: What is the standard deviation of the scores averaged in the previous question?
+
+### Q9: What is the formula relating POP100 and HU100?
+
+Fit your model to the entire training dataset to find the answer.  Round the coefficient and intercept to 2 decimal places.  Format the answer like this:
+
+```
+POP100 = ????*HU100 + ????
+```
+
+## Q10: what is the relationship between HU100 and POP100, visually?
+
+Answer with plot showing a scatter of actual values (both train and test) and a fit line based on the model.
+
+Use a `.text` call to annocate Dane County, as in the following.
+
+## Model 3: Land Use to Population
+
+### Q11: How many numbers in the matrix A is between 2 and 5 (inclusive)?
+
+You can paste the following to define `A`:
 
 ```python
-????
-df = pd.read_sql("""
-????
-""", ????)
-
-train, test = train_test_split(df, random_state=0)
-```
-
-Notes:
-* when we set `random_state=0` (or some other number), the split "randomly" happens the same way every time.  Having everybody use 0 makes it possible for us to write a reliable tester.
-* you may want to review the `LIMIT` clause so that you only get the first 400 rows
-* only select these columns: `file_name`, `district_name`, `lon`, `lat`, `water_ratio`, `forest_ratio`, `agriculture_ratio`, `developed_ratio`
-* you'll need to use a `JOIN` as introduced in lab to get the `district_name` from the `districts` table
-
-#### Q1: What are the **last** 5 rows of the test dataset?
-
-It should look like this:
-
-<img src="imgs/q1.png">
-
-#### Q2: What is the relationship between developed_ratio and _____? [PLOT]
-
-Fill in the blank with a feature of your choosing.  Answer with a
-scatter plot where the y-axis is developed_ratio and the x-axis is
-your feature.  This is exploratory, so no need to make the plot look
-nice.
-
-Here's an example with latitude on the x-axis (don't produce the same
-plot!  Choose a different feature for yourself to use on the x-axis).
-
-<img src="imgs/q2.png">
-
-#### Q3: What are the developed_ratio predictions of a Linear model on the first 5 test points?
-
-Train a LinearRegression model on features `lat`, `lon`,
-`water_ratio`, `forest_ratio`, `agriculture_ratio` of the the training
-data.
-
-Use the model to make predictions on the test dataset, and add these
-predictions to a `predicted` column in a DataFrame that is a copy of
-the original test DataFrame (you can copy a DataFrame with `.copy()`).
-
-Show the first 5 rows of the test data, with this added column:
-
-<img src="imgs/q3.png">
-
-#### Q4: How does the model score when evaluated against the test dataset?
-
-Use the r2_score (remember that this is the default for `.score`).
-Expected: about 0.714.
-
-#### Q5: How do the predictions compare to the actual values? [PLOT]
-
-Plot the developed_ratio column on the x-axis and the predicted column
-on the y-axis, like this (be sure to update the axis labels):
-
-<img src="imgs/q5.png">
-
-#### Q6: What are the coefficients for each feature in your model? [PLOT]
-
-Hint: create a Pandas Series where where you use the feature names for
-the index and the model's `.coef_` for the values, then use
-`.plot.bar()`.
-
-<img src="imgs/q6.png">
-
-Perhaps the negative coefficients are not surprising -- when there is
-more water, forest, or agriculture in a square of land, there is less
-development space remaining.
-
-#### Q7: Can we beat our simple model's score of 0.756 with a more complicated model?
-
-Use a pipeline that transforms the features prior to the
-LinearRegression.  Use a OneHotEncoder for district, a 2nd-degree
-polynomial transformation for the ratio features, and keep using lat
-and lon unmodified.
-
-You'll again train on the training data and use the model's default
-`.score` on the test data.
-
-Hint 1: you may want to import the following, then review how to use
-each imported class:
-
-```python
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import PolynomialFeatures, OneHotEncoder
-from sklearn.compose import make_column_transformer
-```
-
-Hint 2: you may want to read about the `remainder` parameter for
-dealing with lat and lon:
-https://scikit-learn.org/stable/modules/generated/sklearn.compose.make_column_transformer.html
-
-## Part 2: Cross Validation
-
-Perform an 8-fold cross validation on your two models above using
-`cross_val_score` on the training dataset.  You can use the default
-scoring metric (which again is `r2_score`).
-
-#### Q8: what are the mean (average) scores for simple and complex models, respectively?
-
-Answer with a tuple, like this: `(0.6517545836308132, 0.7882683505969759)`
-
-#### Q9: what is the standard deviation of scores for each model?
-
-Answer with a tuple again.  Hint: we used `.var()` in lecture for
-variance; do a web search to see if you can find a similar method for
-standard deviation on a numpy array.
-
-## Part 3: Computing Feature Metrics
-
-Our previous dataset was quite small, just 400 rows.  In this section,
-you will be extending this to all 2000 rows by computing the metrics
-directly from the raw maps in `images.zip`.  You'll want to start by
-pulling in the whole dataset with a new query (one that doesn't have a
-`LIMIT`).  You'll split it into train and test, just as before (again
-using the default test ratio).
-
-You'll see a bunch of .npy files in images.zip, meaning they contain numpy matrices
-(these contain the use data).  These are encoded as
-numpy array files -- take a look:
-
-```
-unzip -l data/images.zip
-```
-
-To complete the 1600 rows with the missing metrics, you can use the
-`file_name` column to determine which numpy array to load and use.  If
-`zf` is a ZipFile, you can read a numpy array inside using the
-following:
-
-```python
-with zf.open(????) as f:
-    buf = io.BytesIO(f.read())
-    map_array = np.load(buf)
-```
-
-For those who are curious: similar StringIO (used previously), BytesIO
-is like a fake file.  `f` is also a file, but it lacks a feature
-called "seeking" -- we won't get into the details here, but that's why
-we can't use numpy's `np.load` directly on `f`, as you would if the
-numpy array file were not in a zip.
-
-To open `zf` itself, you may or may not want to use a `with`
-statement, depending on how many places in your code you'll access the
-file (`with` statements cannot span multiple Jupyter cells).  Avoid
-repeatedly opening `images.zip`, or your code will be slow.
-
-In lab, we learned how to count cells with a particular in a matrix.
-You'll do that here, but it will be somewhat more general.  We'll
-define "water" as code 11, "forest" as codes 41-43, "agriculture" as
-codes 81-82, and "developed" as codes 21-24 (all the ranges include
-both the start and end numbers).
-
-The real land matrices are much larger, but imagine you had a 2x2:
-
-```python
-np.array([
-  [43, 23],
-  [9,  21],
+A = np.array([
+    [0,0,5,8,4],
+    [1,2,4,0,3],
+    [2,4,0,9,2],
+    [3,5,2,1,1],
+    [0,5,0,1,0]
 ])
 ```
 
-`forest_ratio` should be 0.25, developed_ratio should be 0.5, and the
-others should be 0.
+### Q12: How does Milwaukee County Look?
 
-#### Q10: How many cells in all of `area1234.npy` contain code 52?
+You can show the image like this:
 
-Expected: `80`.
+```python
+fig, ax = plt.subplots(figsize=(12,12))
+ax.imshow(????, vmin=0, vmax=255)
+```
 
-#### Q11: What are the **last** 5 rows of the new test dataset?
+You can get the matrix for Milwaukee County by learning how to use `rasterio` in the lab.
 
-If you did the new query and split into train/test correctly, you can
-copy your code from Q1 to answer this.
+You could also define a custom color map (corresponding to the legend here: https://www.mrlc.gov/data/legends/national-land-cover-database-2019-nlcd2019-legend) and pass `cmap=custom_cmap` to `imshow` to use it.
 
-<img src="imgs/q11.png">
+You can created a custom color map using `ListedColormap`, which lets you specify red, green, blue mixes for different values.  Here's an example for the land use data:
 
-#### Q12: what are the mean (average) scores for simple and complex models, respectively, on the larger dataset?
+```python
+from matplotlib.colors import ListedColormap
 
-You should be able to re-use your code from Q8, running it now on the bigger dataset.
+c = np.zeros((256,3))
+c[0] = [0.00000000000, 0.00000000000, 0.00000000000]
+c[11] = [0.27843137255, 0.41960784314, 0.62745098039]
+c[12] = [0.81960784314, 0.86666666667, 0.97647058824]
+c[21] = [0.86666666667, 0.78823529412, 0.78823529412]
+c[22] = [0.84705882353, 0.57647058824, 0.50980392157]
+c[23] = [0.92941176471, 0.00000000000, 0.00000000000]
+c[24] = [0.66666666667, 0.00000000000, 0.00000000000]
+c[31] = [0.69803921569, 0.67843137255, 0.63921568628]
+c[41] = [0.40784313726, 0.66666666667, 0.38823529412]
+c[42] = [0.10980392157, 0.38823529412, 0.18823529412]
+c[43] = [0.70980392157, 0.78823529412, 0.55686274510]
+c[51] = [0.64705882353, 0.54901960784, 0.18823529412]
+c[52] = [0.80000000000, 0.72941176471, 0.48627450980]
+c[71] = [0.88627450980, 0.88627450980, 0.75686274510]
+c[72] = [0.78823529412, 0.78823529412, 0.46666666667]
+c[73] = [0.60000000000, 0.75686274510, 0.27843137255]
+c[74] = [0.46666666667, 0.67843137255, 0.57647058824]
+c[81] = [0.85882352941, 0.84705882353, 0.23921568628]
+c[82] = [0.66666666667, 0.43921568628, 0.15686274510]
+c[90] = [0.72941176471, 0.84705882353, 0.91764705882]
+c[95] = [0.43921568628, 0.63921568628, 0.72941176471]
+custom_cmap = ListedColormap(c)
+```
 
-Expected: `(0.7729881088121584, 0.8844524099928219)`.
+### Q13: What portion of Milwaukee County is "Open Water"?
+
+Be careful!  Not everything in the matrix is Milwaukee County -- be sure not to count the cells with value 0.
+
+### Dataset 3
+
+Create a DataFrame called `land_df` where the index contains county names (in the same order they appear in `counties.geojson`) and four columns:
+
+* developed_open
+* developed_low
+* developed_med
+* developed_high
+* POP100
+
+The first four columns correspond to land cover codes 21-24 (https://www.mrlc.gov/data/legends/national-land-cover-database-2019-nlcd2019-legend) and should give the number of pixels in a county of the specified type.  The 5th column should get pulled in from `counties.geojson`.
+
+Split `land_df` using train_test_split with `random_state=320` (as with the other datasets).
+
+### Q14: What are the First 3 Columns of `train`, represented as nested dictionaries?
+
+You can use `train.iloc[:3].to_dict()` to answer.
+
+### Q15: What is the Relationship Between POP100 and ________________?
+
+Plot a scatter with `POP100` on the y-axis and one of the development columns of your choosing on the x-axis.
 
 # Individual Part (25%)
 
 You have to do the remainder of this project on your own.  Do not
 discuss with anybody except 320 staff (mentors, TAs, instructor).
 
-## Part 4: Map Animation
+Individual part will be released soon!
 
-We have been analyzing different locations, at the same point in time.
-In this section, we'll analyze multiple snapshots of one location
-(Madison) and ultimately create an animation showing the city
-changing.
-
-We have zips for multiple cities under data (for you to explore if you
-want for fun), but you'll only need `madison.zip`.  We won't need the
-database for this part.  Check inside the zip, and see if you can
-infer which .npy file is for each year, based on the names.  The .npy
-files are formatted the same as the ones we've been using, although
-they are somewhat larger.
-
-Here's a code snippet to show the difference between Madison in 2001
-and 2016 that may give you ideas for how to create your animation.
-
-```python
-from matplotlib import pyplot as plt
-
-with ZipFile("data/madison.zip") as zf:
-    with zf.open("year-2001.npy") as f:
-        buf = io.BytesIO(f.read())
-        mad2001 = np.load(buf)
-    with zf.open("year-2016.npy") as f:
-        buf = io.BytesIO(f.read())
-        mad2016 = np.load(buf)
-
-fig, axes = plt.subplots(ncols=2, figsize=(12,6))
-axes[0].imshow(mad2001, vmin=0, vmax=255)
-axes[0].set_title("Madison 2001")
-axes[1].imshow(mad2016, vmin=0, vmax=255)
-axes[1].set_title("Madison 2001")
-```
-
-It will initially look like this, which isn't correct:
-
-<img src="imgs/bad-colors.png" width=600>
-
-The land use data encodes usage with codes between 11 and 95, each of
-which is supposed to have a certain color, but these colors don't lie
-on a natural spectrum.  For example, 11 and 90 are both blues, but
-there are greens, reds, and other colors in between:
-https://www.mrlc.gov/data/legends/national-land-cover-database-2016-nlcd2016-legend
-
-We have defined a [get_usage_colormap() function](colormap.md) that
-creates a custom cmap corresponding to the land-use codes.  You can
-paste that function in your notebook, then pass
-`cmap=get_usage_colormap()` to your `.imshow` calls to use it.
-
-<img src="imgs/good-colors.png" width=600>
-
-You see Madison doesn't change a lot over this period (it's only a 15
-year interval), but you'll notice the differences upon close inspection.
-
-#### Q13: What is the shape of the 2001 Madison matrix?
-
-Expected: `(1200, 1200)`
-
-#### Q14: What portion of the points in Madison changed from 2001 to 2016?
-
-Expected: about 0.06156
-
-#### Q15: What years appear in `madison.zip`?
-
-Expected: `[2001, 2004, 2006, 2008, 2011, 2013, 2016]`
-
-#### Q16: How has Madison evolved over the years? [VIDEO]
-
-Use FuncAnimation to create a video with one frame per year in the
-dataset (there are some gaps in the dataset, but 2001 should be frame
-0, 2004 should be frame 1, etc).  It should be embedded directly in
-the notebook (use `to_html5_video` and `HTML`), but should look like
-[this](madison.mp4).  There should be about 1 second between frames.
-A title above the plot should say what year is being currently
-displayed.
