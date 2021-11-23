@@ -26,6 +26,8 @@ anybody outside the course.
 
 Answer with a geopandas plot that has a legend.  The population is in the `POP100` column.
 
+<img src="q2.png">
+
 ### Dataset 1
 
 Let's construct a dataset we can use to train a model.  Read `counties.geojson` into a GeoDataFrame (if you haven't already done so).
@@ -87,6 +89,8 @@ Answer with plot showing a scatter of actual values (both train and test) and a 
 
 Use a `.text` call to annocate Dane County, as in the following.
 
+<img src="q10.png">
+
 ## Model 3: Land Use to Population
 
 ### Q11: How many numbers in the matrix A is between 2 and 5 (inclusive)?
@@ -145,6 +149,8 @@ c[90] = [0.72941176471, 0.84705882353, 0.91764705882]
 c[95] = [0.43921568628, 0.63921568628, 0.72941176471]
 custom_cmap = ListedColormap(c)
 ```
+
+<img src="q12.png">
 
 ### Q13: What portion of Milwaukee County is "Open Water"?
 
