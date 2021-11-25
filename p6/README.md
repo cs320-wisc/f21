@@ -185,3 +185,58 @@ discuss with anybody except 320 staff (mentors, TAs, instructor).
 
 Individual part will be released soon!
 
+### Model Comparison
+
+Create (a) a linear model and (b) polynomial model (2nd degree, no bias factor) for use with the land cover dataset you created in the previous section (the one with features `developed_open`, `developed_low`, `developed_med`, and `developed_high`).
+
+### Q16: How do the models compare in terms of average cross validation score on the training data (5 folds)?
+
+Answer with a tuple, giving the average scores for the linear and polynomial models, respectively, like this:
+
+```python
+(0.9181286409212669, 0.6490702789444955)
+```
+
+### Q17: How consistent are the scores of each model across different folds?
+
+Answer with a plot that has a bar for each model, with error bars indicating standard deviation of scores.
+
+Expected:
+
+<img src="q17.png">
+
+### Model Interpretation
+
+Fit both models to the entire training dataset.
+
+### Q18: what are the coefficients of the linear model?
+
+Answer with a bar plot.
+
+Expected:
+
+<img src="q18.png">
+
+### Q19: what are the coefficients of the polynomial model?
+
+Answer with a dict, like this:
+
+```python
+{'developed_open': -0.10421547981954869,
+ 'developed_low': 1.2925525095848176,
+ 'developed_med': -4.959212819522501,
+ 'developed_high': 13.195644532447844,
+ 'developed_open^2': 1.8580256379019389e-06,
+ 'developed_open developed_low': -1.9531480201062656e-05,
+ 'developed_open developed_med': 8.182470913425943e-05,
+ 'developed_open developed_high': -0.00010695600475867095,
+ 'developed_low^2': 3.5293004807535056e-05,
+ 'developed_low developed_med': -0.0002326425087280648,
+ 'developed_low developed_high': 0.00025876108520569985,
+ 'developed_med^2': 0.0005602988332727987,
+ 'developed_med developed_high': -0.0017321013682364689,
+ 'developed_high^2': 0.001572181162921871}
+```
+
+### Q20: Choose the better of your two models -- how much variance can it explain in your test dataset?
+
