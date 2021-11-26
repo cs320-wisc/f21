@@ -1,94 +1,173 @@
 # DRAFT (don't start yet)
 
-# Clustering for Color Segmentation
+# Lab 13: Decision Boundaries
 
-An image is a matrix of colors.  Each cell, called a *pixel*, contains
-a red, green, and blue value (mixing these can create any color).  If
-we re-organize an image into a table such that we have one row per
-pixel and and red, green, and blue columns, then we can perform
-clustering on that table.  The result will inform us about the main
-colors in the image.
+We've learned two kinds of supervised learning: regression and
+classification.
 
-This page has an image of the WI capital that we'll use: https://en.wikipedia.org/wiki/Madison,_Wisconsin.  Download a resized version of it:
+Visualizing a regression model (like LinearRegression) is
+often straightforward: just draw a fit line.
 
-```
-wget https://raw.githubusercontent.com/tylerharter/cs320/master/s21/lab13/capital.jpg
-```
+How can we visualize a classification model (like LogisticRegression)?
+In this lab, you'll learn how to visualize decision boundaries.  In
+the end, it will look like this:
 
-Run the following to read and view the image:
+<img src="deg3.png" width=400>
 
-```python
-from matplotlib import pyplot as plt
-img = plt.imread("capital.jpg")
-plt.imshow(img)
-```
+# Example Data
 
-<img src="capital.jpg" width=200>
-
-`img` is three dimensional: row, column, color amounts.  Check it's
-`.shape`, then use `.reshape` fit it into a DataFrame like the one we
-described above:
+Generate and plot some scatter data:
 
 ```python
+import numpy as np
 import pandas as pd
-rgb = pd.DataFrame(????, columns=["red", "green", "blue"])
-rgb
+import matplotlib.pyplot as plt
+
+x = np.random.uniform(-3, 3, 200)
+y = 1 - x + np.random.normal(0, size=x.shape)
+z = ((0 < x-y/3) & (x-y/3 < 2.8)) | (x < -2.8)
+
+df = pd.DataFrame({"x":x, "y":y, "z":z})
+ax = df.plot.scatter(x="x", y="y", c=df["z"], vmin=-1)
 ```
+
+<img src="scatter.png" width=400>
+
+If we wanted to find model the relationship between the y and x
+variables, what kind of model do we need?
 
 <details>
     <summary>ANSWER</summary>
-    <code>img.reshape(-1, 3)</code>
+    Regression.  y is continuous.
 </details>
 
-Use KMeans clustering to identify 4 centroids for the colors:
+If we wanted to find model the relationship between z (represented by
+the color of the points) and inputs x and y, what kind of model do we
+need?
+
+<details>
+    <summary>ANSWER</summary>
+    Classification.  z is categorical.
+</details>
+
+## Regression
+
+Fit a line and view:
 
 ```python
-from sklearn.cluster import KMeans
-km = ????(n_clusters=4)
-km.????(rgb)
+from sklearn.linear_model import LinearRegression
+ax = df.plot.scatter(x="x", y="y", c=df["z"], vmin=-1)
+
+lr = LinearRegression()
+lr.fit(df[["x"]], df["y"])
+x = np.array(ax.get_xlim())
+y = lr.predict(x.reshape(-1, 1))
+ax.plot(x, y, c="red")
 ```
 
-Look at `km.cluster_centers_`; this contains the four resulting 4
-centroids (each on a row, each containing three color amounts).
+<img src="fit.png" width=400>
 
-Convert the centroid values to ints and place them in a DataFrame
-called centroids that has the same columns as `rgb`.
+## Classification
 
-<details>
-    <summary>ANSWER</summary>
-    <code>pd.DataFrame(km.cluster_centers_.astype(int), columns=rgb.columns)</code>
-</details>
+Let's train a pipeline using a LogisticRegression to separate the
+black from gray points.
 
-Reshape centroids.values so that we have 1 row by 4 columns by 3
-colors, then pass the result to `imshow`:
+To visualize this, we'll do the following:
 
-`plt.imshow(????)`
+1. train our model
+2. create a regular scatter plot
+3. break up the plot area into a grid of points
+4. determine how the model predicts each of these possible points
+5. use `plt.contourf` to smoothly show the decisions (and the boundary between them)
 
-<details>
-    <summary>ANSWER</summary>
-    <code>centroids.values.reshape(1, 4, 3)</code>
-</details>
+Please do all steps in the same cell (just keep adding the code we
+show to the end)!
 
-The result should look like this:
+If you run into trouble, you can see the whole code
+[here](solution.md).  But don't look at that unless you're really,
+really stuck. :)
 
-<img src="4colors.png">
+### Step 1: training
 
 ```python
-km = KMeans(n_clusters=4)
-km.fit(img.reshape(????))
-plt.imshow(km.cluster_centers_.reshape(????).astype(int))
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.linear_model import LogisticRegression
+
+pipe = Pipeline([
+    ("poly", PolynomialFeatures(1)), # degree 1 does nothing
+    ("std", StandardScaler()),
+    ("lr", LogisticRegression()),
+])
+pipe.fit(df[["x", "y"]], df["z"])
 ```
 
-<details>
-    <summary>ANSWER</summary>
-    <code>-1,3</code> and <code>1,4,3</code>
-</details>
+### Step 2: scatter
 
-How accurate is the image if we redraw it using only those 4 colors?
-Complete the following using `int`, `img.shape`, `labels_`, and
-`cluster_centers_` (not necessarily in that order).
+Run it:
 
 ```python
-img2 = km.????.astype(????)[km.????].reshape(????)
-plt.imshow(img2)
+df.plot.scatter(x="x", y="y", c=df["z"], vmin=-1)
 ```
+
+### Step 3: meshgrid
+
+At the end of your cell, add this:
+
+```python
+x, y = np.meshgrid(np.arange(-3, ax.get_xlim()[1], 0.01),
+                   np.arange(ax.get_ylim()[0], ax.get_ylim()[1], 0.01))
+x, y
+```
+
+`meshgrid` breaks up the space into two matrices covering the entire
+space (with `0.01` granularity, in this case).  The first one has the
+x coords of each point (which is why each column contains only one
+distinct number).  The second one contains the y coords of each point.
+
+Add this to the end of your cell:
+
+```python
+xy = np.hstack((x.reshape(-1,1), y.reshape(-1,1)))
+xy
+```
+
+The reshaping arranges each as a vertical column, and the hstack puts
+them side-by-side in a matrix.
+
+### Step 4: predicting each point
+
+The advantage of the shape of `xy`: this is in proper form to feed
+into a model.  Let's do that!
+
+```python
+z = pipe.predict(xy).reshape(x.shape)
+z
+```
+
+### Step 5: visualizing decision boundaries
+
+Ok, now we can plot the decision boundaries (using `alpha=0.1` for
+semi-transparency) on top of scatter points, adding the following in
+the same cell:
+
+```python
+plt.contourf(x, y, z, alpha=0.1, cmap="binary")
+```
+
+You should get this:
+
+<img src="deg1.png" width=400>
+
+## Improvements
+
+Clearly, a straight line can't separate the gray from the black very
+well.  Adjust the pipeline to fit 2nd-degree polynomials
+(`PolynomialFeatures(1)` should be changed to
+`PolynomialFeatures(2)`).  Now you'll get this:
+
+<img src="deg2.png" width=400>
+
+Finally, try allowing 3rd-degree polynomials to separate the points:
+
+<img src="deg3.png" width=400>
