@@ -350,7 +350,7 @@ def ip_check():
 def region():
     start_time = time.time()
     try:
-        run("region", "server_log.zip", "temp.zip")
+        run("region", "server_log.zip", "server_log2.zip")
     except subprocess.TimeoutExpired:
         print("Execution time for sample should be less than 30 seconds")
         return 0
@@ -362,7 +362,7 @@ def region():
 
     points = 0
 
-    df = pd.read_csv("temp.zip")
+    df = pd.read_csv("server_log2.zip")
     err = is_expected(len(df), "row_count")
     if err:
         print(err)
