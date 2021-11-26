@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 12: Model Comparison
 
 In this lab, we'll compare different polynomial regression models and
@@ -61,7 +59,7 @@ df
 ```
 
 Let's say we want the relationship between a y variable and our x
-variable to be $y = 2x + 5$.  We can add the y column and plot the
+variable to be *y = 2x + 5*.  We can add the y column and plot the
 relationship like this:
 
 ```python
@@ -76,7 +74,7 @@ Let's say you want to add some random noise to the relationship.  Add
 
 To create the data for the following work, modify the example as follows:
 
-* use $y = 5x - x^2 + 50$
+* use *y = 5x - x^2 + 50*
 * use 8 for the scale of the noise
 
 It should look roughly like the following:
