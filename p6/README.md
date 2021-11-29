@@ -8,6 +8,10 @@ We will be predicting population of counties in Wisconsin using regression model
 * `counties_tracts.db` - details about housing units per tract (counties are sub-divided into tracts)
 * `land.zip` - details about land use (farm, forest, developed, etc.) in WI
 
+## Corrections
+
+* Nov 29: fixed tester for Q5 and updated Q5 text to read "assume there are exactly 2.59 square kilometers per square mile for the purposes of your calculation."
+
 # Group Part (75%)
 
 For this portion of the project, you may collaborate with your group
@@ -55,7 +59,7 @@ Answer with a list, in the same order as the names appear in the DataFrame.
 
 Consult the Census documentation to learn what units the data is in, and do any conversions necessary to answer the question: https://tigerweb.geo.census.gov/tigerwebmain/TIGERweb_attribute_glossary.html
 
-Assume there are exactly 2.59 kilometers per mile for the purposes of your calculation.
+Assume there are exactly 2.59 square kilometers per square mile for the purposes of your calculation.
 
 ## Model 2: Housing Units to Population
 
