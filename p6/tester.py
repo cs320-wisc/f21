@@ -96,7 +96,16 @@ def compare_list(expected, actual, config={}):
         return sorted(expected) == sorted(actual)
 
 def compare_tuple(expected, actual, config={}):
-    return expected == actual
+    res = True
+    tolerance = 0.0001
+    for e, a in zip(expected, actual):
+        if type(e) == float:
+            if not math.isclose(e, a, rel_tol=tolerance):
+                res = False
+        else:
+            if e != a:
+                res = False
+    return res
 
 def compare_set(expected, actual, config={}):
     if config.get("require") == "superset":
