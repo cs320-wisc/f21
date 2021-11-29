@@ -1,5 +1,9 @@
 # Project 6: Regression Models
 
+## Corrections/Clarifications
+
+* Nov 29: tester.py is tolerant to precision errors up to 0.0001 in q16
+
 ## Overview
 
 We will be predicting population of counties in Wisconsin using regression models.  You'll need to extract data from three different datasets to construct DataFrames suitable for training:
