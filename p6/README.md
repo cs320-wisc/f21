@@ -3,6 +3,7 @@
 ## Corrections/Clarifications
 
 * Nov 29: tester.py is tolerant to precision errors up to 0.0001 in q16
+* Nov 29: fixed tester for Q5 and updated Q5 text to read "assume there are exactly 2.59 square kilometers per square mile for the purposes of your calculation."
 * Nov 29: q5 answer key changed
 * Nov 29: increased tolerance for q5
 
@@ -13,10 +14,6 @@ We will be predicting population of counties in Wisconsin using regression model
 * `counties.geojson` - population and boundaries of each county 
 * `counties_tracts.db` - details about housing units per tract (counties are sub-divided into tracts)
 * `land.zip` - details about land use (farm, forest, developed, etc.) in WI
-
-## Corrections
-
-* Nov 29: fixed tester for Q5 and updated Q5 text to read "assume there are exactly 2.59 square kilometers per square mile for the purposes of your calculation."
 
 # Group Part (75%)
 
