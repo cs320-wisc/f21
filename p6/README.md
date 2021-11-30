@@ -4,6 +4,7 @@
 
 * Nov 29: tester.py is tolerant to precision errors up to 0.0001 in q16
 * Nov 29: q5 answer key changed
+* Nov 29: increased tolerance for q5
 
 ## Overview
 
