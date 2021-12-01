@@ -64,7 +64,7 @@ lr.fit(times_df[[????]], times_df[????])
 lr.predict([[1000000]])
 ```
 
-Call `measure_predict` with 1000000 to see how good your prediction
+Call `measure_shuffle` with 1000000 to see how good your prediction
 was.  When I did this, the model predicted 943.0 milliseconds, but it
 actually took 887.6 milliseconds.  Not bad, considering we're
 extrapolating to 100x larger than our largest measurement!
