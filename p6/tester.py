@@ -82,6 +82,7 @@ def compare_float(expected, actual, config={}):
     if math.isnan(expected) and math.isnan(actual):
         return True
     tolerance = float(config.get("tolerance", 0))
+    tolerance = 0.0001
     return math.isclose(expected, actual, rel_tol=tolerance)
 
 def compare_str(expected, actual, config={}):
@@ -114,13 +115,14 @@ def compare_set(expected, actual, config={}):
         return expected == actual
 
 def compare_dict(expected, actual, config={}):
-    tolerance = config.get("tolerance", None)
-
+    tolerance = config.get("tolerance", 0.0001)
     if tolerance:
         if expected.keys() != actual.keys():
             return False
-
         for key in expected.keys():
+            # for q14
+            if isinstance(expected[key], dict):
+                return expected == actual
             if not compare_float(expected[key], actual[key], {"tolerance": tolerance}):
                 return False
                 
@@ -166,6 +168,7 @@ def compare(expected_csv, actual_csv):
         actual_rows = {int(row["question"]): dict(row) for row in csv.DictReader(f)}
 
     for qnum in sorted(expected_rows.keys()):
+        print(qnum)
         if not qnum in actual_rows:
             continue
         expected = expected_rows[qnum]
