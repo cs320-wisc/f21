@@ -94,7 +94,7 @@ POP100 = ????*HU100 + ????
 
 Answer with plot showing a scatter of actual values (both train and test) and a fit line based on the model.
 
-Use a `.text` call to annocate Dane County, as in the following.
+Use a `.text` call to annotate Dane County, as in the following.
 
 <img src="q10.png">
 
