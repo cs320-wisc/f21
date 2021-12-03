@@ -100,7 +100,7 @@ Use a `.text` call to annotate Dane County, as in the following.
 
 ## Model 3: Land Use to Population
 
-### Q11: How many numbers in the matrix A is between 2 and 5 (inclusive)?
+### Q11: How many numbers in the matrix A are between 2 and 5 (inclusive)?
 
 You can paste the following to define `A`:
 
@@ -189,8 +189,6 @@ Plot a scatter with `POP100` on the y-axis and one of the development columns of
 
 You have to do the remainder of this project on your own.  Do not
 discuss with anybody except 320 staff (mentors, TAs, instructor).
-
-Individual part will be released soon!
 
 ### Model Comparison
 
