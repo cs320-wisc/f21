@@ -7,8 +7,8 @@ import numpy as np
 
 # hitting lower accuracy corresponds to grade of 0%
 # hitting upper accuracy corresponds to grade of 100%
-lower = 55
-upper = 80
+lower = 50
+upper = 75
 max_sec = 60
 module_name = "main"
 test_set = "test1"
