@@ -36,7 +36,7 @@ variables, what kind of model do we need?
 
 <details>
     <summary>ANSWER</summary>
-    Regression.  y is continuous.
+    Regression.  y is numeric.
 </details>
 
 If we wanted to find model the relationship between z (represented by
