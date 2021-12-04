@@ -1,4 +1,4 @@
-# DRAFT (don't start yet)
+# DRAFT ONLY -- DON'T START YET
 
 # P7: Selling Laptops: Smart Marketing
 
@@ -47,13 +47,13 @@ Each of the 3 datasets consist of 3 files (so there are 9 files total, of which 
 2. `???_logs.csv`: details about webpages visited by each user
 3. `???_y.csv`: y=1 means they clicked the email; y=0 means they did not
 
-Here's some data in `train_users.csv`:
+Here is some data in `train_users.csv`:
 
-<img src="users.png" height=220>
+image
 
-Here's the corresponding data from `train_y.csv`:
+Here is the corresponding data from `train_y.csv`:
 
-<img src="y.png" height=220>
+image 
 
 After aligning the IDs and considering the `y` column, we can see
 Nikki Young clicked the promotional email, whereas the other 4 users
@@ -61,16 +61,11 @@ did not.
 
 Here is some data in `train_logs.csv`:
 
-<img src="logs.png" height=220>
+image
 
 Each row represents a visit to a webpage on the site.  Each row
-contains the date, the id of the user who visited the page, their ip
-address, the url that they visited, and the number of minutes spent on
-the page.
-
-We have included the `ip2location.csv` dataset, identical to the one
-in P5.  Feel free to use it if you want to infer country as a feature
-for your model based on IP address.
+contains the date, the id of the user who visited the page, the url
+that they visited, and the number of minutes spent on the page.
 
 ## `UserPredictor` class
 
@@ -154,4 +149,4 @@ print(f"AVG: {scores.mean()}, STD: {scores.std()}\n")
 
   * if you plan to work with your team members (not required, as usual), consider how you may want to divide the work.  One possibility: each team member could try a different model; after comparing them, all team members could submit the one model that scores best.  Alternatively, each team member could be responsible for computing different per-user stats to use as features for training/predicting.  Of course, avoid getting in a situation where you are dependent on any one person to complete the project; this project should be a reasonable amount of work, even for somebody working individually.
 
-  * remember that the project is due Apr 28 and that you're not allowed to use late days on P7
+  * remember that the project is due Dec. 15 and that you're not allowed to use late days on P7
