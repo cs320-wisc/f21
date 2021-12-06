@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 13: Decision Boundaries
 
 We've learned two kinds of supervised learning: regression and
@@ -38,7 +36,7 @@ variables, what kind of model do we need?
 
 <details>
     <summary>ANSWER</summary>
-    Regression.  y is continuous.
+    Regression.  y is numeric.
 </details>
 
 If we wanted to find model the relationship between z (represented by
@@ -60,8 +58,8 @@ ax = df.plot.scatter(x="x", y="y", c=df["z"], vmin=-1)
 
 lr = LinearRegression()
 lr.fit(df[["x"]], df["y"])
-x = np.array(ax.get_xlim())
-y = lr.predict(x.reshape(-1, 1))
+x = pd.DataFrame({"x": np.arange(ax.get_xlim()[0], ax.get_xlim()[1], 0.1)})
+y = lr.predict(x)
 ax.plot(x, y, c="red")
 ```
 
@@ -115,7 +113,7 @@ df.plot.scatter(x="x", y="y", c=df["z"], vmin=-1)
 At the end of your cell, add this:
 
 ```python
-x, y = np.meshgrid(np.arange(-3, ax.get_xlim()[1], 0.01),
+x, y = np.meshgrid(np.arange(-3, 3, 0.01),
                    np.arange(ax.get_ylim()[0], ax.get_ylim()[1], 0.01))
 x, y
 ```
@@ -128,20 +126,22 @@ distinct number).  The second one contains the y coords of each point.
 Add this to the end of your cell:
 
 ```python
-xy = np.hstack((x.reshape(-1,1), y.reshape(-1,1)))
-xy
+predict_df = pd.DataFrame({
+    "x": x.reshape(-1),
+    "y": y.reshape(-1),
+})
+predict_df
 ```
 
-The reshaping arranges each as a vertical column, and the hstack puts
-them side-by-side in a matrix.
+The reshaping arranges each as a vertical column in a DataFrame -- exactly the format the model wants for prediction.
 
 ### Step 4: predicting each point
 
-The advantage of the shape of `xy`: this is in proper form to feed
-into a model.  Let's do that!
+The advantage of the shape of `x`: this is in proper form to feed
+into a model.  Let's use the zame for z!
 
 ```python
-z = pipe.predict(xy).reshape(x.shape)
+z = pipe.predict(predict_df).reshape(x.shape)
 z
 ```
 
@@ -155,7 +155,7 @@ the same cell:
 plt.contourf(x, y, z, alpha=0.1, cmap="binary")
 ```
 
-You should get this:
+You should get something like this:
 
 <img src="deg1.png" width=400>
 
