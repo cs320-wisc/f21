@@ -1,5 +1,3 @@
-# DRAFT (don't start yet)
-
 # Lab 14: Clustering for Color Segmentation
 
 An image is a matrix of colors.  Each cell, called a *pixel*, contains
