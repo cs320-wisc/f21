@@ -63,7 +63,7 @@ Here is some data in `train_logs.csv`:
 
 Each row represents a visit to a webpage on the site.  Each row
 contains the date, the id of the user who visited the page, the url
-that they visited, and the number of minutes spent on the page.  We
+that they visited, and the number of seconds spent on the page.  We
 see Adriana visited 4 pages on the website for varying amounts of time
 (including one for laptop.html).
 
