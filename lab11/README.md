@@ -229,22 +229,16 @@ Now, let's do an elementwise comparison to get a True in every place where there
 a % 2 == 0
 ```
 
-It will be easier to count matches if we represent True as 1 and False as 0:
-
-```python
-(a % 2 == 0).astype(int)
-```
-
 How many is that?
 
 ```python
-(a % 2 == 0).astype(int).sum()
+(a % 2 == 0).sum()
 ```
 
 And what percent of the total is that?
 
 ```python
-(a % 2 == 0).astype(int).mean() * 100
+(a % 2 == 0).mean() * 100
 ```
 
 This may be useful for counting what percentage of an area matches a
